@@ -1,1 +1,1 @@
-My name is Bingo. B-I-N-G-O. B-I-N-G-O.
+And Bingo was his name-o. There was a farmer who had a dog. 
