@@ -18,6 +18,10 @@ cd SkateHub
 ```
 cd server
 ```
+* Install the necessary dependencies:
+```
+npm install
+```
 * To connect to mongodb run:
 ```
 node server.js
