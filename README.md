@@ -5,6 +5,9 @@
 * This app will allow users to post these spots with a coordinate location for others to travel to. Users will be able to see what spots their friends are skating and invite their friends to come skate that spot. We wish to bring this to both IOS and Android devices by using the open-source Ionic Framework.
 * Created by: Derwin Graham, William (Alex) Wood, TJ Bach, Chris Welborn, and Darius Brown
 
+## Prerequisites
+* [Node](https://nodejs.org/en/) version 6.11.5 or higher
+* [NPM](https://www.npmjs.com/) version 5.3.0 or higher
 
 ## Build
 * Currently the only thing this project does is connect to a cloud database at mlabs. To do so run
