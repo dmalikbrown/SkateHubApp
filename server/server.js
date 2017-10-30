@@ -10,7 +10,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 // Connect To Database
-var dbUrl = "mongodb://wawood1:password@ds241025.mlab.com:41025/skatehub";
+var dbUrl = "mongodb://Dummy_User:password@ds241025.mlab.com:41025/skatehub";
 mongoose.Promise = require('bluebird');
 var options = {
   useMongoClient: true,
