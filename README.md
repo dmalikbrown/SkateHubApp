@@ -6,3 +6,6 @@
 
 
 ## Build
+* Currently the only thing this project does is connect to a cloud database at mlabs. To do so run
+```
+git clone 
