@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SkateHub
 * Our app "SkateHub," is an app that will connect skaters all over the world in the future. For this capstone project we will be focusing more on a smaller audience for the time being.
 * The app itself will let skaters create a profile in which they can enter basic information about themselves, add friends, find skate spots in their area, and socialize, as well as interact with other local skaters in their area. Skateboarders don't have a set spot they skate, part of the skateboarding world is to venture out and find hidden spots.
@@ -27,3 +28,6 @@ npm install
 node server.js
 ```
 * A message in your console should pop up saying Hello WOrld and that you're connected.
+=======
+ls
+>>>>>>> dev

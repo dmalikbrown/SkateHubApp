@@ -20,9 +20,17 @@ var options = {
 };
 mongoose.connect(dbUrl, options);
 
-
-// On Connection
 mongoose.connection.on('connected', () => {
   console.log('Connected to database '+dbUrl);
+  console.log('Open thy browser to localhost:3000');
 });
+// On Connection
 const app = express();
+
+app.get('/',function(req,res){
+  res.sendFile(path.join(__dirname+'/index.html'));
+  //__dirname : It will resolve to your project folder.
+});
+// On Connection
+
+app.listen(3000);
