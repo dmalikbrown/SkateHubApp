@@ -8,4 +8,18 @@
 ## Build
 * Currently the only thing this project does is connect to a cloud database at mlabs. To do so run
 ```
-git clone 
+git clone https://github.com/SCCapstone/SkateHub.git
+```
+* Change directory into SkateHub
+```
+cd SkateHub
+```
+* Change directory into server
+```
+cd server
+```
+* To connect to mongodb run:
+```
+node server.js
+```
+* A message in your console you pop up saying Hello WOrld and that you're connected.
