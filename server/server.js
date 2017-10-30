@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 //const passport = require('passport');
 const mongoose = require('mongoose');
+const path = require('path');
 
 // Connect To Database
 var dbUrl = "mongodb://Dummy_User:password@ds241025.mlab.com:41025/skatehub";
