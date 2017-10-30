@@ -22,4 +22,4 @@ cd server
 ```
 node server.js
 ```
-* A message in your console you pop up saying Hello WOrld and that you're connected.
+* A message in your console should pop up saying Hello WOrld and that you're connected.
