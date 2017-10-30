@@ -25,3 +25,4 @@ mongoose.connect(dbUrl, options);
 mongoose.connection.on('connected', () => {
   console.log('Connected to database '+dbUrl);
 });
+const app = express();
