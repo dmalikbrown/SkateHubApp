@@ -30,3 +30,7 @@ npm install
 node server.js
 ```
 * A message in your console should pop up saying Hello WOrld and that you're connected.
+* Open a browser and go to:
+```
+localhost:3000
+```
