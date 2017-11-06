@@ -29,8 +29,18 @@ npm install
 ```
 node server.js
 ```
-* A message in your console should pop up saying Hello WOrld and that you're connected.
-* Open a browser and go to:
+* A message in your console should pop up saying that you're connected.
+* Open another terminal and change into the ionic skatehub directory:
 ```
-localhost:3000
+cd Skatehub/skatehub
 ```
+* Run npm install to gain all dependencies
+```
+npm install
+```
+* Run ionic serve to run in the browser
+```
+ionic serve
+```
+* If you run in Google Chrome you can inspect the page and toggle the device simulator to view on mobile phones
+
