@@ -28,14 +28,25 @@ mongoose.connection.on('connected', () => {
 // On Connection
 const app = express();
 
-app.get('/',function(req,res){
-  res.sendFile(path.join(__dirname+'/index.html'));
-  //__dirname : It will resolve to your project folder.
-});
-app.get('/darius',function(req,res){
-  res.sendFile(path.join(__dirname+'/darius.html'));
-  //__dirname : It will resolve to your project folder.
-});
+// app.get('/',function(req,res){
+//   res.sendFile(path.join(__dirname+'/index.html'));
+//   //__dirname : It will resolve to your project folder.
+// });
+// app.get('/darius',function(req,res){
+//   res.sendFile(path.join(__dirname+'/darius.html'));
+//   //__dirname : It will resolve to your project folder.
+// });
+const port = process.env.PORT || 3000;
 
 
-app.listen(3000);
+// Body Parser Middleware
+var bodyOptions = {
+  limit: '50mb'
+}
+app.use(bodyParser.json(bodyOptions));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+// CORS Middleware
+app.use(cors());
+
+app.listen(port);
