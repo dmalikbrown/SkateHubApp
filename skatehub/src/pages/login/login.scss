@@ -1,4 +1,7 @@
 page-login {
+  div.scroll-content {
+    overflow-y: hidden !important;
+  }
   ion-content {
     background-image: url('../assets/imgs/background.jpg');
     -webkit-background-image: url('../assets/imgs/background.jpg');
@@ -6,13 +9,18 @@ page-login {
     background-size:cover;
   }
   div.loginform {
-    display: block;
-    text-align: center;
-  }
-  form {
-      display: inline-block;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-  }
+    display: flex;
+   justify-content: center; /* center horizontally */
+   align-items: center;
+   height: 100%;
+ }
+ ion-item {
+   border-radius: 10px !important;
+   height: 45px;
+   width: 100%;
+ }
+ div.input-wrapper {
+   margin-bottom: 15px;
+ }
+
 }

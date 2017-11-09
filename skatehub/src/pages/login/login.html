@@ -13,20 +13,34 @@
 </ion-header> -->
 
 
-<ion-content padding>
-  <div class = "loginform">
-  <form (ngSubmit)="loginForm()">
-     <ion-item>
-       <ion-label floating color ="primary">Enter Username</ion-label>
+<ion-content >
+  <!-- <div class = "loginform"> -->
+  <!-- <form (ngSubmit)="loginForm()"> -->
+    <ion-row style="margin-top: 45%;" justify-content-center>
+      <h1 style="color: #E0E0E0; font-weight: 900;">SkateHub</h1>
+    </ion-row>
+    <ion-row justify-content-center padding>
+
+     <ion-item padding no-lines>
+       <ion-label color ="light">Enter Username</ion-label>
        <ion-input type="text" [(ngModel)]="username" name="username"></ion-input>
      </ion-item>
-     <ion-item >
-       <ion-label floating color ="primary">Enter Password</ion-label>
+   </ion-row>
+   <ion-row justify-content-center padding>
+     <ion-item padding>
+       <ion-label color ="light">Enter Password</ion-label>
        <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
      </ion-item>
-     <div text-center style="margin-top: 3%;">
-       <button ion-button strong round block outline type="submit">Login</button>
-     </div>
-   </form>
- </div>
+   </ion-row>
+   <div text-right style="margin-top: 3%; padding: 10px;">
+     <button ion-button icon-end style="width: 50%;" strong (tap) = "loginForm()">
+       Lets Skate
+       <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
+     </button>
+   </div>
+   <ion-row style="margin-top: 45%; background-color: #222; opacity: .6; height: 35px;" justify-content-center>
+     <p no-padding style="color: #F5F5F5; font-weight: bold; margin-top: 5px;">Ready To Skate? Sign Up</p>
+   </ion-row>
+   <!-- </form> -->
+ <!-- </div> -->
 </ion-content>
