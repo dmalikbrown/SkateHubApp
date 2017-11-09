@@ -19,10 +19,19 @@ export class LoginPage {
   username: any ="";
   password: any ="";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
-  }
 
+  splash = true;
+  tabBarElement: any;
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  this.tabBarElement = document.querySelector('.tabbar');
+  }
   ionViewDidLoad() {
+
+  setTimeout(() => {
+    this.splash = false;
+  }, 4000);
     console.log('ionViewDidLoad LoginPage');
   }
 
