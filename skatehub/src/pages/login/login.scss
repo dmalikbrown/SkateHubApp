@@ -1,3 +1,18 @@
 page-login {
-
+  ion-content {
+    background-image: url('../assets/imgs/background.jpg');
+    -webkit-background-image: url('../assets/imgs/background.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+  }
+  div.loginform {
+    display: block;
+    text-align: center;
+  }
+  form {
+      display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+  }
 }
