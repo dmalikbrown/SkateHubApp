@@ -31,14 +31,16 @@
     <ion-row justify-content-center padding>
 
      <ion-item padding no-lines>
-       <ion-label color ="light">Enter Username</ion-label>
-       <ion-input type="text" [(ngModel)]="username" name="username"></ion-input>
+       <!-- <ion-label color ="light">Enter Username</ion-label> -->
+       <ion-input type = "text" placeholder="Username" [(ngModel)]="username" name="username"></ion-input>
      </ion-item>
    </ion-row>
    <ion-row justify-content-center padding>
      <ion-item padding>
-       <ion-label color ="light">Enter Password</ion-label>
-       <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
+       <!-- <ion-label color ="light">Enter Password</ion-label> -->
+       
+       <ion-input type="text" placeholder="Password" [(ngModel)]="password" name="password #password" ></ion-input>
+
      </ion-item>
    </ion-row>
    <div text-right style="margin-top: 3%; padding: 10px;">
