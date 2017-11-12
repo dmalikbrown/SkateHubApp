@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 
 import { LoginPage } from '../pages/login/login';
+import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -17,7 +18,8 @@ import { AuthProvider } from '../providers/auth/auth';
     MyApp,
     LoginPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    RegisterPage
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { AuthProvider } from '../providers/auth/auth';
     MyApp,
     LoginPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    RegisterPage
   ],
   providers: [
     StatusBar,
