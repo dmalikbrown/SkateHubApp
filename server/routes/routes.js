@@ -5,7 +5,7 @@ const router = express.Router();
 //const config = require('../config/database');
 const User = require('../models/user');
 
-// '/skatehub/register'
+// '/skatehub/authenticate'
 router.post('/authenticate', (req, res, next) => {
   console.log(req.body);
   res.json({success: true, msg: 'hello world'});
