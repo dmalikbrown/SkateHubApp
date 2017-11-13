@@ -11,5 +11,9 @@ router.post('/authenticate', (req, res, next) => {
   res.json({success: true, msg: 'hello world'});
 });
 
+router.post('/register', (req, res, next) => {
+  console.log(req.body);
+  res.json({success: true, msg: 'hello world'});
+});
 
 module.exports = router;
