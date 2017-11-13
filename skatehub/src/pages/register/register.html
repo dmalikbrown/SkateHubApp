@@ -34,4 +34,8 @@
     <!-- <ion-label color ="light">Enter Username</ion-label> -->
     <ion-input type = "password" placeholder="Confirm Password" [(ngModel)]="confirmPass" name="confirmPass"></ion-input>
   </ion-item>
+  <button ion-button icon-end style="width: 50%;" strong (tap) = "registerForm()">
+    Register
+    <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
+  </button>
 </ion-content>
