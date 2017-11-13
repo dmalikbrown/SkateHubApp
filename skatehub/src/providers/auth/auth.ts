@@ -26,4 +26,10 @@ export class AuthProvider {
       .map(res => res.json());
   }
 
+  registerUser(user){
+    let headers = new Headers();
+    headers.append('Content-Type','application/json');
+    return this.http.post(this.devEp+"/skatehub/register",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
 }
