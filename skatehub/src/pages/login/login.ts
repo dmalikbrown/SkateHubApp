@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { RegisterPage } from '../../pages/register/register';
+import { HomePage } from '../../pages/home/home';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -16,6 +18,7 @@ import { RegisterPage } from '../../pages/register/register';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  homePage = HomePage;
   registerPage = RegisterPage;
   username: any ="";
   password: any ="";
