@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
@@ -24,7 +25,8 @@ import { AuthProvider } from '../providers/auth/auth';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
