@@ -3,11 +3,10 @@ const bcrypt = require('bcryptjs');
 // User Schema
 const UserSchema = mongoose.Schema(
   {
-    name: {type: String, required: true, max: 100},
+    fullName: {type: String, required: true, max: 100},
     username: {type: String, required: true, max: 100},
     email: {type: String, required: true, max: 100},
     password: {type: String, required: true},
-    phoneNumber: {type: String, required: true, max: 100},
     stance: {type: String, max: 100},
     spots: [{type: String}],
     savedSpots: [{type: String}],
@@ -31,6 +30,7 @@ module.exports.getUserByUsername = function(username, callback){
   User.findOne(query, callback);
 }
 module.exports.addUser = function(newUser, callback){
+  console.log(newUser);
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if(err) throw err;
