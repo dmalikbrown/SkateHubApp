@@ -6,7 +6,7 @@ const express = require('express');
 //const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-//const passport = require('passport');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -42,6 +42,9 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // CORS Middleware
 app.use(cors());
+
+//Initialize passport
+require('./config/passport')(passport);
 
 app.use('/skatehub', skatehub);
 

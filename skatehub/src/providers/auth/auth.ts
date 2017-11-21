@@ -34,6 +34,30 @@ export class AuthProvider {
       .map(res => res.json());
   }
 
+  isValidToken(){
+    return new Promise((resolve, reject) => {
+
+        //Load token if exists
+        this.storage.get('id_token').then((value) => {
+
+            this.token = value;
+
+            let headers = new Headers();
+            headers.append('Authorization', this.token);
+            this.http.get(this.devEp+'/skatehub/protected', {headers: headers})
+                .subscribe(res => {
+                    resolve(res);
+                }, (err) => {
+                    console.log(err);
+                    reject(err);
+                });
+
+        });
+
+    });
+
+  }
+
   storeUserData(token, user){
     let key = 'id_token';
     this.storage.set(key, token);

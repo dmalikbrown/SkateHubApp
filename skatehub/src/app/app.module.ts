@@ -13,7 +13,7 @@ import { SearchPage } from '../pages/search/search';
 import { PostPage } from '../pages/post/post';
 import { NavigatePage } from '../pages/navigate/navigate';
 import { ProfilePage } from '../pages/profile/profile';
-
+import { SplashPage } from '../pages/splash/splash';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -30,7 +30,8 @@ import { AuthProvider } from '../providers/auth/auth';
     SearchPage,
     PostPage,
     NavigatePage,
-    ProfilePage
+    ProfilePage,
+    SplashPage
 
   ],
   imports: [
@@ -49,7 +50,8 @@ import { AuthProvider } from '../providers/auth/auth';
     SearchPage,
     PostPage,
     NavigatePage,
-    ProfilePage
+    ProfilePage,
+    SplashPage
   ],
   providers: [
     StatusBar,

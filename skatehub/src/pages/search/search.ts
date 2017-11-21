@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AuthProvider } from '../../providers/auth/auth';
 
 /**
  * Generated class for the SearchPage page.
@@ -15,11 +16,22 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class SearchPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public authProvider: AuthProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchPage');
+  }
+
+  ionViewCanEnter(){
+    this.authProvider.isValidToken().then((res) => {
+         console.log("Already authorized");
+        return true;
+     }, (err) => {
+         console.log("Not already authorized");
+         return false;
+     });
   }
 
 }

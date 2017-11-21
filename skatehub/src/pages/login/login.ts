@@ -35,10 +35,10 @@ export class LoginPage {
   }
   ionViewDidLoad() {
 
-  setTimeout(() => {
-    this.splash = false;
-  }, 4000);
-    console.log('ionViewDidLoad LoginPage');
+  // setTimeout(() => {
+  //   this.splash = false;
+  // }, 4000);
+  //   console.log('ionViewDidLoad LoginPage');
   }
 
   loginForm(){
