@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { RegisterPage } from '../../pages/register/register';
-import { HomePage } from '../../pages/home/home';
+import { TabsPage } from '../../pages/tabs/tabs';
 
 
 /**
@@ -18,8 +18,9 @@ import { HomePage } from '../../pages/home/home';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  homePage = HomePage;
+
   registerPage = RegisterPage;
+  tabsPage = TabsPage;
   username: any ="";
   password: any ="";
 

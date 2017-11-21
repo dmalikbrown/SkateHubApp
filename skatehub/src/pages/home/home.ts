@@ -9,8 +9,6 @@ import { LoginPage } from '../../pages/login/login';
 })
 export class HomePage {
 
-  tab1Root = RegisterPage;
-  tab2Root = LoginPage;
 
   constructor(public navCtrl: NavController) {
 
