@@ -8,7 +8,47 @@ const User = require('../models/user');
 // '/skatehub/authenticate'
 router.post('/authenticate', (req, res, next) => {
   console.log(req.body);
-  res.json({success: true, msg: 'hello world'});
+  if(req.body.username == undefined || req.body.password == undefined){
+    return res.json({success: false, msg: 'Invalid Username or Password'});
+  }
+  let username = req.body.username.toLowerCase();
+  let password = req.body.password;
+
+  User.getUserByUsername(username, (err, user) =>{
+  if(err){
+    return res.json({success: false, msg: 'Invalid Username or Password'});
+  }
+  if(!user){
+    return res.json({success: false, msg: 'Invalid Username or Password'});
+  }
+  else
+  {
+    User.comparePassword(password, user.password, (err, isMatch) => {
+      if(err){
+        return res.json({success: false, msg: 'Invalid Username or Password'});
+      }
+      if(isMatch)
+      {
+        let randString = "2017-11-20 23:52:291211635275399870131421393217846107168351807835241506674495890246549867007470974291162240824812535450";
+        const token = jwt.sign({_id: user._id}, randString,
+        {
+          expiresIn: 2592000
+        });
+        let uObj = {
+          id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          username: user.username
+        };
+        return res.json({success: true, token: 'JWT '+token, user: uObj });
+      }
+      else
+        {
+          return res.json({success: false, msg: 'Invalid Username or Password'});
+        }
+      });
+  }
+  });
 });
 
 router.post('/register', (req, res, next) => {
