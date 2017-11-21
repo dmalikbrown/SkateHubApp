@@ -46,9 +46,10 @@ export class LoginPage {
       username: this.username,
       password: this.password
     };
-    this.authProvider.authenticateUser(obj).subscribe(function(data){
+    this.authProvider.authenticateUser(obj).subscribe((data) =>{
       if(data.success){
-        console.log(data.msg);
+        this.authProvider.storeUserData(data.token, data.user);
+        this.navCtrl.setRoot(TabsPage, {user: data.user});
       }
       else{
         //print error or something
