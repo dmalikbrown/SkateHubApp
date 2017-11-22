@@ -34,4 +34,30 @@ export class ProfilePage {
      });
   }
 
+  profilePage(){
+    console.log("Profile");
+    //Launches the profile page.
+    //this.navCtrl.push("myProfile");
+  }
+  mySpotsPage(){
+    console.log("My Spots");
+
+  }
+  friendsPage(){
+    console.log("Friends");
+  }
+  invitesPage(){
+    console.log("Invites");
+  }
+  savedSpotsPage(){
+    console.log("Saved Spots");
+  }
+  settingsPage(){
+    console.log("Settings");
+  }
+  logOutPage(){
+    console.log("Log Out");
+  }
+  //aboutPage(){console.log();}
+
 }
