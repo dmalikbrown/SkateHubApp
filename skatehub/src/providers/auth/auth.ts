@@ -12,7 +12,7 @@ import { Storage } from '@ionic/storage';
 export class AuthProvider {
 
   prodEp: any = "";
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://10.31.10.217:3000";
   token: any;
   user: any;
 
