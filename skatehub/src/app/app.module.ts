@@ -15,10 +15,19 @@ import { NavigatePage } from '../pages/navigate/navigate';
 import { ProfilePage } from '../pages/profile/profile';
 import { SplashPage } from '../pages/splash/splash';
 
+import { AuthProvider } from '../providers/auth/auth';
+import { SpotsProvider } from '../providers/spots/spots';
 
+import { ImagePicker } from '@ionic-native/image-picker';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AuthProvider } from '../providers/auth/auth';
+import { Camera } from '@ionic-native/camera';
+import { FilePath } from '@ionic-native/file-path';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
+
 
 @NgModule({
   declarations: [
@@ -56,8 +65,16 @@ import { AuthProvider } from '../providers/auth/auth';
   providers: [
     StatusBar,
     SplashScreen,
+    ImagePicker,
+    FileTransfer,
+    File,
+    Camera,
+    FilePath,
+    Geolocation,
+    NativeGeocoder,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    SpotsProvider
   ]
 })
 export class AppModule {}
