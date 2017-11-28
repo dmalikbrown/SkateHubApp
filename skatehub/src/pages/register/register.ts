@@ -82,6 +82,9 @@ export class RegisterPage {
     }
     return true;
   }
+  goBack() {
+    this.navCtrl.pop();
+  }
 
 registerForm() {
 

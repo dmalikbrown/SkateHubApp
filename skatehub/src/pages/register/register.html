@@ -14,27 +14,48 @@
 
 
 <ion-content padding>
-  <ion-item padding no-lines>
-    <!-- <ion-label color ="light">Enter Username</ion-label> -->
-    <ion-input type = "text" placeholder="Full Name" [(ngModel)]="fullName" name="fullName"></ion-input>
-  </ion-item>
-  <ion-item padding no-lines>
-    <!-- <ion-label color ="light">Enter Username</ion-label> -->
-    <ion-input type = "text" placeholder="Email" [(ngModel)]="email" name="email"></ion-input>
-  </ion-item>
-  <ion-item padding no-lines>
-    <!-- <ion-label color ="light">Enter Username</ion-label> -->
-    <ion-input type = "text" placeholder="Username" [(ngModel)]="username" name="username"></ion-input>
-  </ion-item>
-  <ion-item padding no-lines>
-    <!-- <ion-label color ="light">Enter Username</ion-label> -->
-    <ion-input type = "password" placeholder="Password" [(ngModel)]="password" name="password"></ion-input>
-  </ion-item>
-  <ion-item padding no-lines>
-    <!-- <ion-label color ="light">Enter Username</ion-label> -->
-    <ion-input type = "password" placeholder="Confirm Password" [(ngModel)]="confirmPass" name="confirmPass"></ion-input>
-  </ion-item>
-  <button ion-button icon-end style="width: 50%;" strong (tap) = "registerForm()">
+  <button (click)="goBack()" color = "white" ion-button clear icon-start>
+    <ion-icon style="font-size: 1.5em;" name="arrow-back" ></ion-icon>
+      Back
+      </button>
+
+  <ion-row style="margin-top: 10% ; opacity: .90;" justify-content-center padding=".5px;">
+
+    <ion-item padding no-lines>
+      <!-- <ion-label color ="light">Enter Username</ion-label> -->
+      <ion-input type = "text" placeholder="Full Name" [(ngModel)]="fullName" name="fullName"></ion-input>
+    </ion-item>
+  </ion-row>
+
+  <ion-row style="opacity: .90;" justify-content-center padding=".5px;">
+    <ion-item padding no-lines>
+      <!-- <ion-label color ="light">Enter Username</ion-label> -->
+      <ion-input type = "text" placeholder="Email" [(ngModel)]="email" name="email"></ion-input>
+    </ion-item>
+  </ion-row>
+
+  <ion-row style=" opacity: .90;" justify-content-center padding=".5px;">
+    <ion-item padding no-lines>
+      <!-- <ion-label color ="light">Enter Username</ion-label> -->
+      <ion-input type = "text" placeholder="Username" [(ngModel)]="username" name="username"></ion-input>
+    </ion-item>
+  </ion-row>
+
+  <ion-row style=" opacity: .90;" justify-content-center padding=".5px;">
+    <ion-item padding no-lines>
+      <!-- <ion-label color ="light">Enter Username</ion-label> -->
+      <ion-input type = "password" placeholder="Password" [(ngModel)]="password" name="password"></ion-input>
+    </ion-item>
+  </ion-row>
+
+  <ion-row style=" opacity: .90;" justify-content-center padding=".5px;">
+    <ion-item padding no-lines>
+      <!-- <ion-label color ="light">Enter Username</ion-label> -->
+      <ion-input type = "password" placeholder="Confirm Password" [(ngModel)]="confirmPass" name="confirmPass"></ion-input>rt
+    </ion-item>
+  </ion-row>
+
+  <button id = "registerbutton" ion-button strong (tap) = "registerForm()" justify-content-center padding left = ".10px" block icon-start>
     Register
     <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
   </button>
