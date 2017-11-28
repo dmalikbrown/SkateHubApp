@@ -2,9 +2,15 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-//const config = require('../config/database');
+const cloudinary = require('cloudinary');
+const multiparty = require('multiparty');
 const User = require('../models/user');
 
+cloudinary.config({
+  cloud_name: "skatehub",
+  api_key: '268764636196583',
+  api_secret: 'dM_yK-fX8Vr2cPgu7srRiwLzmUA'
+});
 // '/skatehub/authenticate'
 router.post('/authenticate', (req, res, next) => {
   console.log(req.body);
@@ -100,6 +106,40 @@ router.post('/register', (req, res, next) => {
       return res.json({sucess: false, msg: "That username exists already, please try another one"});
     }
 
+  });
+
+});
+
+router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  //multiparty helps handle files and large payloads
+  (new multiparty.Form()).parse(req, function(err, fields, files) {
+      console.log(files);
+      //call the cloudinary api to upload photo
+      cloudinary.uploader.upload(files.file[0].path, function (resp) {
+        //return the resp from cloudinary
+        return res.json({success: true, fileUrl: resp});
+      });
+    });
+});
+
+router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  /*
+  String manipulation to get the 'id' of the image for cloudinary to remove.
+  */
+  let url = req.body.url;
+  let filename = url.substring(url.lastIndexOf('/')+1);
+  console.log(filename);
+  let id = filename.substring(0,filename.lastIndexOf('.'));
+  console.log(id);
+  //make cloudinary api call to remove photo with the particular 'id'
+  cloudinary.v2.uploader.destroy(id, function(error, result){
+    if(error){
+      //TODO return success false or something.
+    }
+    else {
+      return res.json({success: true});
+    }
   });
 
 });
