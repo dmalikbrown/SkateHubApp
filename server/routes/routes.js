@@ -135,6 +135,7 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
       let avatar = user.avatar;
       let spotObj = new Spot({
         avatar: avatar,
+        name: req.body.name,
         userId: req.body.id,
         location: req.body.location,
         types: req.body.types,
