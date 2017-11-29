@@ -125,6 +125,10 @@
   </ion-row>
   <ion-list>
     <ion-item>
+      <ion-label floating>Name your spot</ion-label>
+      <ion-textarea [(ngModel)]="spotName"></ion-textarea>
+    </ion-item>
+    <ion-item>
       <ion-label floating>Describe your spot</ion-label>
       <ion-textarea [(ngModel)]="spotDescription"></ion-textarea>
     </ion-item>

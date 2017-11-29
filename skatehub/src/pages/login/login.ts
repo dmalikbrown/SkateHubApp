@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { RegisterPage } from '../../pages/register/register';
 
 import { AuthProvider } from './../../providers/auth/auth';
@@ -30,7 +30,8 @@ export class LoginPage {
   tabBarElement: any;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+          public authProvider: AuthProvider, public alertCtrl: AlertController) {
   this.tabBarElement = document.querySelector('.tabbar');
   }
   ionViewDidLoad() {

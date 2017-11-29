@@ -30,6 +30,7 @@ export class PostPage {
   imagePath: any; //typically going to be a string
   imageNewPath: any; //typically going to be a string
   spotDescription: any = "";//typically going to be a string
+  spotName: any = "";
   currentLocationBoolean: boolean = false; //boolean if user wants to set spot addy to their location
   riskLvl: any;
   lighting: any;
@@ -371,6 +372,7 @@ export class PostPage {
       console.log("ready to post!");
       let obj = {
         id: this.user.id,
+        name: this.spotName,
         location: this.address,
         types: this.skateTypes,
         description: this.spotDescription,
