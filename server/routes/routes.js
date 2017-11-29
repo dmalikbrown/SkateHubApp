@@ -126,7 +126,49 @@ router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req
 
 router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
-  
+  User.getUserById(req.body.id, (err,user) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when creating spot"});
+    }
+    if(user){
+      let avatar = user.avatar;
+      let spotObj = new Spot({
+        avatar: avatar,
+        userId: req.body.id,
+        location: req.body.location,
+        types: req.body.types,
+        description: req.body.description,
+        images: req.body.images,
+        lightingLevel: req.body.lightingLvl,
+        riskLevel: req.body.riskLvl
+      });
+      Spot.addSpot(spotObj, (err,spot) =>{
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg:"Error when adding spot"});
+        }
+        else{
+          let newSpot = {
+            id: spot._id
+          };
+          User.addSpot(user._id, newSpot, (err, x) =>{
+            if(err){
+              console.log(err);
+              return res.json({success: false, msg:"Error when adding spot"});
+            }
+            else{
+              return res.json({success: true});
+            }
+          });
+        }
+      });
+    }
+    else{
+      return res.json({success: false, msg:"Error when posting"});
+    }
+  })
+
 });
 
 router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{

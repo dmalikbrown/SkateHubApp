@@ -6,6 +6,7 @@ const SpotSchema = mongoose.Schema(
     location: {type: String, required: true},
     types: [{type: String}],
     desciption: {type: String},
+    userId: {type: String},
     avatar: {type: String},
     images: [{type: String}],
     rating: {type: Number},
