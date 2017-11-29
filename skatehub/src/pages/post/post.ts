@@ -35,7 +35,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://10.31.10.217:3000"; //end point for the server when in dev mode
+  devEp = "http://10.31.3.101:3000"; //end point for the server when in dev mode
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
@@ -329,7 +329,7 @@ export class PostPage {
        this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude)
           .then((result: NativeGeocoderReverseResult) =>{
             console.log(JSON.stringify(result));
-            this.address = result.thoroughfare +", "+ result.locality + ", "+ result.administrativeArea;
+            this.address = result.subThoroughfare+" "+result.thoroughfare +", "+ result.locality + ", "+ result.administrativeArea;
           })
           .catch((error: any) => console.log(error));
 
@@ -374,7 +374,8 @@ export class PostPage {
         types: this.skateTypes,
         description: this.spotDescription,
         images: this.resultArr,
-        lightingLvl: this.lighting
+        lightingLvl: this.lighting,
+        riskLvl: this.riskLvl
       };
       //TODO make server call with needed attributes
       console.log(obj);
