@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Content } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 
 @Component({
@@ -7,6 +7,8 @@ import { AuthProvider } from './../../providers/auth/auth';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild(Content) content: Content;
+
 
   user: any;
 
@@ -33,5 +35,9 @@ export class HomePage {
       this.user = this.navParams.data;
       console.log(this.user);
     }
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 }

@@ -8,10 +8,26 @@ const UserSchema = mongoose.Schema(
     email: {type: String, required: true, max: 100},
     password: {type: String, required: true},
     stance: {type: String, max: 100},
-    spots: [{type: String}],
-    savedSpots: [{type: String}],
-    invites: [{type: String}],
-    friends: [{type: String}],
+    spots: [
+    {
+              id: {type: String}
+    }
+    ],
+    savedSpots: [
+    {
+              id: {type: String}
+    }
+    ],
+    invites: [
+    {
+              id: {type: String}
+    }
+    ],
+    friends: [
+    {
+              id: {type: String}
+    }
+    ],
     avatar: {type: String}
   } , { timestamps: { createdAt: 'created_at' } });
 
@@ -45,4 +61,8 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
     if(err) throw err;
     callback(null, isMatch);
   });
+}
+  module.exports.addSpot = function(id, spotId, callback){
+    User.update({_id: id},{$push: {spots: spotId}}, callback);
+
 }

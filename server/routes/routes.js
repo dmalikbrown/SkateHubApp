@@ -2,9 +2,17 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-//const config = require('../config/database');
+const cloudinary = require('cloudinary');
+const multiparty = require('multiparty');
 const User = require('../models/user');
+const Spot = require('../models/spot');
 
+
+cloudinary.config({
+  cloud_name: "skatehub",
+  api_key: '268764636196583',
+  api_secret: 'dM_yK-fX8Vr2cPgu7srRiwLzmUA'
+});
 // '/skatehub/authenticate'
 router.post('/authenticate', (req, res, next) => {
   console.log(req.body);
@@ -100,6 +108,88 @@ router.post('/register', (req, res, next) => {
       return res.json({sucess: false, msg: "That username exists already, please try another one"});
     }
 
+  });
+
+});
+
+router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  //multiparty helps handle files and large payloads
+  (new multiparty.Form()).parse(req, function(err, fields, files) {
+      console.log(files);
+      //call the cloudinary api to upload photo
+      cloudinary.uploader.upload(files.file[0].path, function (resp) {
+        //return the resp from cloudinary
+        return res.json({success: true, fileUrl: resp});
+      });
+    });
+});
+
+router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  User.getUserById(req.body.id, (err,user) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when creating spot"});
+    }
+    if(user){
+      let avatar = user.avatar;
+      let spotObj = new Spot({
+        avatar: avatar,
+        name: req.body.name,
+        userId: req.body.id,
+        location: req.body.location,
+        types: req.body.types,
+        description: req.body.description,
+        images: req.body.images,
+        lightingLevel: req.body.lightingLvl,
+        riskLevel: req.body.riskLvl
+      });
+      Spot.addSpot(spotObj, (err,spot) =>{
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg:"Error when adding spot"});
+        }
+        else{
+          let newSpot = {
+            id: spot._id
+          };
+          User.addSpot(user._id, newSpot, (err, x) =>{
+            if(err){
+              console.log(err);
+              return res.json({success: false, msg:"Error when adding spot"});
+            }
+            else{
+              return res.json({success: true});
+            }
+          });
+        }
+      });
+    }
+    else{
+      return res.json({success: false, msg:"Error when posting"});
+    }
+  })
+
+});
+
+router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  /*
+  String manipulation to get the 'id' of the image for cloudinary to remove.
+  */
+  let url = req.body.url;
+  let filename = url.substring(url.lastIndexOf('/')+1);
+  console.log(filename);
+  let id = filename.substring(0,filename.lastIndexOf('.'));
+  console.log(id);
+  //make cloudinary api call to remove photo with the particular 'id'
+  cloudinary.v2.uploader.destroy(id, function(error, result){
+    if(error){
+      //TODO return success false or something.
+    }
+    else {
+      return res.json({success: true});
+    }
   });
 
 });
