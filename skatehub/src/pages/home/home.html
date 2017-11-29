@@ -1,23 +1,25 @@
 
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar color="white">
+    <ion-buttons end right>
+      <button id = "filter" color="black" ion-button icon-only>
+        Filter
+        <ion-icon name="ios-arrow-down"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title style="border: 1px solid #ccc" (click)="scrollToTop()">SkateHub</ion-title>
+
+    <ion-buttons start left>
+      <button color="black" ion-button icon-only>
+        <ion-icon name="ios-chatbubbles"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <h2>HomePage</h2>
-  <!--h1>
-    Fuck Darius
-  </h1>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p -->
-<!-- <ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="RegisterPage" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="LoginPage" tabIcon="information-circle"></ion-tab>
-  <!-- <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab> >
-</ion-tabs> -->
+
 
 </ion-content>
