@@ -15,6 +15,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult} from '@ionic-native/native-geocoder';
+import {HomePage} from './../../pages/home/home';
 
 declare var cordova: any;
 
@@ -35,7 +36,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://10.30.168.136:3000"; //end point for the server when in dev mode
+  devEp = "http://localhost:3000"; //end point for the server when in dev mode
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
@@ -381,8 +382,25 @@ export class PostPage {
       console.log(obj);
 
     this.spotsProvider.createSpot(obj).subscribe((data) => {
-
-    });  
+      if(data.success){
+        let toast = this.toastCtrl.create({
+          message: "You've added a spot",
+          position: 'top',
+          cssClass:'link',
+          duration: 3000
+        });
+        toast.present();
+        this.navCtrl.setRoot(HomePage);
+      }
+      else{
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: data.msg,
+          buttons: ["Dismiss"]
+        });
+        alert.present();
+      }
+    });
     }
   }
 

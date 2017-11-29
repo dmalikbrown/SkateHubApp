@@ -53,6 +53,12 @@ export class LoginPage {
       }
       else{
         //print error or something
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: data.msg,
+          buttons: ["Dismiss"]
+        });
+        alert.present();
       }
     });
   }
