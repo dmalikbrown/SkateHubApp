@@ -35,7 +35,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://localhost:3000"; //end point for the server when in dev mode
+  devEp = "http://10.30.168.136:3000"; //end point for the server when in dev mode
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
@@ -379,6 +379,10 @@ export class PostPage {
       };
       //TODO make server call with needed attributes
       console.log(obj);
+
+    this.spotsProvider.createSpot(obj).subscribe((data) => {
+
+    });  
     }
   }
 

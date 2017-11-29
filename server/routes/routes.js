@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
 const multiparty = require('multiparty');
 const User = require('../models/user');
+const Spot = require('../models/spot');
+
 
 cloudinary.config({
   cloud_name: "skatehub",
@@ -120,6 +122,11 @@ router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req
         return res.json({success: true, fileUrl: resp});
       });
     });
+});
+
+router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  
 });
 
 router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{

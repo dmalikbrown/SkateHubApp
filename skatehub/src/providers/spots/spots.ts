@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 export class SpotsProvider {
 
   prodEp: any = "";
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://10.30.168.136:3000";
 
   constructor(public http: Http, public authProvider: AuthProvider) {
   }
@@ -36,6 +36,14 @@ export class SpotsProvider {
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
     return this.http.post(this.devEp+"/skatehub/image/remove",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+
+  createSpot(obj){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+    return this.http.post(this.devEp+"/skatehub/spot/create",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
