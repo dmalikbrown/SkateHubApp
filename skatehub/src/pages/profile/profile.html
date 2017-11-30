@@ -7,19 +7,30 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>profile</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-  <button ion-button color=dark ion-button block strong (tap) = "profilePage()"> My Profile </button>
-  <button ion-button color=dark ion-button block strong (tap) = "mySpotsPage()"> My Spots </button>
-  <button ion-button color=dark ion-button block strong (tap) = "friendsPage()"> Friends </button>
-  <button ion-button color=dark ion-button block strong (tap) = "invitesPage()"> Invites </button>
-  <button ion-button color=dark ion-button block strong (tap) = "savedSpotsPage()"> Saved Spots </button>
-  <button ion-button color=dark ion-button block strong (tap) = "settingsPage()"> Settings </button>
-  <button ion-button color=dark ion-button block strong (tap) = "logOutPage()"> Log Out </button>
-  <!--button ion-button color=dark ion-button block strong (tap) = "aboutPage()"> About </button!-->
+  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+    <ion-icon name = "arrow-dropdown"></ion-icon>
+    My Spots
+  </button>
+  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+    <ion-icon name = "ios-people"></ion-icon>
+    Friends
+  </button>
+  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+    <ion-icon name = "paper-plane"></ion-icon>
+    Invites
+  </button>
+  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+    <ion-icon name = "checkmark-circle-outline"></ion-icon>
+    Saved Spots
+  </button>
+  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+    <ion-icon name = "settings"></ion-icon>
+    Settings
+  </button>
+
 </ion-content>
