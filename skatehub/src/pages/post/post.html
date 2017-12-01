@@ -145,7 +145,7 @@
     </ion-item>
     <ion-item *ngIf="!currentLocationBoolean">
       <ion-label stacked>What's the address?</ion-label>
-      <ion-input placeholder= "address, city, state"></ion-input>
+      <ion-input placeholder= "address, city, state" [(ngModel)] = "address"></ion-input>
     </ion-item>
     <ion-item no-lines>
       <ion-label>Use your current location?</ion-label>

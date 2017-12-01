@@ -1,25 +1,89 @@
 
-<ion-header>
-  <ion-navbar color="white">
+<ion-header no-border>
+  <ion-navbar color="primary">
     <ion-buttons end right>
-      <button id = "filter" color="black" ion-button icon-only>
+      <button id = "filter" color="white" ion-button icon-right>
         Filter
         <ion-icon name="ios-arrow-down"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-title style="border: 1px solid #ccc" (click)="scrollToTop()">SkateHub</ion-title>
+    <ion-title style="border: 1px solid #ccc" (tap)="scrollToTop()">SkateHub</ion-title>
 
     <ion-buttons start left>
-      <button color="black" ion-button icon-only>
+      <button color="white" ion-button icon-only>
         <ion-icon name="ios-chatbubbles"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>HomePage</h2>
+<ion-content>
+  <ion-row justify-content-center>
+    <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
+      <ion-option value="all">All</ion-option>
+      <ion-option value="NC">North Carolina</ion-option>
+      <ion-option value="SC">South Carolina</ion-option>
+    </ion-select>
+  </ion-row>
+  <ion-row *ngIf="noSpots" style="height: 50vh;" justify-content-center>
+    <ion-col align-self-center offset-4>
+      <h1 style="color: #9E9E9E;">No spots</h1>
+    </ion-col>
+  </ion-row>
+  <ion-list *ngIf="spots.length > 0">
+    <ion-row *ngFor="let spot of spots" justify-content-center padding-bottom>
+      <ion-row style="width: 100%;">
+        <ion-col>
+          <ion-item no-lines>
+            <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
+             <ion-avatar class ="border-green" item-start>
+              <img [src]="spot.avatar" alt = "">
+              <!-- style="border-radius: 50%; width: 50px; height: 50px;" -->
+             </ion-avatar>
+            <h3><strong>{{spot.username}}</strong></h3>
+            <ion-icon name = "more" item-end></ion-icon>
+          </ion-item>
+        </ion-col>
+        <!-- <ion-col col-6>
+        </ion-col> -->
+      </ion-row>
+      <img [src] = "spot.images[0]" style="height: 385px; width: 100%; display: block;">
+      <ion-row style="width: 100%;" no-wrap>
+        <ion-col align-self-center text-center>
+          <!-- <p *ngFor="let type of spot.types; let x = index;">
+            <ng-container *ngIf="x < 4">{{type}}</ng-container>
+          </p> -->
+          <ion-grid>
+            <ion-row wrap>
+              <ion-col *ngFor= "let type of spot.types; let x = index;" col-6>
+                  <ng-container *ngIf="x < 4">{{type}}</ng-container>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
 
+        </ion-col>
+        <ion-col col-4>
+        </ion-col>
+        <ion-col >
+          <button color="primary" ion-button clear icon-left strong>
+            <ion-icon name="pin"></ion-icon>
+            Skate
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row no-padding>
+        <ion-col pull-9>
+          <strong>
+            <!--
+             If there are comments use an array and then the length of that array.
+             Would need to add tap functionality to display the comments.
+           -->
+            <p> View comments (0)</p>
+          </strong>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-list>
 
 </ion-content>
