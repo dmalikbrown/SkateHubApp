@@ -33,31 +33,36 @@ export class ProfilePage {
          return false;
      });
   }
-
+/*
   profilePage(){
     console.log("Profile");
     //Launches the profile page.
     //this.navCtrl.push("myProfile");
   }
+  */
   mySpotsPage(){
     console.log("My Spots");
-
+    this.navCtrl.push("MySpotsPage");
   }
   friendsPage(){
     console.log("Friends");
+    this.navCtrl.push("FriendsPage");
   }
   invitesPage(){
     console.log("Invites");
+    this.navCtrl.push("InvitesPage");
   }
   savedSpotsPage(){
     console.log("Saved Spots");
+    this.navCtrl.push("SavedSpotsPage");
   }
   settingsPage(){
     console.log("Settings");
+    this.navCtrl.push("SettingsPage");
   }
+  /*
   logOutPage(){
     console.log("Log Out");
   }
-  //aboutPage(){console.log();}
-
+  */
 }
