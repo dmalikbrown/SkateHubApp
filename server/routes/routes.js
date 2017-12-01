@@ -135,6 +135,7 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
       let avatar = user.avatar;
       let spotObj = new Spot({
         avatar: avatar,
+        username: user.username,
         name: req.body.name,
         userId: req.body.id,
         location: req.body.location,
@@ -196,6 +197,21 @@ router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req
 
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
+});
+router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Spot.find({}, (err, spots) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      if(!spots){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else{
+        return res.json({success: true, spots: spots});
+      }
+    });
 });
 
 module.exports = router;
