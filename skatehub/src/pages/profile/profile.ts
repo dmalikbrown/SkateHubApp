@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
+import { InvitesPage } from './../../pages/invites/invites';
+import { FriendsPage } from './../../pages/friends/friends';
+import { MySpotsPage } from './../../pages/my-spots/my-spots';
+import { SavedSpotsPage } from './../../pages/saved-spots/saved-spots';
+import { SettingsPage } from './../../pages/settings/settings';
+
 
 /**
  * Generated class for the ProfilePage page.
@@ -42,23 +48,23 @@ export class ProfilePage {
   */
   mySpotsPage(){
     console.log("My Spots");
-    this.navCtrl.push("MySpotsPage");
+    this.navCtrl.push(MySpotsPage);
   }
   friendsPage(){
     console.log("Friends");
-    this.navCtrl.push("FriendsPage");
+    this.navCtrl.push(FriendsPage);
   }
   invitesPage(){
     console.log("Invites");
-    this.navCtrl.push("InvitesPage");
+    this.navCtrl.push(InvitesPage);
   }
   savedSpotsPage(){
     console.log("Saved Spots");
-    this.navCtrl.push("SavedSpotsPage");
+    this.navCtrl.push(SavedSpotsPage);
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push("SettingsPage");
+    this.navCtrl.push(SettingsPage);
   }
   /*
   logOutPage(){

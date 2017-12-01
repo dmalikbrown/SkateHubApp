@@ -14,6 +14,12 @@ import { PostPage } from '../pages/post/post';
 import { NavigatePage } from '../pages/navigate/navigate';
 import { ProfilePage } from '../pages/profile/profile';
 import { SplashPage } from '../pages/splash/splash';
+import { InvitesPage } from '../pages/invites/invites';
+import { FriendsPage } from '../pages/friends/friends';
+import { MySpotsPage } from '../pages/my-spots/my-spots';
+import { SavedSpotsPage } from '../pages/saved-spots/saved-spots';
+import { SettingsPage } from '../pages/settings/settings';
+
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
@@ -40,7 +46,12 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     PostPage,
     NavigatePage,
     ProfilePage,
-    SplashPage
+    SplashPage,
+    InvitesPage,
+    FriendsPage,
+    MySpotsPage,
+    SavedSpotsPage,
+    SettingsPage
 
   ],
   imports: [
@@ -60,7 +71,12 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     PostPage,
     NavigatePage,
     ProfilePage,
-    SplashPage
+    SplashPage,
+    InvitesPage,
+    FriendsPage,
+    MySpotsPage,
+    SavedSpotsPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,
