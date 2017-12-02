@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 
 /**
@@ -9,22 +9,23 @@ import { AuthProvider } from './../../providers/auth/auth';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
+declare var google;
+
 @Component({
   selector: 'page-navigate',
   templateUrl: 'navigate.html',
 })
 export class NavigatePage {
 
+
+  map: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NavigatePage');
-  }
-
-  ionViewCanEnter(){
+  ionViewCanEnter() {
     this.authProvider.isValidToken().then((res) => {
          console.log("Already authorized");
         return true;
@@ -33,5 +34,52 @@ export class NavigatePage {
          return false;
      });
   }
+
+  ionViewDidLoad() {
+    this.initMap();
+    console.log('ionViewDidLoad NavigatePage');
+  }
+
+  initMap(){
+    google.maps.visualRefresh = true;
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 42.360091, lng: -71.0963487},
+      zoom: 20
+    });
+    let infoWindow = new google.maps.InfoWindow;
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          let pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Location found.');
+          infoWindow.open(this.map);
+          this.map.setCenter(pos);
+        }, () => {
+          this.handleLocationError(true, infoWindow, this.map.getCenter());
+
+        });
+    } else {
+      this.handleLocationError(false, infoWindow, this.map.getCenter());
+    }
+
+  }
+
+  handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(this.map);
+  }
+
+
+
+
 
 }
