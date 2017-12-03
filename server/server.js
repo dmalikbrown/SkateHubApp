@@ -23,7 +23,7 @@ mongoose.connect(dbUrl, options);
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to database '+dbUrl);
-  console.log('Open thy browser to localhost:3000');
+  console.log('Server is up.');
 });
 // On Connection
 const app = express();
