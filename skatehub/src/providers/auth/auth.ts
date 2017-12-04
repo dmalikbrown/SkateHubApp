@@ -27,6 +27,13 @@ export class AuthProvider {
       return this.http.get(this.devEp+"/skatehub/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
+  getAllUsers(){
+    let headers = new Headers();
+    headers.append('Authorization', this.token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
 
   authenticateUser(user){
     let headers = new Headers();
