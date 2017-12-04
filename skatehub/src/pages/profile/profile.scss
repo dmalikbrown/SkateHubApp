@@ -23,3 +23,6 @@ page-profile {
     opacity: 0.5;
   }
 }
+ion-toast.warning .toast-wrapper {
+	background: map-get($colors, danger);
+}

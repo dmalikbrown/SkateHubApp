@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController,
+  ToastController} from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { InvitesPage } from './../../pages/invites/invites';
 import { FriendsPage } from './../../pages/friends/friends';
@@ -25,10 +26,10 @@ export class ProfilePage {
 
   userId: any;
   user: any;
-
+  defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -67,6 +68,30 @@ export class ProfilePage {
       if(data.success){
         this.user = data.user;
         console.log(this.user);
+        if(this.checkAvatar() && this.checkStance()){
+          let msg = "Update your profile picture and skate stance to enhance your profile!";
+          let pos = "top";
+          let cssClass = "warning";
+          let showCloseButton = true;
+          let closeButtonText = "Ok";
+          this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+        }
+        else if(this.checkAvatar()){
+          let msg = "Update your profile picture to enhance your profile!";
+          let pos = "top";
+          let cssClass = "warning";
+          let showCloseButton = true;
+          let closeButtonText = "Ok";
+          this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+        }
+        else if(this.checkStance()){
+          let msg = "Update your skate stance to enhance your profile!";
+          let pos = "top";
+          let cssClass = "warning";
+          let showCloseButton = true;
+          let closeButtonText = "Ok";
+          this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+        }
       }
       else {
         //TODO Error alert
@@ -78,6 +103,28 @@ export class ProfilePage {
         alert.present();
       }
     });
+  }
+  checkAvatar(){
+    if(this.user.avatar == this.defaultAvatar){
+      return true;
+    }
+    return false;
+  }
+  checkStance(){
+    if(this.user.stance == '' || !this.user.stance){
+      return true;
+    }
+    return false;
+  }
+  toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      position: pos,
+      cssClass: cssClass,
+      showCloseButton: showCloseButton,
+      closeButtonText: closeButtonText
+    });
+    toast.present();
   }
   mySpotsPage(){
     console.log("My Spots");

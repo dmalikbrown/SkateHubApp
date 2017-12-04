@@ -29,9 +29,14 @@ export class RegisterPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
   }
 
+  /*
+  Confirms that the email the user types in contains attributes to be considered
+  an email. If it is not a valid email, display alert.
+  @parameters    none
+  @return        boolean     If false, not valid. True, valid email.
+  */
   confirmEmail(){
     let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(!re.test(this.email.toLowerCase())){
@@ -45,6 +50,12 @@ export class RegisterPage {
     }
     return true;
   }
+  /*
+  Confirms that the username the user types in contains attributes to be considered
+  an username. If it is not a valid username, display alert.
+  @parameters    none
+  @return        boolean     If false, not valid. True, valid username.
+  */
   confirmUsername(){
     let re = /^\w+$/;
     if(!re.test(this.username.toLowerCase())){
@@ -58,6 +69,12 @@ export class RegisterPage {
     }
     return true;
   }
+  /*
+  Confirms that the password the user types in contains attributes to be considered
+  a password. If it is not a valid password, display alert.
+  @parameters    none
+  @return        boolean     If false, not valid. True, valid password.
+  */
   confirmPassword(){
     if(this.password.length < 6){
       let alert = this.alertCtrl.create({
@@ -70,6 +87,12 @@ export class RegisterPage {
     }
     return true;
   }
+  /*
+  Confirms that the 'confirm password' the user types in matches their typed
+  password. If it is not the same, display alert.
+  @parameters    none
+  @return        boolean     If false, not valid. True, valid match.
+  */
   passwordMatch(){
     if(this.password != this.confirmPass){
       let alert = this.alertCtrl.create({
@@ -82,12 +105,26 @@ export class RegisterPage {
     }
     return true;
   }
+  /*
+  Pops the register page back to the login page.
+  @parameters    none
+  @return        none
+  */
   goBack() {
     this.navCtrl.pop();
   }
-
+  /*
+  Makes a server call with the user's information to register. Double checks
+  certain attributes for certain characters. If all attributes are valid, send
+  the server the information. If user registers successfully, set TabsPage to root.
+  @parameters    none
+  @return        nothing
+  */
 registerForm() {
 
+  /*
+  Performs necessary checks
+  */
   if(this.fullName == "" || this.email == "" || this.username == "" || this.password =="" || this.confirmPass == ""){
     let alert = this.alertCtrl.create({
       title: 'Invalid Form',
@@ -117,9 +154,10 @@ registerForm() {
     username: this.username.toLowerCase(),
     password:  this.password
   };
+  //server call
   this.authProvider.registerUser(obj).subscribe((data)=>{
-    if(data.success){
-      console.log(data);
+    if(data.success){ //valid register set root to TabsPage with params
+      console.log(data.token);
       this.authProvider.storeUserData(data.token, data.user);
       this.navCtrl.setRoot(TabsPage, {user: data.user});
     }

@@ -136,14 +136,22 @@ export class NavigatePage {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
-
+          /*
+          Check that the authProvider still exists because if a user taps the
+          Navigate tab then the Profile tab and logs out fast enough, error is
+          thrown. Call back isn't fast enough.
+          */
+          let username = "";
+          if(this.authProvider.user){
+            username = this.authProvider.user.username;
+          }
           var marker = new google.maps.Marker({
             position: pos,
             map: this.map,
             draggable: true,
             animation: google.maps.Animation.DROP,
             label: {
-              text: JSON.stringify(this.authProvider.user.username),
+              text: username,
               fontFamily: 'sans-serif',
               color: 'white'
               }

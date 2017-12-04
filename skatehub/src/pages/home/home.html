@@ -1,4 +1,4 @@
-
+<!-- Start header -->
 <ion-header no-border>
   <ion-navbar color="primary">
     <ion-buttons end right>
@@ -8,7 +8,7 @@
       </button>
     </ion-buttons>
 
-    <ion-title style="border: 1px solid #ccc" (tap)="scrollToTop()">SkateHub</ion-title>
+    <ion-title (tap)="scrollToTop()">SkateHub</ion-title>
 
     <ion-buttons start left>
       <button color="white" ion-button icon-only>
@@ -17,8 +17,11 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+<!-- End header -->
+
 
 <ion-content>
+  <!-- Start State filter -->
   <ion-row justify-content-center>
     <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
       <ion-option value="all">All</ion-option>
@@ -26,13 +29,20 @@
       <ion-option value="SC">South Carolina</ion-option>
     </ion-select>
   </ion-row>
+  <!-- End state filter -->
+
+  <!-- If no spots have been posted - START -->
   <ion-row *ngIf="noSpots" style="height: 50vh;" justify-content-center>
     <ion-col align-self-center offset-4>
       <h1 style="color: #9E9E9E;">No spots</h1>
     </ion-col>
   </ion-row>
+  <!-- If no spots have been posted - END -->
+
+  <!-- If spots have been posted - START -->
   <ion-list *ngIf="spots.length > 0">
     <ion-row *ngFor="let spot of spots" justify-content-center padding-bottom>
+      <!-- Top header of post -->
       <ion-row style="width: 100%;">
         <ion-col>
           <ion-item no-lines>
@@ -45,33 +55,48 @@
             <ion-icon name = "more" item-end (tap) = "openDetailedAction(spot)"></ion-icon>
           </ion-item>
         </ion-col>
-        <!-- <ion-col col-6>
-        </ion-col> -->
       </ion-row>
+      <!-- Top header of post END -->
+
+      <!-- 1st img in post images array - START -->
       <img [src] = "spot.images[0]" style="height: 385px; width: 100%; display: block;">
+      <!-- 1st img in post images array - END -->
+
+      <!-- Types and skate button - START -->
       <ion-row style="width: 100%;" no-wrap>
+          <!-- Type grid - START -->
         <ion-col align-self-center text-center>
-          <!-- <p *ngFor="let type of spot.types; let x = index;">
-            <ng-container *ngIf="x < 4">{{type}}</ng-container>
-          </p> -->
           <ion-grid>
+            <ion-row no-padding no-margin>
+              <ion-col>
+                <strong>
+                  <p no-padding no-margin> Type(s)</p>
+                </strong>
+              </ion-col>
+            </ion-row>
             <ion-row wrap>
               <ion-col *ngFor= "let type of spot.types; let x = index;" col-6>
-                  <ng-container *ngIf="x < 4">{{type}}</ng-container>
+                  <ng-container *ngIf="x < 4">
+                    <img [src] = "type" style="height: 40px;">
+                  </ng-container>
               </ion-col>
             </ion-row>
           </ion-grid>
-
         </ion-col>
+        <!-- Type grid - END -->
         <ion-col col-4>
         </ion-col>
+        <!-- Skate button - START -->
         <ion-col >
           <button color="primary" ion-button clear icon-left strong (tap)="openNavigation(spot)">
             <ion-icon name="pin"></ion-icon>
             Skate
           </button>
         </ion-col>
+        <!-- Skate button - END -->
       </ion-row>
+      <!-- Types and skate button - END -->
+      <!-- View Comments - START -->
       <ion-row no-padding>
         <ion-col pull-9>
           <strong>
@@ -83,7 +108,9 @@
           </strong>
         </ion-col>
       </ion-row>
+      <!-- View Comments - END -->
     </ion-row>
   </ion-list>
+  <!-- If spots have been posted - END -->
 
 </ion-content>

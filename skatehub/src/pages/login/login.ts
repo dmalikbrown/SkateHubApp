@@ -35,20 +35,21 @@ export class LoginPage {
   this.tabBarElement = document.querySelector('.tabbar');
   }
   ionViewDidLoad() {
-
-  // setTimeout(() => {
-  //   this.splash = false;
-  // }, 4000);
-  //   console.log('ionViewDidLoad LoginPage');
   }
 
+  /*
+  Makes a server call with the user's username and password to be authenticated.
+  If the user is authenticated, set the TabsPage to the root.
+  @parameters    none
+  @return        nothing
+  */
   loginForm(){
     let obj = {
       username: this.username,
       password: this.password
     };
     this.authProvider.authenticateUser(obj).subscribe((data) =>{
-      if(data.success){
+      if(data.success){//user was authenticated
         this.authProvider.storeUserData(data.token, data.user);
         this.navCtrl.setRoot(TabsPage, {user: data.user});
       }

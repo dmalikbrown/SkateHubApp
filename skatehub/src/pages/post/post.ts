@@ -37,7 +37,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://10.31.11.81:3000"; //end point for the server when in dev mode
+  devEp = "http://localhost:3000"; //end point for the server when in dev mode
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
@@ -175,21 +175,28 @@ export class PostPage {
               this.filePath.resolveNativePath(results[i])
                 .then(filePath => {
                   //Same sequence from the "openCamera()" function
+                  console.log("file path: "+ filePath);
+                  console.log("results: "+ results[i]);
                   let sourceDirectory = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                  let sourceFileName = results[i].substring(results[i].lastIndexOf('/') + 1, results[i].lastIndexOf('?'));
+                  // results[i].lastIndexOf('?')
+                  let sourceFileName = results[i].substring(results[i].lastIndexOf('/') + 1, results[i].length);
                   let newName = Date.now()+sourceFileName.split('?').shift();
+                  console.log("src dir: "+ sourceDirectory);
+                  console.log("src file: "+ sourceFileName);
+                  console.log("new file: "+ newName);
                   this.file.copyFile(sourceDirectory, sourceFileName,cordova.file.cacheDirectory, newName).then((result: any) => {
                     this.imagePath = filePath;
                     this.imageNewPath = result.nativeURL;
                     this.uploadPhoto();
                   },(err) => {
-                    console.log("file copy "+ err);
+                    console.log(JSON.stringify(err));
                     let alert = this.alertCtrl.create({
                       title: 'Error Uploading',
                       subTitle: "Try Again",
                       buttons: ['Dismiss']
                     });
                     alert.present();
+                    return;
                   });
             });
           }

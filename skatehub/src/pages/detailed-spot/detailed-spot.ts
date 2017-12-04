@@ -25,6 +25,15 @@ export class DetailedSpotPage {
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController) {
   }
 
+  /*
+  When the view is loaded, get the spot from the navParams. Whatever page pushed
+  the detailed spot page must send a spot in the parameters. We should check if
+  the "this.navParams.get('spot')" actually equals null or undefined.
+
+  After getting the spot, get the id which is also sent from the page that pushed
+  the detailed spot page. Using the userId on the spot, compare it with the
+  navparams id value. If they equal, then the user is viewing their own post.
+  */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
     if (this.spot.userId == this.navParams.get('id'))
@@ -35,12 +44,16 @@ export class DetailedSpotPage {
     {
         this.isUser = false;
     }
-    console.log(this.spot);
-    console.log(this.isUser);
-    console.log('ionViewDidLoad DetailedSpotPage');
   }
 
+  /*
+  Open an action handler that contains 3 buttons: 'Save Spot', 'Report Spot', and
+  'Cancel'.
+  @parameters    none
+  @return        nothing
+  */
   openAction(){
+    //create the action sheet with necessary object/values
     let actionSheet = this.actionSheet.create({
      buttons: [
        {
@@ -64,10 +77,17 @@ export class DetailedSpotPage {
        }
      ]
    });
-   actionSheet.present();
+   actionSheet.present(); //display the action sheet after creating
 }
 
+/*
+Open a navigation action handler that contains the different navigation apps
+on the user's device.
+@parameters    none
+@return        nothing
+*/
   openNavigation(){
+    //grab the user's current location
     this.geolocation.getCurrentPosition().then((resp) => {
     // resp.coords.latitude
     // resp.coords.longitude
@@ -76,9 +96,10 @@ export class DetailedSpotPage {
       console.log('Error getting location', error);
     });
     this.destination = this.spot.location;
-    let options: LaunchNavigatorOptions = {
+    let options: LaunchNavigatorOptions = { //set navigator options
       start: this.start
     };
+    //open the navigator action handler
     this.launchNavigator.navigate(this.destination, options)
         .then(
             success => console.log('Launched navigator'),

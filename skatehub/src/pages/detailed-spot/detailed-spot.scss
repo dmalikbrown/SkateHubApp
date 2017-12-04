@@ -1,3 +1,8 @@
 page-detailed-spot {
-
+  .border-green {
+    border-color: map-get($colors, primary);
+    border-style: solid;
+    border-width: medium;
+    border-radius: 50%;
+  }
 }

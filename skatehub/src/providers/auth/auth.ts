@@ -56,7 +56,6 @@ export class AuthProvider {
         this.storage.get('id_token').then((value) => {
 
             this.token = value;
-
             let headers = new Headers();
             headers.append('Authorization', this.token);
             this.http.get(this.devEp+'/skatehub/protected', {headers: headers})

@@ -1,20 +1,13 @@
-<!--
-  Generated template for the PostPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>New Spot</ion-title>
-  </ion-navbar>
-
+<!-- Header start -->
+<ion-header no-border>
+  <ion-navbar color="primary">
+    <ion-title >New Spot</ion-title>
+  </ion-navbar >
 </ion-header>
-
+<!-- Header end -->
 
 <ion-content>
-
+<!-- Camera and photolibrary row - START -->
   <ion-row>
     <ion-row>
       <!--
@@ -96,13 +89,13 @@
      -->
       <ion-col offset-4 *ngIf="resultArr.length == 0">
         <ion-row>
-          <ion-col>
-            <button ion-button large clear style=" height: 100px;" strong (tap) = "openPhotoLibrary()">
+          <ion-col col-6>
+            <button ion-button large icon-only clear style=" height: 100px;" strong (tap) = "openPhotoLibrary()">
               <ion-icon style="font-size: 3em;" name="image" color ="primary"></ion-icon>
             </button>
           </ion-col>
-          <ion-col>
-            <button ion-button large clear style=" height: 100px;" strong (tap) = "openCamera()">
+          <ion-col col-6>
+            <button ion-button large clear icon-only style=" height: 100px;" strong (tap) = "openCamera()">
               <ion-icon style="font-size: 3em;" name="camera" color ="primary"></ion-icon>
             </button>
           </ion-col>
@@ -123,6 +116,8 @@
       </ion-col>
     </ion-row>
   </ion-row>
+  <!-- Camera and photolibrary row - START -->
+  <!-- Other Attributes - START -->
   <ion-list>
     <ion-item>
       <ion-label floating>Name your spot</ion-label>
@@ -135,11 +130,11 @@
     <ion-item>
       <ion-label>Select types for the spot</ion-label>
       <ion-select [(ngModel)]="skateTypes" multiple="true">
-        <ion-option value ="stairs">Stairs</ion-option>
-        <ion-option value ="rails">Rails</ion-option>
-        <ion-option value ="ledge">Ledge</ion-option>
-        <ion-option value ="bank">Bank</ion-option>
-        <ion-option value ="diy">DIY</ion-option>
+        <ion-option value ="assets/imgs/stairs.png">Stairs</ion-option>
+        <ion-option value ="assets/imgs/rail.png">Rails</ion-option>
+        <ion-option value ="assets/imgs/ledge.png">Ledge</ion-option>
+        <ion-option value ="assets/imgs/ramp.png">Ramp</ion-option>
+        <ion-option value ="assets/imgs/diy.png">DIY</ion-option>
         <ion-option value ="misc">Misc</ion-option>
       </ion-select>
     </ion-item>
@@ -170,9 +165,12 @@
       </ion-select>
     </ion-item>
   </ion-list>
+  <!-- Other Attributes - END -->
+  <!-- Submit Button - START -->
   <ion-row justify-content-center>
     <button ion-button large strong (tap) = "uploadSpot()">
       Create Spot
     </button>
   </ion-row>
+  <!-- Submit Button - END -->
 </ion-content>

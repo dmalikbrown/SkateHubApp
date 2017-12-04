@@ -35,13 +35,4 @@ export class TabsPage {
          return false;
      });
   }
-  // ionViewDidEnter(){
-  //   if(this.navParams.get('user')){
-  //     this.user = this.navParams.get('user');
-  //   }
-  //   else{
-  //     this.authProvider.loadUser();
-  //     this.user = this.authProvider.user;
-  //   }
-  // }
 }

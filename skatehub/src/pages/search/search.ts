@@ -42,6 +42,11 @@ export class SearchPage {
          return false;
      });
   }
+  /*
+  Initializes the user object. Makes function call to getUsers and getSpots.
+  @parameters    none
+  @return        nothing
+  */
   ionViewDidEnter(){
     if(this.authProvider.user){
       this.user = this.authProvider.user;
@@ -54,6 +59,11 @@ export class SearchPage {
     this.getUsers();
     this.getSpots();
   }
+  /*
+  Makes a server call to retrieve all the spots in the spots Collection.
+  @parameters    none
+  @return        nothing
+  */
   getSpots(){
     this.spotsProvider.getAllSpots().subscribe((data) => {
       if(data.success){
@@ -64,6 +74,11 @@ export class SearchPage {
       }
     });
   }
+  /*
+  Makes a server call to retrieve all the users in the users Collection.
+  @parameters    none
+  @return        nothing
+  */
   getUsers(){
     this.authProvider.getAllUsers().subscribe((data)=>{
       if(data.success){
@@ -74,10 +89,22 @@ export class SearchPage {
       }
     });
   }
+  /*
+  Function is called from the html when the user is typing. Makes function calls
+  to filterUsers and filterSpots.
+  @parameters    none
+  @return        nothing
+  */
   filter(){
     this.filterUsers();
     this.filterSpots();
   }
+  /*
+  Filters the users array using the searchTerm checking against users' username
+  and fullName. Sets the userResultArr to that filter.
+  @parameters    none
+  @return        nothing
+  */
   filterUsers() {
     this.start = false;
     if(this.searchTerm && this.searchTerm.trim() != ''){
@@ -87,6 +114,12 @@ export class SearchPage {
       this.userResultArr = [];
     }
  }
+ /*
+ Filters the spots array using the searchTerm checking against spots' name.
+ Sets the spotsResultArr to that filter.
+ @parameters    none
+ @return        nothing
+ */
  filterSpots(){
 
    this.start = false;
@@ -97,6 +130,4 @@ export class SearchPage {
      this.spotsResultArr = [];
    }
  }
-
-
 }

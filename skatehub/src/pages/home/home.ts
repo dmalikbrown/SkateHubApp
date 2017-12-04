@@ -38,28 +38,38 @@ export class HomePage {
          return false;
      });
   }
+  /*
+  Calls 'grabPosts' function that grabs all skate spots posted. Initializes the user
+  object.
+  @parameters    none
+  @return        nothing
+  */
   ionViewDidEnter(){
-    //console.log(this.authProvider.user);
     this.grabPosts();
     if(this.authProvider.user){
       this.user = this.authProvider.user;
-      console.log(this.user);
     }
     else{
       this.user = this.navParams.data;
-      console.log(this.user);
     }
 
   }
 
+  /*
+  Makes server call using the spotsProvider to grab all posts updating the array.
+  @parameters    none
+  @return        nothing
+  */
   grabPosts(){
-    //TODO server call to get posts
     this.spotsProvider.getAllSpots().subscribe((data) =>{
       if(data.success){
-        this.spots = data.spots.reverse();
-        this.spotsVarHolder = data.spots.reverse();
+        this.spots = data.spots;
+        this.spotsVarHolder = this.spots;
         if(this.spots.length == 0){
           this.noSpots = true;
+        }
+        else {
+          this.noSpots = false;
         }
       }
       else {
@@ -73,11 +83,18 @@ export class HomePage {
     });
 
   }
+  /*
+  Filters the spots by their state. spotsVarHolder will always contain all posts
+  so that variable can be used to filter.
+  @parameters    none
+  @return        nothing
+  */
   filterByState(){
     if(this.state == 'all'){
       this.spots = this.spotsVarHolder;
       return;
     }
+    // use array filter function calling parseStateFromSpot function.
     this.spots = this.spotsVarHolder.filter(x => this.parseStateFromSpot(x) == this.state);
     if(this.spots.length == 0){
       this.noSpots = true;
@@ -86,12 +103,22 @@ export class HomePage {
       this.noSpots = false;
     }
   }
+  /*
+  Parse the state from a spot
+  @parameters    spot     the spot that needs to be parsed
+  @return        state    string containing the state (abbr).
+  */
   parseStateFromSpot(spot){
     let location = spot.location;
-    let state = location.substring(location.lastIndexOf(',')+1).replace(/ /g, "");
+    let state = location.substring(location.lastIndexOf(',')+1).replace(/ /g, ""); //replace white space
     return state;
   }
-
+  /*
+  Open a navigation action handler that contains the different navigation apps
+  on the user's device.
+  @parameters    none
+  @return        nothing
+  */
   openNavigation(spot){
     this.geolocation.getCurrentPosition().then((resp) => {
     // resp.coords.latitude
@@ -110,13 +137,18 @@ export class HomePage {
             error => console.log('Error launching navigator: ' + error)
     );
   }
-
+  /*
+  Open an action handler that contains 3 buttons: 'View Spot', 'Save Spot', and
+  'Cancel'.
+  @parameters    spot    the current spot in the array that is being tapped.
+  @return        nothing
+  */
   openDetailedAction(spot){
     let actionSheet = this.actionSheet.create({
      buttons: [
        {
-         text: 'Go to Post',
-         handler: () => {
+         text: 'View Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
            this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user.id});
            console.log('Go to Post clicked');
          }
@@ -137,9 +169,14 @@ export class HomePage {
      ]
    });
 
-   actionSheet.present();
+   actionSheet.present(); //display the action sheet
   }
 
+  /*
+  Scrolls the user back to the top of their screen.
+  @parameters    none
+  @return        nothing
+  */
   scrollToTop() {
     this.content.scrollToTop();
   }

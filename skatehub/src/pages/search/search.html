@@ -1,11 +1,5 @@
-<!--
-  Generated template for the SearchPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+<!-- Header start -->
 <ion-header no-border>
-
   <ion-navbar color="primary">
     <form (ngSubmit) = "filter();">
       <ion-searchbar
@@ -17,11 +11,11 @@
      </ion-searchbar>
     </form>
   </ion-navbar>
-
 </ion-header>
+<!-- Header end -->
 
-
-<ion-content >
+<ion-content>
+  <!-- User list if searchTerm matches - START -->
   <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">
     <ion-list-header>People</ion-list-header>
     <ion-item *ngFor= "let user of userResultArr" detail-push>
@@ -31,7 +25,11 @@
       <h2>{{user.username}}</h2>
     </ion-item>
   </ion-list>
+  <!-- User list if searchTerm matches - END -->
+  <!-- Item divider for styling -->
   <ion-item-divider *ngIf="!start && !hideSearch"></ion-item-divider>
+  <!-- Item divider - END -->
+  <!-- Spot list if searchTerm matches - START -->
   <ion-list *ngIf="!start && spotsResultArr.length > 0 && !hideSearch">
     <ion-list-header>Skate Spots</ion-list-header>
     <ion-item *ngFor= "let spot of spotsResultArr" detail-push>
@@ -41,4 +39,5 @@
       <h2>{{spot.name}}</h2>
     </ion-item>
   </ion-list>
+  <!-- Spot list if searchTerm matches - END -->
 </ion-content>
