@@ -213,6 +213,25 @@ router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, re
       }
     });
 });
+router.get('/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    User.find({}, (err, users) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting users"});
+      }
+      if(!users){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting users"});
+      }
+      else{
+        let l = users.length;
+        for(let i = 0; i<l; i++){
+          users[i].password = "";
+        }
+        return res.json({success: true, users: users});
+      }
+    });
+});
 router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   // console.log(req.params.id);
     let id = req.params.id;
