@@ -20,6 +20,14 @@ export class AuthProvider {
   //  console.log('Hello AuthProvider Provider');
   }
 
+  getUser(id){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.get(this.devEp+"/skatehub/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
+
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
@@ -75,6 +83,11 @@ export class AuthProvider {
     this.storage.get('id_token').then(token => {
       this.token = token;
     });
+  }
+  logout(){
+    this.token = null;
+    this.user = null;
+    this.storage.clear();
   }
 
 }

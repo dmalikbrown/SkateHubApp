@@ -213,5 +213,34 @@ router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, re
       }
     });
 });
+router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let id = req.params.id;
+    User.getUserById(id, (err, user) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading"});
+      }
+      if(!user){
+        console.log("HOW DID THIS HAPPEN? --- getting user");
+        return res.json({success: false, msg:"Error loading"});
+      }
+      else {
+        let userObj = {
+          fullName: user.fullName,
+          username: user.username,
+          email: user.email,
+          stance: user.stance,
+          spots: user.spots,
+          savedSpots: user.savedSpots,
+          invites: user.invites,
+          friends: user.friends,
+          avatar: user.avatar
+        };
+        return res.json({success: true, user: userObj});
+      }
+
+    });
+});
 
 module.exports = router;
