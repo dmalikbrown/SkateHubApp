@@ -4,36 +4,71 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
+<!-- <ion-header>
 
   <ion-navbar>
     <ion-title>Profile</ion-title>
   </ion-navbar>
-</ion-header>
+</ion-header> -->
 
-<ion-content padding>
-  <button ion-button icon-left block strong (tap) = "mySpotsPage()" color = "dark">
+<ion-content>
+  <!-- <ion-row justify-content-center class="top-spacing">
+      <ion-avatar *ngIf="user" class= "profile-shift">
+        <img [src]="imagePath" (tap)="show(imagePath)" style="border-radius: 50%; width: 100px; height: 100px; border: 10px solid #FF8F00;">
+      </ion-avatar>
+      <ion-icon ios="md-create" color="primary" *ngIf="imageChosen == 0" (tap)="chooseImage()" style="font-size: 25px;"></ion-icon>
+      <ion-icon name="remove-circle" color="danger" *ngIf="imageChosen == 1" (tap)="clear()" style="font-size: 30px;"></ion-icon>
+  </ion-row> -->
+  <div class ="square-background">
+  </div>
+  <ion-row justify-content-center class="top-spacing">
+      <ion-avatar *ngIf="user" class= "profile-shift">
+        <img [src]="user.avatar" class = "avatar-border">
+      </ion-avatar>
+      <ion-icon ios="md-create" color="white" style="font-size: 25px; position: relative;"></ion-icon>
+      <!-- <ion-icon name="remove-circle" color="danger" style="font-size: 30px;"></ion-icon> -->
+  </ion-row>
+    <h4 *ngIf="user" no-margin text-center ion-text color = "white" style = "position: relative;">{{user.username}}</h4>
+    <p *ngIf="user && (user.stance)" text-center ion-text color = "white" no-margin style = "position: relative;"> Stance: {{user.stance}} </p>
+    <p *ngIf="user && (user.stance == '' || !user.stance)" text-center ion-text color = "white" no-margin style = "position: relative;"> Set stance! </p>
+
+  <button class = "top-spacing-buttons" ion-button icon-left block strong (tap) = "mySpotsPage()" color = "grey">
     <ion-icon name = "archive"></ion-icon>
     My Spots
+    <!-- <span style="margin-left: 50%;"></span> -->
   </button>
-  <button ion-button icon-left block strong (tap) = "friendsPage()" color = "dark">
+  <button ion-button icon-left block strong (tap) = "friendsPage()" color = "grey">
     <ion-icon name = "ios-people"></ion-icon>
     Friends
+    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
   </button>
-  <button ion-button icon-left block strong (tap) = "invitesPage()" color = "dark">
+  <button ion-button icon-left block strong (tap) = "invitesPage()" color = "grey">
     <ion-icon name = "paper-plane"></ion-icon>
     Invites
+    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
   </button>
-  <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "dark">
+  <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "grey">
     <ion-icon name = "checkmark-circle-outline"></ion-icon>
     Saved Spots
   </button>
-  <button ion-button icon-left block strong (tap) = "settingsPage()" color = "dark">
+  <button ion-button icon-left block strong (tap) = "settingsPage()" color = "grey">
     <ion-icon name = "settings"></ion-icon>
     Settings
   </button>
-  <button ion-button icon-left block strong (tap) = "profilePage()" color = "dark">
+  <button ion-button icon-left block strong (tap) = "logout()" color = "grey">
     <ion-icon name = "exit"></ion-icon>
     Logout
   </button>
+  <!-- <ion-list color="black" class = "top-spacing-buttons">
+    <ion-item color="black" (tap) = "mySpotsPage()">
+      <ion-icon name="archive" item-start></ion-icon>
+        My Spots
+      <ion-badge color="white" item-end>25</ion-badge>
+    </ion-item>
+    <ion-item color="black" (tap) = "friendsPage()">
+      <ion-icon name="people" item-start></ion-icon>
+        Friends
+      <ion-badge color="white" item-end>4</ion-badge>
+    </ion-item>
+  </ion-list> -->
 </ion-content>
