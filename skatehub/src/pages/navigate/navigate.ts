@@ -142,7 +142,11 @@ export class NavigatePage {
             map: this.map,
             draggable: true,
             animation: google.maps.Animation.DROP,
-            title: 'Hello World!'
+            label: {
+              text: JSON.stringify(this.authProvider.user.username),
+              fontFamily: 'sans-serif',
+              color: 'white'
+              }
           })
 
           //sets position of infoWindow
