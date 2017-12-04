@@ -85,8 +85,8 @@ router.post('/register', (req, res, next) => {
             }
             else{
               console.log(retUser);
-              let randString = "2017-11-20 23:52:291211635275399870131421393217846107168351807835241506674495890246549867007470974291162240824812535450"
-              const token = jwt.sign({id: retUser._id}, randString, {
+              let randString = "2017-11-20 23:52:291211635275399870131421393217846107168351807835241506674495890246549867007470974291162240824812535450";
+              const token = jwt.sign({_id: retUser._id}, randString, {
                 expiresIn: 2592000// 30 days in seconds
               });
               let uObj = {
@@ -209,7 +209,7 @@ router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, re
           return res.json({success: false, msg:"Error when getting spots"});
       }
       else{
-        return res.json({success: true, spots: spots});
+        return res.json({success: true, spots: spots.reverse()});
       }
     });
 });

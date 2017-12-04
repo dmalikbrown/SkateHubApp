@@ -28,7 +28,7 @@ const UserSchema = mongoose.Schema(
               id: {type: String}
     }
     ],
-    avatar: {type: String}
+    avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'}
   } , { timestamps: { createdAt: 'created_at' } });
 
 const User = module.exports = mongoose.model('User', UserSchema);

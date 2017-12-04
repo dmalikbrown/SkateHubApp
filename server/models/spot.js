@@ -5,14 +5,14 @@ const SpotSchema = mongoose.Schema(
     name: {type: String, required: true, max: 100},
     location: {type: String, required: true},
     types: [{type: String}],
-    desciption: {type: String},
+    description: {type: String},
     userId: {type: String},
     avatar: {type: String},
     username: {type: String},
     images: [{type: String}],
     rating: {type: Number},
-    riskLevel: {type: String},
-    lightingLevel: {type: Number}
+    riskLevel: {type: Number},
+    lightingLevel: {type: String}
   } , { timestamps: { createdAt: 'created_at' } });
 
 const Spot = module.exports = mongoose.model('Spot', SpotSchema);
