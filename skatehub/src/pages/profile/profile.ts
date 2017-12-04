@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, AlertController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { InvitesPage } from './../../pages/invites/invites';
 import { FriendsPage } from './../../pages/friends/friends';
@@ -27,7 +27,8 @@ export class ProfilePage {
   user: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public authProvider: AuthProvider, public app: App) {
+              public authProvider: AuthProvider, public app: App,
+              public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -69,6 +70,12 @@ export class ProfilePage {
       }
       else {
         //TODO Error alert
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: data.msg,
+          buttons: ["Dismiss"]
+        });
+        alert.present();
       }
     });
   }

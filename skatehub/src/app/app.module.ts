@@ -33,6 +33,7 @@ import { Camera } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     FilePath,
     Geolocation,
     NativeGeocoder,
+    LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     SpotsProvider

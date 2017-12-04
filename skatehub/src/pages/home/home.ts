@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content, AlertController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Component({
   selector: 'page-home',
@@ -16,10 +18,13 @@ export class HomePage {
   spots: any = [];
   spotsVarHolder: any = [];
   noSpots: boolean;
+  start: any = "";
+  destination: any = "";
 
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
             public navParams: NavParams, public spotsProvider: SpotsProvider,
-            public alertCtrl: AlertController) {
+            public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
+            public geolocation: Geolocation) {
   }
 
   ionViewCanEnter(){
@@ -84,6 +89,26 @@ export class HomePage {
     let state = location.substring(location.lastIndexOf(',')+1).replace(/ /g, "");
     return state;
   }
+
+  openNavigation(spot){
+    this.geolocation.getCurrentPosition().then((resp) => {
+    // resp.coords.latitude
+    // resp.coords.longitude
+      this.start = resp.coords.latitude+","+resp.coords.longitude;
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+    this.destination = spot.location;
+    let options: LaunchNavigatorOptions = {
+      start: this.start
+    };
+    this.launchNavigator.navigate(this.destination, options)
+        .then(
+            success => console.log('Launched navigator'),
+            error => console.log('Error launching navigator: ' + error)
+    );
+  }
+
   scrollToTop() {
     this.content.scrollToTop();
   }
