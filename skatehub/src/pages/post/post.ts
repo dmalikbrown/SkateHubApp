@@ -382,7 +382,7 @@ export class PostPage {
 
     this.spotsProvider.createSpot(obj).subscribe((data) => {
 
-    });  
+    });
     }
   }
 
