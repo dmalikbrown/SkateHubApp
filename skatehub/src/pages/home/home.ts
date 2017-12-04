@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, AlertController } from 'ionic-angular';
+import { NavController, NavParams, Content, AlertController, ActionSheetController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
+import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
+
 
 @Component({
   selector: 'page-home',
@@ -24,7 +26,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
             public navParams: NavParams, public spotsProvider: SpotsProvider,
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
-            public geolocation: Geolocation) {
+            public geolocation: Geolocation, public actionSheet: ActionSheetController) {
   }
 
   ionViewCanEnter(){
@@ -109,7 +111,38 @@ export class HomePage {
     );
   }
 
+  openDetailedAction(spot){
+    let actionSheet = this.actionSheet.create({
+     buttons: [
+       {
+         text: 'Go to Post',
+         handler: () => {
+           this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user.id});
+           console.log('Go to Post clicked');
+         }
+       },
+       {
+         text: 'Save Spot',
+         handler: () => {
+           console.log('Saved Spot clicked');
+         }
+       },
+       {
+         text: 'Cancel',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancel clicked');
+         }
+       }
+     ]
+   });
+
+   actionSheet.present();
+  }
+
   scrollToTop() {
     this.content.scrollToTop();
   }
+
+
 }
