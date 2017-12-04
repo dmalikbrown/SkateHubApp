@@ -12,7 +12,7 @@ const SpotSchema = mongoose.Schema(
     images: [{type: String}],
     rating: {type: Number},
     riskLevel: {type: String},
-    lightingLevel: {type: String}
+    lightingLevel: {type: Number}
   } , { timestamps: { createdAt: 'created_at' } });
 
 const Spot = module.exports = mongoose.model('Spot', SpotSchema);
