@@ -2,4 +2,26 @@ page-home {
   #filter {
     font-size: 1.2em;
   }
+  .border-green {
+    border-color: map-get($colors, primary);
+    border-style: solid;
+    border-width: medium;
+    border-radius: 50%;
+  }
+  .border-bottom-green {
+    border-bottom: .5px solid map-get($colors, primary);
+  }
+  .state-select .select-placeholder {
+    font-size: 1.5em;
+  }
+  .state-select .select-text {
+    font-size: 1.5em;
+  }
+  .state-select .select-icon {
+    width: 20px !important;
+    height: 25px !important;
+  }
+  ion-item {
+    transition: 0.2s linear;
+  }
 }

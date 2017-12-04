@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content } from 'ionic-angular';
+import { NavController, NavParams, Content, AlertController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
+import { SpotsProvider } from './../../providers/spots/spots';
 
 @Component({
   selector: 'page-home',
@@ -11,9 +12,14 @@ export class HomePage {
 
 
   user: any;
+  state: any;
+  spots: any = [];
+  spotsVarHolder: any = [];
+  noSpots: boolean;
 
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
-            public navParams: NavParams) {
+            public navParams: NavParams, public spotsProvider: SpotsProvider,
+            public alertCtrl: AlertController) {
   }
 
   ionViewCanEnter(){
@@ -27,6 +33,7 @@ export class HomePage {
   }
   ionViewDidEnter(){
     //console.log(this.authProvider.user);
+    this.grabPosts();
     if(this.authProvider.user){
       this.user = this.authProvider.user;
       console.log(this.user);
@@ -35,8 +42,48 @@ export class HomePage {
       this.user = this.navParams.data;
       console.log(this.user);
     }
+
   }
 
+  grabPosts(){
+    //TODO server call to get posts
+    this.spotsProvider.getAllSpots().subscribe((data) =>{
+      if(data.success){
+        this.spots = data.spots.reverse();
+        this.spotsVarHolder = data.spots.reverse();
+        if(this.spots.length == 0){
+          this.noSpots = true;
+        }
+      }
+      else {
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: data.msg,
+          buttons: ["Dismiss"]
+        });
+        alert.present();
+      }
+    });
+
+  }
+  filterByState(){
+    if(this.state == 'all'){
+      this.spots = this.spotsVarHolder;
+      return;
+    }
+    this.spots = this.spotsVarHolder.filter(x => this.parseStateFromSpot(x) == this.state);
+    if(this.spots.length == 0){
+      this.noSpots = true;
+    }
+    else {
+      this.noSpots = false;
+    }
+  }
+  parseStateFromSpot(spot){
+    let location = spot.location;
+    let state = location.substring(location.lastIndexOf(',')+1).replace(/ /g, "");
+    return state;
+  }
   scrollToTop() {
     this.content.scrollToTop();
   }

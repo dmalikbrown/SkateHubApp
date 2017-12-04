@@ -126,7 +126,51 @@ router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req
 
 router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
-  
+  User.getUserById(req.body.id, (err,user) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when creating spot"});
+    }
+    if(user){
+      let avatar = user.avatar;
+      let spotObj = new Spot({
+        avatar: avatar,
+        username: user.username,
+        name: req.body.name,
+        userId: req.body.id,
+        location: req.body.location,
+        types: req.body.types,
+        description: req.body.description,
+        images: req.body.images,
+        lightingLevel: req.body.lightingLvl,
+        riskLevel: req.body.riskLvl
+      });
+      Spot.addSpot(spotObj, (err,spot) =>{
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg:"Error when adding spot"});
+        }
+        else{
+          let newSpot = {
+            id: spot._id
+          };
+          User.addSpot(user._id, newSpot, (err, x) =>{
+            if(err){
+              console.log(err);
+              return res.json({success: false, msg:"Error when adding spot"});
+            }
+            else{
+              return res.json({success: true});
+            }
+          });
+        }
+      });
+    }
+    else{
+      return res.json({success: false, msg:"Error when posting"});
+    }
+  })
+
 });
 
 router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
@@ -153,6 +197,21 @@ router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req
 
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
+});
+router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Spot.find({}, (err, spots) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      if(!spots){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else{
+        return res.json({success: true, spots: spots});
+      }
+    });
 });
 
 module.exports = router;

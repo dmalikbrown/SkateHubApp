@@ -125,6 +125,10 @@
   </ion-row>
   <ion-list>
     <ion-item>
+      <ion-label floating>Name your spot</ion-label>
+      <ion-textarea [(ngModel)]="spotName"></ion-textarea>
+    </ion-item>
+    <ion-item>
       <ion-label floating>Describe your spot</ion-label>
       <ion-textarea [(ngModel)]="spotDescription"></ion-textarea>
     </ion-item>
@@ -141,7 +145,7 @@
     </ion-item>
     <ion-item *ngIf="!currentLocationBoolean">
       <ion-label stacked>What's the address?</ion-label>
-      <ion-input placeholder= "address, city, state"></ion-input>
+      <ion-input placeholder= "address, city, state" [(ngModel)] = "address"></ion-input>
     </ion-item>
     <ion-item no-lines>
       <ion-label>Use your current location?</ion-label>
