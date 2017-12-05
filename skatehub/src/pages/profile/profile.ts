@@ -122,7 +122,9 @@ export class ProfilePage {
       position: pos,
       cssClass: cssClass,
       showCloseButton: showCloseButton,
-      closeButtonText: closeButtonText
+      closeButtonText: closeButtonText,
+      dismissOnPageChange: true,
+      duration: 2000
     });
     toast.present();
   }

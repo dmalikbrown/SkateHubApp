@@ -23,11 +23,15 @@
 <ion-content>
   <!-- Start State filter -->
   <ion-row justify-content-center>
-    <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
-      <ion-option value="all">All</ion-option>
-      <ion-option value="NC">North Carolina</ion-option>
-      <ion-option value="SC">South Carolina</ion-option>
-    </ion-select>
+    <ion-col offset-6 col-12>
+      <ion-item no-lines>
+        <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
+          <ion-option value="all">All</ion-option>
+          <ion-option value="NC">North Carolina</ion-option>
+          <ion-option value="SC">South Carolina</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
   </ion-row>
   <!-- End state filter -->
 
