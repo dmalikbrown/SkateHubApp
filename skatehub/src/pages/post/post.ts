@@ -4,7 +4,7 @@ constructor.
 */
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController,
-  ActionSheetController, Platform, ToastController } from 'ionic-angular';
+  ActionSheetController, Platform, ToastController} from 'ionic-angular';
 import {Headers} from '@angular/http';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
@@ -15,7 +15,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult} from '@ionic-native/native-geocoder';
-import {HomePage} from './../../pages/home/home';
+// import { TabsPage } from './../../pages/tabs/tabs';
 
 declare var cordova: any;
 
@@ -37,7 +37,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://localhost:3000"; //end point for the server when in dev mode
+  devEp = "http://10.31.11.81:3000"; //end point for the server when in dev mode
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
@@ -85,8 +85,8 @@ export class PostPage {
       sourceType: this.camera.PictureSourceType.CAMERA,
       // allowEdit: true,
       encodingType: this.camera.EncodingType.JPEG,
-      targetWidth: 700,
-      targetHeight: 700,
+      targetWidth: 1080,
+      targetHeight: 1080,
       saveToPhotoAlbum: false
     };
     //Open the camera on the device then capture the imgUrl (image url)
@@ -146,8 +146,8 @@ export class PostPage {
     */
     let options = {
       maximumImagesCount: 4, //This doesn't get applied on iOS -- bug with plugin
-      height: 700,
-      width: 700
+      height: 1080,
+      width: 1080
     };
     this.imagePicker.getPictures(options).then((results) => {
 
@@ -325,6 +325,9 @@ export class PostPage {
   }
 
   grabAddress(){
+    if(this.address != ""){
+      this.address = "";
+    }
     this.geolocation.getCurrentPosition().then((resp) => {
        // resp.coords.latitude
        // resp.coords.longitude
@@ -392,7 +395,7 @@ export class PostPage {
           duration: 3000
         });
         toast.present();
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.parent.select(0);
       }
       else{
         let alert = this.alertCtrl.create({

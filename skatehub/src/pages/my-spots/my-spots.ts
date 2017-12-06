@@ -15,11 +15,17 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MySpotsPage {
 
+  spots: any = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MySpotsPage');
+  }
+  ionViewDidEnter(){
+    this.spots = this.navParams.get('spots');
+    console.log(this.spots);
   }
 
 }

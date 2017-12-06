@@ -8,6 +8,7 @@ const SpotSchema = mongoose.Schema(
     desciption: {type: String},
     userId: {type: String},
     avatar: {type: String},
+    username: {type: String},
     images: [{type: String}],
     rating: {type: Number},
     riskLevel: {type: String},

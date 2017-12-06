@@ -135,6 +135,7 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
       let avatar = user.avatar;
       let spotObj = new Spot({
         avatar: avatar,
+        username: user.username,
         name: req.body.name,
         userId: req.body.id,
         location: req.body.location,
@@ -196,6 +197,50 @@ router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req
 
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
+});
+router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Spot.find({}, (err, spots) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      if(!spots){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else{
+        return res.json({success: true, spots: spots});
+      }
+    });
+});
+router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let id = req.params.id;
+    User.getUserById(id, (err, user) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading"});
+      }
+      if(!user){
+        console.log("HOW DID THIS HAPPEN? --- getting user");
+        return res.json({success: false, msg:"Error loading"});
+      }
+      else {
+        let userObj = {
+          fullName: user.fullName,
+          username: user.username,
+          email: user.email,
+          stance: user.stance,
+          spots: user.spots,
+          savedSpots: user.savedSpots,
+          invites: user.invites,
+          friends: user.friends,
+          avatar: user.avatar
+        };
+        return res.json({success: true, user: userObj});
+      }
+
+    });
 });
 
 module.exports = router;
