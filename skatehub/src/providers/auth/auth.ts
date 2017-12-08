@@ -12,7 +12,7 @@ import { Storage } from '@ionic/storage';
 export class AuthProvider {
 
   devEp: any = "http://localhost:3000";
-  prodEp: any = "https://skatehub.herokuapp.com/";
+  prodEp: any = "https://skatehub.herokuapp.com";
   token: any;
   user: any;
 

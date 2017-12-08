@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 export class SpotsProvider {
 
   devEp: any = "http://localhost:3000";
-  prodEp: any = "https://skatehub.herokuapp.com/";
+  prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public http: Http, public authProvider: AuthProvider) {
   }

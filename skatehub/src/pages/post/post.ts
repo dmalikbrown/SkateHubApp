@@ -38,7 +38,7 @@ export class PostPage {
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
   devEp = "http://localhost:3000"; //end point for the server when in dev mode
-  prodEp = "https://skatehub.herokuapp.com/";
+  prodEp = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
