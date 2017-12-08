@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 export class SpotsProvider {
 
   prodEp: any = "";
-  devEp: any = "http://10.31.6.152:3000";
+  devEp: any = "http://localhost:3000";
 
   constructor(public http: Http, public authProvider: AuthProvider) {
   }
