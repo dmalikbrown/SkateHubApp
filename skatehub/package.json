@@ -78,10 +78,6 @@
       "cordova-plugin-file": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-filepath": {},
-      "cordova-plugin-camera": {
-        "CAMERA_USAGE_DESCRIPTION": "To take photos for spots",
-        "PHOTOLIBRARY_USAGE_DESCRIPTION": "To select photos for spots"
-      },
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       },
@@ -90,6 +86,10 @@
       },
       "uk.co.workingedge.phonegap.plugin.launchnavigator": {
         "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
+      },
+      "cordova-plugin-camera": {
+        "CAMERA_USAGE_DESCRIPTION": " ",
+        "PHOTOLIBRARY_USAGE_DESCRIPTION": "To select photos for skate spots."
       }
     },
     "platforms": [
