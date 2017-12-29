@@ -20,6 +20,7 @@ import { MySpotsPage } from '../pages/my-spots/my-spots';
 import { SavedSpotsPage } from '../pages/saved-spots/saved-spots';
 import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
+import { RecoverPage } from '../pages/recover/recover';
 
 
 
@@ -55,7 +56,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
-    SettingsPage
+    SettingsPage,
+    RecoverPage
 
   ],
   imports: [
@@ -81,7 +83,9 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
-    SettingsPage
+    SettingsPage,
+    RecoverPage
+
   ],
   providers: [
     StatusBar,
