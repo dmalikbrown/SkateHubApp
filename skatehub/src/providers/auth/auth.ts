@@ -11,8 +11,8 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthProvider {
 
-  prodEp: any = "";
   devEp: any = "http://localhost:3000";
+  prodEp: any = "https://skatehub.herokuapp.com";
   token: any;
   user: any;
 
@@ -24,28 +24,28 @@ export class AuthProvider {
       let headers = new Headers();
       headers.append('Authorization', this.token);
       headers.append('Content-Type','application/json');
-      return this.http.get(this.devEp+"/skatehub/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      return this.http.get(this.prodEp+"/skatehub/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
   getAllUsers(){
     let headers = new Headers();
     headers.append('Authorization', this.token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.devEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.prodEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
   authenticateUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    return this.http.post(this.devEp+"/skatehub/authenticate",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.prodEp+"/skatehub/authenticate",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
   registerUser(user){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    return this.http.post(this.devEp+"/skatehub/register",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.prodEp+"/skatehub/register",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -58,7 +58,7 @@ export class AuthProvider {
             this.token = value;
             let headers = new Headers();
             headers.append('Authorization', this.token);
-            this.http.get(this.devEp+'/skatehub/protected', {headers: headers})
+            this.http.get(this.prodEp+'/skatehub/protected', {headers: headers})
                 .subscribe(res => {
                     resolve(res);
                 }, (err) => {

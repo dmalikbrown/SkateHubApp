@@ -1,10 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.skatehub.prod" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>SkateHub</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
+    <allow-navigation href="*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+    <content original-src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -23,8 +27,6 @@
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
         <preference name="loadUrlTimeoutValue" value="700000" />
-    </platform>
-    <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -95,10 +97,6 @@
     <plugin name="cordova-plugin-file" spec="^5.0.0" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.0" />
     <plugin name="cordova-plugin-filepath" spec="^1.1.0" />
-    <plugin name="cordova-plugin-camera" spec="^3.0.0">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="To take photos for spots" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To select photos for spots" />
-    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
@@ -107,5 +105,9 @@
     </plugin>
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.1.0">
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
+    </plugin>
+    <plugin name="cordova-plugin-camera" spec="^3.0.0">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To select photos for skate spots." />
     </plugin>
 </widget>
