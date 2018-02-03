@@ -9,7 +9,7 @@
 * [NPM](https://www.npmjs.com/) version 5.3.0 or higher
 
 ## Build
-* Currently the only thing this project does is connect to a cloud database at mlabs. To do so run
+* Currently the only thing this project does is connect to a cloud database at mlabs and load some dummy DYNAMIC content. To do so run
 ```
 git clone https://github.com/SCCapstone/SkateHub.git
 ```
@@ -44,3 +44,27 @@ ionic serve
 ```
 * If you run in Google Chrome you can inspect the page and toggle the device simulator to view on mobile phones
 
+## Unit Tests
+
+* To run the unit tests, first:
+```
+cd Skatehub/skatehub
+```
+* Then run the following command:
+```
+npm run test
+```
+* The tests should begin using the Karma testing framework and open a chrome browser as well as display the output in the terminal.
+
+## E2E Tests
+
+* To run the e2e tests, first have a terminal running the server and a terminal running the ionic serve.
+* Then, in a 3rd terminal, first:
+```
+cd Skatehub/skatehub
+```
+* Then run the e2e test:
+```
+npm run e2e
+```
+* The tests should begin and display the output.
