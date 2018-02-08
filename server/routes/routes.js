@@ -69,13 +69,13 @@ router.post('/register', (req, res, next) => {
   });
   User.getUserByUsername(userObj.username, (err, user) =>{
     if(err){
-      return res.json({sucess: false, msg: "Error with registration, please try again."});
+      return res.json({success: false, msg: "Error with registration, please try again."});
     }
     if(!user){
       //TODO query for email next
       User.getUserByEmail(userObj.email, (err, anotherUser) => {
         if(err){
-          return res.json({sucess: false, msg: "Error with registration, please try again."});
+          return res.json({success: false, msg: "Error with registration, please try again."});
         }
         if(!anotherUser){
           User.addUser(userObj, (err, retUser) =>{
@@ -100,12 +100,12 @@ router.post('/register', (req, res, next) => {
           });
         }
         else{
-          return res.json({sucess: false, msg: "That email exists already, please try another one"});
+          return res.json({success: false, msg: "That email exists already, please try another one"});
         }
       });
     }
     else{
-      return res.json({sucess: false, msg: "That username exists already, please try another one"});
+      return res.json({success: false, msg: "That username exists already, please try another one"});
     }
 
   });
