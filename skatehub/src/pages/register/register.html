@@ -4,7 +4,7 @@
     <ion-icon style="font-size: 1.5em;" name="arrow-back" ></ion-icon>
       Back
   </button>
-  <form (ngSubmit) = "registerForm()">
+  <form>
     <ion-row style="margin-top: 10% ; opacity: .90;" justify-content-center padding=".5px;">
 
       <ion-item padding no-lines>
@@ -36,9 +36,9 @@
       </ion-item>
     </ion-row>
 
-    <button id = "registerbutton" ion-button strong type = "submit" (tap) = "registerForm()" justify-content-center padding left = ".10px" block icon-start>
-      Register
-      <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
-    </button>
   </form>
+  <button id = "registerbutton" ion-button strong (tap) = "registerForm()" justify-content-center padding left = ".10px" block icon-start>
+    Register
+    <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
+  </button>
 </ion-content>
