@@ -58,10 +58,11 @@ export class RegisterPage {
   */
   confirmUsername(){
     let re = /^\w+$/;
-    if(!re.test(this.username.toLowerCase())){
+    if(!re.test(this.username.toLowerCase()) || this.username.length >= 15){
       let alert = this.alertCtrl.create({
         title: 'Invalid Username',
-        subTitle: "Please use a username that only contains letters, numbers, or underscores",
+        subTitle: "Please use a username that only contains letters, numbers,\
+        or underscores and is also less than 15 characters",
         buttons: ['Dismiss']
       });
       alert.present();
