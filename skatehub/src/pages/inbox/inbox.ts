@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the InboxPage page.
@@ -15,15 +15,15 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class InboxPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad InboxPage');
   }
 
-  dismiss(){
-    this.viewCtrl.dismiss();
-  }
+  // dismiss(){
+  //   this.viewCtrl.dismiss();
+  // }
 
 }

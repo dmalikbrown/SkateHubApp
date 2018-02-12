@@ -21,7 +21,7 @@ import { MySpotsPage } from '../pages/my-spots/my-spots';
 import { SavedSpotsPage } from '../pages/saved-spots/saved-spots';
 import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
-
+import { FilterPage } from '../pages/filter/filter';
 
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -57,8 +57,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     InboxPage,
-    SettingsPage
-
+    SettingsPage,
+    FilterPage
   ],
   imports: [
     BrowserModule,
@@ -84,7 +84,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     InboxPage,
-    SettingsPage
+    SettingsPage,
+    FilterPage
   ],
   providers: [
     StatusBar,
