@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, AlertController, ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, Content, AlertController, ActionSheetController, ModalController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
+import { InboxPage } from '../../pages/inbox/inbox';
 
 
 @Component({
@@ -26,7 +27,12 @@ export class HomePage {
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
             public navParams: NavParams, public spotsProvider: SpotsProvider,
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
-            public geolocation: Geolocation, public actionSheet: ActionSheetController) {
+            public geolocation: Geolocation, public actionSheet: ActionSheetController, public modalCtrl: ModalController) {
+  }
+
+  openInbox(){
+      let inboxModal = this.modalCtrl.create(InboxPage);
+      inboxModal.present();
   }
 
   ionViewCanEnter(){

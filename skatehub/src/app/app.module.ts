@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { InboxPage } from '../pages/inbox/inbox';
 import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -55,6 +56,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
+    InboxPage,
     SettingsPage
 
   ],
@@ -81,6 +83,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
+    InboxPage,
     SettingsPage
   ],
   providers: [
