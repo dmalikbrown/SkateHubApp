@@ -1,11 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, AlertController, ActionSheetController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Content, AlertController,
+  ActionSheetController, PopoverController, Events} from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
+import { FilterPage } from '../../pages/filter/filter';
 
 
 @Component({
@@ -27,12 +29,23 @@ export class HomePage {
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
             public navParams: NavParams, public spotsProvider: SpotsProvider,
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
-            public geolocation: Geolocation, public actionSheet: ActionSheetController, public modalCtrl: ModalController) {
+            public geolocation: Geolocation, public actionSheet: ActionSheetController,
+            public popoverCtrl: PopoverController, public event: Events) {
+
+              this.event.subscribe('filter:event', (data) => {
+                console.log(data);
+                //TODO make a function that filters the spots based on type
+              });
   }
 
   openInbox(){
-      let inboxModal = this.modalCtrl.create(InboxPage);
-      inboxModal.present();
+      this.navCtrl.push(InboxPage);
+  }
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(FilterPage);
+    popover.present({
+      ev: myEvent
+    });
   }
 
   ionViewCanEnter(){

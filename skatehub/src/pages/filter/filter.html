@@ -1,0 +1,51 @@
+<!--
+  Generated template for the FilterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title text-wrap>Filter</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+
+<ion-content>
+  <ion-list no-padding>
+        <ion-item>
+          <ion-label>Filter</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Stairs</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "stairs" (ionChange) = "addToFilterArray('stairs', stairs)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Rails</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "rails" (ionChange) = "addToFilterArray('rails', rails)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ledges</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "ledges" (ionChange) = "addToFilterArray('ledges', ledges)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Banks</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "banks" (ionChange) = "addToFilterArray('banks', banks)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>DIY</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "diy" (ionChange) = "addToFilterArray('diy', diy)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Misc</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "misc" (ionChange) = "addToFilterArray('misc', misc)"></ion-checkbox>
+        </ion-item>
+        <!-- TODO
+        <ion-item>
+          <ion-label>Parks</ion-label>
+          <ion-checkbox item-end [(ngModel)]="pepperoni"></ion-checkbox>
+        </ion-item> -->
+  </ion-list>
+</ion-content>
