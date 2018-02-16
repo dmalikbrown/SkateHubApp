@@ -151,9 +151,46 @@ export class ProfilePage {
     //this.events.publish('logout');
     this.app.getRootNavs()[0].push(LoginPage);
   }
-  /*
-  logOutPage(){
-    console.log("Log Out");
+
+  changeStance(){
+    console.log("Stance Changed");
+    if(this.user.stance == null)
+    {
+      this.user.stance = "Goofy";
+      // let obj = {
+      //   stance: "Goofy"
+      // }
+      // this.authProvider.registerUser(obj).subscribe((data)=>{
+      //   if(data.success){ //valid register set root to TabsPage with params
+      //     console.log("Saving data" + data.token);
+      //     this.authProvider.storeUserData(data.token, data.user.Stance);
+      //   }
+      //   else{
+      //     let alert = this.alertCtrl.create({
+      //       title: 'Error',
+      //       subTitle: data.msg,
+      //       buttons: ["Dismiss"]
+      //     });
+      //     alert.present();
+      //   }
+      // });
+      return;
+   }
+    else if(this.user.stance == "Goofy")
+    {
+      this.user.stance = "Regular";
+
+      return;
+    }
+    else if(this.user.stance == "Regular")
+    {
+      this.user.stance = "Goofy";
+
+      return;
+    }
+    //this.user.stance = null;
+    //else{return;}
+    console.log(this.user.stance);
   }
-  */
+
 }
