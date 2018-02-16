@@ -14,29 +14,30 @@
 </ion-header>
 <!-- Header end -->
 
-<ion-content>
+<ion-content class="searchBackGround">
   <!-- User list if searchTerm matches - START -->
-  <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">
-    <ion-list-header>People</ion-list-header>
-    <ion-item *ngFor= "let user of userResultArr" detail-push>
+  <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">	  
+    <ion-list-header class="searchListHeader">People</ion-list-header>
+	<!-- TODO Implement button and push for userResultArr-->
+    <ion-item class="listArr" *ngFor= "let user of userResultArr" detail-push>
       <ion-avatar item-start>
         <img [src]="user.avatar">
       </ion-avatar>
-      <h2>{{user.username}}</h2>
+      <h2>{{ user.username }}</h2>
     </ion-item>
   </ion-list>
   <!-- User list if searchTerm matches - END -->
   <!-- Item divider for styling -->
-  <ion-item-divider *ngIf="!start && !hideSearch"></ion-item-divider>
+  <!--ion-item-divider *ngIf="!start && !hideSearch"></ion-item-divider-->
   <!-- Item divider - END -->
   <!-- Spot list if searchTerm matches - START -->
   <ion-list *ngIf="!start && spotsResultArr.length > 0 && !hideSearch">
-    <ion-list-header>Skate Spots</ion-list-header>
-    <ion-item *ngFor= "let spot of spotsResultArr" detail-push>
+    <ion-list-header class="searchListHeader">Skate Spots</ion-list-header>
+    <ion-item button class="listArr" *ngFor= "let spot of spotsResultArr" detail-push (click)="spotButtonClick(spot)">
       <ion-thumbnail item-start>
         <img [src]="spot.images[0]">
       </ion-thumbnail>
-      <h2>{{spot.name}}</h2>
+      <h2>{{ spot.name }}</h2>
     </ion-item>
   </ion-list>
   <!-- Spot list if searchTerm matches - END -->

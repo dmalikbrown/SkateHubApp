@@ -22,7 +22,6 @@ import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
 
 
-
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
 
