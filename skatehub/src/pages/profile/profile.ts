@@ -152,28 +152,18 @@ export class ProfilePage {
     this.app.getRootNavs()[0].push(LoginPage);
   }
 
+  /*
+  *Checks to see if the current stance has an appropriate value
+  *allows the user to simply tap the text to change it to ther preferred value
+  *working on getting it to talk back to the server*
+  */
   changeStance(){
     console.log("Stance Changed");
+
     if(this.user.stance == null)
     {
       this.user.stance = "Goofy";
-      // let obj = {
-      //   stance: "Goofy"
-      // }
-      // this.authProvider.registerUser(obj).subscribe((data)=>{
-      //   if(data.success){ //valid register set root to TabsPage with params
-      //     console.log("Saving data" + data.token);
-      //     this.authProvider.storeUserData(data.token, data.user.Stance);
-      //   }
-      //   else{
-      //     let alert = this.alertCtrl.create({
-      //       title: 'Error',
-      //       subTitle: data.msg,
-      //       buttons: ["Dismiss"]
-      //     });
-      //     alert.present();
-      //   }
-      // });
+
       return;
    }
     else if(this.user.stance == "Goofy")
@@ -188,8 +178,7 @@ export class ProfilePage {
 
       return;
     }
-    //this.user.stance = null;
-    //else{return;}
+
     console.log(this.user.stance);
   }
 
