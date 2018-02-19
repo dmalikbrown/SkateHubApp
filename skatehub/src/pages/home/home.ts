@@ -3,6 +3,7 @@ import { NavController, NavParams, Content, AlertController,
   ActionSheetController, PopoverController, Events} from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
+import { SpotTypeFilterProvider } from './../../providers/spot-type-filter/spot-type-filter';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
@@ -25,22 +26,87 @@ export class HomePage {
   noSpots: boolean;
   start: any = "";
   destination: any = "";
+  filterArray: any = [];
 
   constructor(public navCtrl: NavController, public authProvider: AuthProvider,
             public navParams: NavParams, public spotsProvider: SpotsProvider,
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
             public geolocation: Geolocation, public actionSheet: ActionSheetController,
-            public popoverCtrl: PopoverController, public event: Events) {
+            public popoverCtrl: PopoverController, public event: Events,
+            public spotTfp: SpotTypeFilterProvider) {
 
+              //whenever an event is published with the name 'filter:event', return
+              //this code... when a user filters, run this code essentially
               this.event.subscribe('filter:event', (data) => {
-                console.log(data);
-                //TODO make a function that filters the spots based on type
+                this.filterArray = data;
+                this.spots = this.filterSpots(data);
               });
   }
+  /*
+  Performs a 'filter' function on the spotsVarHolder (the array that will always
+  contain all the spots). The function that is passed to the 'filter' function
+  loops thru each spot's types and compares them to the array of filter keywords.
+  If the filter keywords are 'stairs' and 'ramp', then only those spots that have
+  a type 'stairs' AND 'ramp' will be returned.
+  @parameters    array of strings (filter keywords)
+  @return        array of spots
+  */
+  filterSpots(filterArray){
+    //if the filter has no keywords, return all the spots
+    if(filterArray.length <=0) return this.spotsVarHolder;
 
+    //return an array that satisfies the conditions
+    return this.spotsVarHolder.filter(function(spot){
+      //filter function is gonna run on all the spots.
+
+      let result = true; //result will be what's returned if the spot has the filter keywords
+      let l = spot.types.length;
+      let innerLen = filterArray.length;
+      //gonna use this variable (count) to keep up with how many type filter keyword matches we have
+      let count = 0;
+      //outer loop is looping thru spot.types array
+      //inner loop is looping thru filterArray (filter keywords)
+      for(let i = 0; i<l; i++){
+        //since the type that's stored to each spot is an
+        //image url example: 'assets/imgs/stairs.png'
+        //we need to parse the actual type ('stairs' in this case)
+        //lastIndexOf('/')+1 starts at the last '/', and indexOf('.') grabs the only '.'
+        // in the string which should be the only period.
+        let type = spot.types[i].substring(spot.types[i].lastIndexOf('/')+1, spot.types[i].indexOf('.'));
+        //if the type matches any of filter keywords, increment count and end the inner loop
+        //proceed to the next type to check.
+        for(let j = 0; j< innerLen; j++){
+          if(type == filterArray[j]){
+            count++;
+            break;
+          }
+        }
+      }
+      //if the count is not equivalent to the filterArray length then that means
+      //all of the filter keywords do not exist on this particular spot
+      //so it should not be included in the new array that is filtered.
+      if(count != filterArray.length){
+        result = false;
+      }
+      //return the outcome
+      return result;
+    });
+  }
+
+  /*
+  Push the InboxPage
+  @parameters    none
+  @return        nothing
+  */
   openInbox(){
       this.navCtrl.push(InboxPage);
   }
+
+  /*
+  Present the filter popover
+  @parameters    event -> Don't know if it's needed
+  @return        nothing
+  */
   presentPopover(myEvent) {
     let popover = this.popoverCtrl.create(FilterPage);
     popover.present({
@@ -71,7 +137,6 @@ export class HomePage {
     else{
       this.user = this.navParams.data;
     }
-
   }
 
   /*
@@ -90,6 +155,8 @@ export class HomePage {
         else {
           this.noSpots = false;
         }
+        this.filterArray = this.spotTfp.getFilterItems();
+        this.spots = this.filterSpots(this.filterArray);
       }
       else {
         let alert = this.alertCtrl.create({
@@ -99,6 +166,7 @@ export class HomePage {
         });
         alert.present();
       }
+
     });
 
   }

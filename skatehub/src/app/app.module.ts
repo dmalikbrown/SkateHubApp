@@ -26,6 +26,7 @@ import { FilterPage } from '../pages/filter/filter';
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
+import { SpotTypeFilterProvider } from '../providers/spot-type-filter/spot-type-filter';
 
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FileTransfer } from '@ionic-native/file-transfer';
@@ -37,6 +38,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+
 
 
 @NgModule({
@@ -100,7 +102,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    SpotsProvider
+    SpotsProvider,
+    SpotTypeFilterProvider
   ]
 })
 export class AppModule {}
