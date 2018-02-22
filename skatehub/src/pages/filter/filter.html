@@ -1,0 +1,44 @@
+<!-- Basic html to display check boxes that call the 'addToFilterArray' which
+  takes a string and boolean as parameters.
+ -->
+
+<ion-content>
+  <ion-list no-padding>
+        <ion-item id = "filter" >
+          <ion-label>Filter</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Stairs</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "stairs" (ionChange) = "addToFilterArray('stairs', stairs)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ramps</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "ramp" (ionChange) = "addToFilterArray('ramp', ramp)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Rails</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "rail" (ionChange) = "addToFilterArray('rail', rail)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ledges</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "ledge" (ionChange) = "addToFilterArray('ledge', ledge)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Banks</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "banks" (ionChange) = "addToFilterArray('banks', banks)"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>DIY</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "diy" (ionChange) = "addToFilterArray('diy', diy)"></ion-checkbox>
+        </ion-item>
+        <!-- <ion-item>
+          <ion-label>Misc</ion-label>
+          <ion-checkbox item-end [(ngModel)] = "misc" (ionChange) = "addToFilterArray('misc', misc)"></ion-checkbox>
+        </ion-item> -->
+        <!-- TODO
+        <ion-item>
+          <ion-label>Parks</ion-label>
+          <ion-checkbox item-end [(ngModel)]="pepperoni"></ion-checkbox>
+        </ion-item> -->
+  </ion-list>
+</ion-content>

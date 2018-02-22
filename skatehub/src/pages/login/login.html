@@ -2,11 +2,11 @@
 <ion-content >
   <form (ngSubmit)="loginForm()">
     <ion-row style="margin-top: 45%;" justify-content-center>
-      <h1 style="color: #E0E0E0; font-weight: 900;">SkateHub</h1>
+      <h1 style="color: #FFFFFF; font-weight: 900;">SkateHub</h1>
     </ion-row>
     <ion-row justify-content-center padding>
      <ion-item padding no-lines>
-       <ion-input type = "text" placeholder="Username" [(ngModel)]="username" name="username"></ion-input>
+       <ion-input  type = "text" placeholder="Username" [(ngModel)]="username" name="username"></ion-input>
      </ion-item>
    </ion-row>
    <ion-row justify-content-center padding>
@@ -20,8 +20,11 @@
        <ion-icon style="font-size: 2.5em;" name="arrow-round-forward" color ="white"></ion-icon>
      </button>
    </div>
-   <ion-row style="margin-top: 35%; background-color: #222; opacity: .6; height: 35px;" justify-content-center>
-     <p no-padding style="color: #F5F5F5; font-weight: bold; margin-top: 5px;">Ready To Skate? <a [navPush] = "registerPage">Sign Up</a></p>
-   </ion-row>
+
    </form>
 </ion-content>
+<ion-footer style = " background-color: #222; opacity: .6;">
+<ion-row style="height: 35px;" justify-content-center>
+  <p no-padding style="color: #F5F5F5; font-weight: bold; margin-top: 9px;">Ready To Skate? <a [navPush] = "registerPage">Sign Up</a></p>
+</ion-row>
+</ion-footer>
