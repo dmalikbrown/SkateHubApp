@@ -21,6 +21,7 @@ import { MySpotsPage } from '../pages/my-spots/my-spots';
 import { SavedSpotsPage } from '../pages/saved-spots/saved-spots';
 import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
+import { EditPasswordPage } from '../pages/edit-password/edit-password';
 import { FilterPage } from '../pages/filter/filter';
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -37,6 +38,8 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { Keyboard } from '@ionic-native/keyboard';
+
 
 
 
@@ -57,8 +60,9 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
-    InboxPage,
     SettingsPage,
+    EditPasswordPage,
+    InboxPage,
     FilterPage
   ],
   imports: [
@@ -84,8 +88,9 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     MySpotsPage,
     SavedSpotsPage,
     DetailedSpotPage,
-    InboxPage,
     SettingsPage,
+    EditPasswordPage,
+    InboxPage,
     FilterPage
   ],
   providers: [
@@ -99,6 +104,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     Geolocation,
     NativeGeocoder,
     LaunchNavigator,
+    Keyboard,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     SpotsProvider,

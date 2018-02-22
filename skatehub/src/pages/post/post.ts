@@ -258,7 +258,7 @@ export class PostPage {
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       //send the file to the routes in the router.js file
-      fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
+      fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
         options).then((entry) => {
           //entry is returned from the server.
           console.log(entry);

@@ -55,6 +55,10 @@ export class ProfilePage {
 
     this.getUser(this.userId);
   }
+
+  ionViewWillLeave(){
+    
+  }
 /*
   profilePage(){
     console.log("Profile");
@@ -101,6 +105,7 @@ export class ProfilePage {
           buttons: ["Dismiss"]
         });
         alert.present();
+        return false;
       }
     });
   }
@@ -146,7 +151,7 @@ export class ProfilePage {
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage);
+    this.navCtrl.push(SettingsPage, {id: this.userId});
   }
   logout(){
     this.authProvider.logout();

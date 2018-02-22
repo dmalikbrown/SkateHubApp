@@ -62,7 +62,49 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
     callback(null, isMatch);
   });
 }
-  module.exports.addSpot = function(id, spotId, callback){
-    User.update({_id: id},{$push: {spots: spotId}}, callback);
+module.exports.addSpot = function(id, spotId, callback){
+  User.update({_id: id},{$push: {spots: spotId}}, callback);
+}
+/*
+Update function takes in a edits object that looks like:
+
+          edits = {
+          id : id,
+          type: type,
+          attributeToBeEdited: newValue
+        }
+The different edit types for now are "fullName", "username", "email",
+and "password". This way we only need 1 function.
+*/
+module.exports.update = function(edits, callback){
+  if(edits.type == "fullName"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {fullName: edits.fullName} },
+      callback
+    );
+  }
+  else if(edits.type == "username"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {username: edits.username} },
+      callback
+    );
+  }
+  else if(edits.type == "email"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {email: edits.email} },
+      callback
+    );
+  }
+  else if(edits.type == "password"){
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(edits.newPassword, salt, (err, hash) => {
+        if(err) throw err;
+        User.findByIdAndUpdate(edits.id,
+          { $set: {password: hash}},
+          callback
+        );
+      });
+    });
+  }
 
 }
