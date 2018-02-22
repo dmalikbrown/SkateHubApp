@@ -23,7 +23,6 @@ import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
 import { FilterPage } from '../pages/filter/filter';
 
-
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
 import { SpotTypeFilterProvider } from '../providers/spot-type-filter/spot-type-filter';
