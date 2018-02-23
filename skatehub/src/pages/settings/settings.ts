@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
-import { Keyboard } from '@ionic-native/keyboard';
 import { EditPasswordPage } from '../../pages/edit-password/edit-password';
 
 
@@ -29,7 +28,7 @@ export class SettingsPage {
   uNReadOnly: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-            public authProvider: AuthProvider, public keyboard: Keyboard,
+            public authProvider: AuthProvider,
             public toastCtrl: ToastController, public alertCtrl: AlertController) {
               //get the id from the profile page
     this.id = this.navParams.get('id');
@@ -70,11 +69,17 @@ export class SettingsPage {
   */
 
   toggleReadOnly(type: string, edit: boolean){
+    console.log(type);
+    console.log(edit);
     if(type =="fullName") this.fNReadOnly = !this.fNReadOnly;
     if(type =="username") this.uNReadOnly = !this.uNReadOnly;
     if(type == "email") this.emailReadOnly = !this.emailReadOnly;
-    if(!edit) this.keyboard.close();
-    if(edit) this.keyboard.show();
+    if(!edit){
+      // this.Keyboard.hide();
+    }
+    if(edit) {
+      // this.Keyboard.show();
+    }
   }
 
   /*
@@ -162,10 +167,13 @@ export class SettingsPage {
       cssClass: cssClass,
       showCloseButton: showCloseButton,
       closeButtonText: closeButtonText,
-      dismissOnPageChange: true,
-      duration: 1000
+      dismissOnPageChange: true
     });
-    toast.present();
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
   }
 
 }

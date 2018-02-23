@@ -121,10 +121,13 @@ to the settings page.
       position: pos,
       cssClass: cssClass,
       showCloseButton: showCloseButton,
-      closeButtonText: closeButtonText,
-      duration: 1000
+      closeButtonText: closeButtonText
     });
-    toast.present();
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
   }
 
 }

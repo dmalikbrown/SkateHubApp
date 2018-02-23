@@ -57,7 +57,7 @@ export class ProfilePage {
   }
 
   ionViewWillLeave(){
-    
+
   }
 /*
   profilePage(){
@@ -128,10 +128,14 @@ export class ProfilePage {
       cssClass: cssClass,
       showCloseButton: showCloseButton,
       closeButtonText: closeButtonText,
-      dismissOnPageChange: true,
-      duration: 2000
+      dismissOnPageChange: true
     });
-    toast.present();
+    //Fixes the bug issue #62 .. gotta call dismiss function at some point
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
   }
   mySpotsPage(){
     console.log("My Spots");

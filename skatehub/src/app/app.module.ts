@@ -38,7 +38,6 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
-import { Keyboard } from '@ionic-native/keyboard';
 
 
 
@@ -104,7 +103,6 @@ import { Keyboard } from '@ionic-native/keyboard';
     Geolocation,
     NativeGeocoder,
     LaunchNavigator,
-    Keyboard,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     SpotsProvider,

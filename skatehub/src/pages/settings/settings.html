@@ -32,13 +32,13 @@
       <!-- Full name field -->
       <ion-item>
         <ion-label floating color ="primary">Full Name</ion-label>
-        <!-- [readonly] attribute will be set dynamically according
+        <!-- [disabled] attribute will be set dynamically according
         to the fNReadOnly boolean var in the .ts file.
         Meaning, if the fNReadOnly = true, then the input field won't allow
         typing. If the fNReadOnly = false, then the input field is editable
       -->
         <ion-input type="text" [(ngModel)]="fullName"
-        name="fullName" [readonly] ="fNReadOnly" placeholder="fullName"></ion-input>
+        name="fullName" [disabled] ="fNReadOnly" placeholder="fullName"></ion-input>
 
         <!-- This is the pencil icon.. It will only be displayed if the
         temporary var editName is false meaning, the user isn't editing their name.
@@ -49,22 +49,25 @@
         variable. The boolean parameter is to toggle the keyboard on the user's
         phone.
         -->
-        <ion-icon *ngIf="!editName" item-end
-        (tap) ="toggleReadOnly('fullName', true); editName = true;"
-        name="create" mode="android" ios="md-create" color="primary"
-        class="edit-icon"></ion-icon>
+          <ion-icon item-end ion-button clear icon-only *ngIf="!editName"
+            (tap) ="toggleReadOnly('fullName', true); editName = true;"
+            name="create" mode="android" ios="md-create" color="primary"
+          class="edit-icon"></ion-icon>
+
 
         <!-- This is a save badge that is displayed after the user taps the pencil
         icon. If the user taps the save badge, the toggleReadOnly func is called
         with the first parameter indicating what is being saved so the input
-        field will be changed back to readonly and a boolean value set to false
+        field will be changed back to disabled and a boolean value set to false
         indicating the keyboard should close. The saveChanges func is called
         with a parameter indicating what is being saved. The editName var is set
         to false to re-display the pencil icon again.
        -->
-        <ion-badge *ngIf="editName"
-        (tap)="toggleReadOnly('fullName', false); saveChanges('fullName'); editName = false;"
-        item-end>Save</ion-badge>
+
+         <ion-badge *ngIf="editName"
+         (tap)="toggleReadOnly('fullName', false); saveChanges('fullName'); editName = false;"
+         item-end clear tappable>Save</ion-badge>
+
       </ion-item>
 
       <!-- Full name field end -->
@@ -74,7 +77,7 @@
        <ion-label floating color ="primary">Username</ion-label>
        <ion-input type="text"
        [(ngModel)]="username" name="username"
-       [readonly] ="uNReadOnly" placeholder="username"></ion-input>
+       [disabled] ="uNReadOnly" placeholder="username"></ion-input>
        <ion-icon *ngIf="!editUsername"
        item-end
        (tap) ="toggleReadOnly('username', true); editUsername = true;"
@@ -86,7 +89,7 @@
        <ion-label floating color ="primary">Email Address</ion-label>
        <ion-input type="email"
        [(ngModel)]="email" name="email"
-       [readonly] ="emailReadOnly" placeholder="email"></ion-input>
+       [disabled] ="emailReadOnly" placeholder="email"></ion-input>
        <ion-icon *ngIf="!editEmail"
        item-end
        (tap) ="toggleReadOnly('email', true); editEmail = true;"
