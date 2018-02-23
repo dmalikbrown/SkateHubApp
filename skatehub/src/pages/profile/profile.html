@@ -28,34 +28,51 @@
 <!-- User avatar and info - END -->
 
 <!-- Bunch of buttons - START -->
-  <button class = "top-spacing-buttons" ion-button icon-left block strong (tap) = "mySpotsPage()" color = "grey">
-    <ion-icon name = "archive"></ion-icon>
-    My Spots
+  <!-- <button class = "top-spacing-buttons" ion-button icon-left block strong (tap) = "mySpotsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "archive"></ion-icon> -->
+    <!-- My Spots -->
     <!-- <span style="margin-left: 50%;"></span> -->
-  </button>
-  <button ion-button icon-left block strong (tap) = "friendsPage()" color = "grey">
-    <ion-icon name = "ios-people"></ion-icon>
-    Friends
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "friendsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "ios-people"></ion-icon> -->
+    <!-- Friends -->
     <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
-  </button>
-  <button ion-button icon-left block strong (tap) = "invitesPage()" color = "grey">
-    <ion-icon name = "paper-plane"></ion-icon>
-    Invites
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "invitesPage()" color = "grey"> -->
+    <!-- <ion-icon name = "paper-plane"></ion-icon> -->
+    <!-- Invites -->
     <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
-  </button>
-  <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "grey">
-    <ion-icon name = "checkmark-circle-outline"></ion-icon>
-    Saved Spots
-  </button>
-  <button ion-button icon-left block strong (tap) = "settingsPage()" color = "grey">
-    <ion-icon name = "settings"></ion-icon>
-    Settings
-  </button>
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "checkmark-circle-outline"></ion-icon> -->
+    <!-- Saved Spots -->
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "settingsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "settings"></ion-icon> -->
+    <!-- Settings -->
+  <!-- </button> -->
   <!-- Bunch of buttons - END -->
   <!-- Logout button - START -->
-  <button ion-button icon-left block strong style="background-color: transparent; color: #f53d3d;" (tap) = "logout()" color = "danger">
-    <ion-icon name = "exit"></ion-icon>
-    Logout
-  </button>
+  <!-- <button ion-button icon-left block strong style="background-color: transparent; color: #f53d3d;" (tap) = "logout()" color = "danger"> -->
+    <!-- <ion-icon name = "exit"></ion-icon> -->
+    <!-- Logout -->
+  <!-- </button> -->
   <!-- Logout button - END -->
+
+<ion-grid style="background-color: #FFF" class="ion-grid">
+  <!-- <ion-row style="background-color: #505"> -->
+    <!-- <ion-col col-6 style="background-color: #000"> Blah blah blah </ion-col> -->
+  <!-- </ion-row> -->
+  <ion-row style="backround-color: #628" class="ion-row">
+    <ion-col col-6 style="background-color: #FF1493" (tap)= "mySpotsPage()" class="ion-col"> My Spots </ion-col>
+    <ion-col col-6 style="background-color: #FF1493" (tap)= "friendsPage()" class="ion-col"> Friends </ion-col>
+  </ion-row>
+  <ion-row style="background-color#628" class="ion-row">
+    <ion-col col-6 style="background-color: #FF1493" (tap)= "invitesPage()" class="ion-col"> Invites </ion-col>
+    <ion-col col-6 style="background-color: #FF1493" (tap)= "settingsPage()" class="ion-col"> Settings </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+
 </ion-content>

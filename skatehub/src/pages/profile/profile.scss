@@ -22,7 +22,20 @@ page-profile {
     height: 45%;
     opacity: 0.5;
   }
+  .ion-grid{
+    margin-top: 20%;
+    height: 55%;
+    width: 100%;
+    }
+  .ion-row{
+    height:100%;
+  }
+  .ion-col{
+    text-align: center;
+  }
 }
+
+
 ion-toast.warning .toast-wrapper {
 	background: map-get($colors, danger);
 }
