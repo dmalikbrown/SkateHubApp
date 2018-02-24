@@ -172,6 +172,7 @@ export class ProfilePage {
         position: 'top',
         cssClass:'link',
         duration: 3000
+        
       });
       toast.present();
       // this.spotsProvider.switchStance(obj).subscribe((data) =>{
@@ -199,6 +200,7 @@ export class ProfilePage {
         cssClass:'link',
         duration: 3000
       });
+      toast.present();
       //this.spotsProvider.switchStance("Regular");
       return;
     }
@@ -214,6 +216,7 @@ export class ProfilePage {
         cssClass:'link',
         duration: 3000
       });
+      toast.present();
       //this.spotsProvider.switchStance("Goofy");
       return;
     }
