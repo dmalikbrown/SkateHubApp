@@ -1,10 +1,9 @@
 <!-- Start header -->
 <ion-header no-border>
   <ion-navbar color="primary">
-    <ion-buttons end right>
-      <button id = "filter" color="white" ion-button icon-right>
-        Filter
-        <ion-icon name="ios-arrow-down"></ion-icon>
+    <ion-buttons end right (tap)="presentPopover($event)">
+      <button id = "filter" color="white" ion-button icon-only>
+        <ion-icon name="options"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -12,7 +11,7 @@
     SkateHub
     </ion-title>
 
-    <ion-buttons start left>
+    <ion-buttons start left (tap) = "openInbox()">
       <button color="white" ion-button icon-only>
         <ion-icon id = "bubbles" name="ios-chatbubbles"></ion-icon>
       </button>

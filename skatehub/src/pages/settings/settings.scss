@@ -1,3 +1,38 @@
 page-settings {
+  .top-spacing {
+    margin-top: 15%;
+  }
+  .profile-shift {
+    margin-left: 5%;
+    position: relative;
+  }
+  // If user has a default avatar use this class
+  .avatar-border {
+    border-radius: 50%;
+    border-color: map-get($colors, primary);
+    border-style: solid;
+    border-width: 8px;
+    width: 100px;
+    height: 100px;
+    //border: 10px solid map-get($colors, primary);
+  }
+  //if user has their own avatar use this class
+  .avatar-uniq {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  .edit-icon {
+    font-size: 25px;
+    color: map-get($colors, primary);
+  }
 
+}
+
+//cssClass for the toasts. Success is green toast, warning is red toast.
+ion-toast.success .toast-wrapper {
+	background: map-get($colors, primary);
+}
+ion-toast.warning .toast-wrapper {
+	background: map-get($colors, danger);
 }

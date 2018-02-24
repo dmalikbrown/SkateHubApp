@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
+import { SpotsProvider } from '../../providers/spots/spots';
+
 
 /**
- * Generated class for the NavigatePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
+* Generated class for the NavigatePage page.
+*
+* See https://ionicframework.com/docs/components/#navigation for more info on
+* Ionic pages and navigation.
+*/
 
 declare var google;
 

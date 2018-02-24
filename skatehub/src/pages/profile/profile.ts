@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, AlertController,
   ToastController} from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
+import { SpotsProvider } from './../../providers/spots/spots';
 import { InvitesPage } from './../../pages/invites/invites';
 import { FriendsPage } from './../../pages/friends/friends';
 import { MySpotsPage } from './../../pages/my-spots/my-spots';
@@ -55,6 +56,10 @@ export class ProfilePage {
 
     this.getUser(this.userId);
   }
+
+  ionViewWillLeave(){
+
+  }
 /*
   profilePage(){
     console.log("Profile");
@@ -101,6 +106,7 @@ export class ProfilePage {
           buttons: ["Dismiss"]
         });
         alert.present();
+        return false;
       }
     });
   }
@@ -123,10 +129,14 @@ export class ProfilePage {
       cssClass: cssClass,
       showCloseButton: showCloseButton,
       closeButtonText: closeButtonText,
-      dismissOnPageChange: true,
-      duration: 2000
+      dismissOnPageChange: true
     });
-    toast.present();
+    //Fixes the bug issue #62 .. gotta call dismiss function at some point
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
   }
   mySpotsPage(){
     console.log("My Spots");
@@ -142,20 +152,85 @@ export class ProfilePage {
   }
   savedSpotsPage(){
     console.log("Saved Spots");
-    this.navCtrl.push(SavedSpotsPage);
+    this.navCtrl.push(SavedSpotsPage, {spots: this.user.savedSpots});
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage);
+    this.navCtrl.push(SettingsPage, {id: this.userId});
   }
   logout(){
     this.authProvider.logout();
     //this.events.publish('logout');
     this.app.getRootNavs()[0].push(LoginPage);
   }
+
   /*
-  logOutPage(){
-    console.log("Log Out");
-  }
+  *Checks to see if the current stance has an appropriate value
+  *allows the user to simply tap the text to change it to ther preferred value
+  *working on getting it to talk back to the server*
   */
+  changeStance(){
+    console.log("Stance Changed");
+
+    if(this.user.stance == null)
+    {
+      let obj = {
+        Stance: "Goofy"
+      };
+      this.user.stance = "Goofy";
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Goofy",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      //
+      // });
+      // toast.present();
+      // this.spotsProvider.switchStance(obj).subscribe((data) =>{
+      //   if(data.sucess){
+      //     let toast = this.toastCtrl.create({
+      //       message: "You swithced stances",
+      //       position: 'top',
+      //       cssClass:'link',
+      //       duration: 3000
+      //     });
+      //   }
+      // });
+      console.log("made it back to profile.ts");
+      return;
+    }
+    else if(this.user.stance == "Goofy")
+    {
+      let obj = {
+        Stance: "Regular"
+      };
+      this.user.stance = "Regular";
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Regular",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      // });
+      // toast.present();
+      //this.spotsProvider.switchStance("Regular");
+      return;
+    }
+    else if(this.user.stance == "Regular")
+    {
+      let obj = {
+        Stance: "Goofy"
+      };
+      this.user.stance = "Goofy";
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Goofy",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      // });
+      // toast.present();
+      //this.spotsProvider.switchStance("Goofy");
+      return;
+    }
+  }
+
 }
