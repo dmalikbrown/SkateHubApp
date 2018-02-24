@@ -178,14 +178,14 @@ export class ProfilePage {
         Stance: "Goofy"
       };
       this.user.stance = "Goofy";
-      let toast = this.toastCtrl.create({
-        message: "You swithced stances to Goofy",
-        position: 'top',
-        cssClass:'link',
-        duration: 3000
-        
-      });
-      toast.present();
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Goofy",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      //
+      // });
+      // toast.present();
       // this.spotsProvider.switchStance(obj).subscribe((data) =>{
       //   if(data.sucess){
       //     let toast = this.toastCtrl.create({
@@ -205,13 +205,13 @@ export class ProfilePage {
         Stance: "Regular"
       };
       this.user.stance = "Regular";
-      let toast = this.toastCtrl.create({
-        message: "You swithced stances to Regular",
-        position: 'top',
-        cssClass:'link',
-        duration: 3000
-      });
-      toast.present();
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Regular",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      // });
+      // toast.present();
       //this.spotsProvider.switchStance("Regular");
       return;
     }
@@ -221,13 +221,13 @@ export class ProfilePage {
         Stance: "Goofy"
       };
       this.user.stance = "Goofy";
-      let toast = this.toastCtrl.create({
-        message: "You swithced stances to Goofy",
-        position: 'top',
-        cssClass:'link',
-        duration: 3000
-      });
-      toast.present();
+      // let toast = this.toastCtrl.create({
+      //   message: "You swithced stances to Goofy",
+      //   position: 'top',
+      //   cssClass:'link',
+      //   duration: 3000
+      // });
+      // toast.present();
       //this.spotsProvider.switchStance("Goofy");
       return;
     }
