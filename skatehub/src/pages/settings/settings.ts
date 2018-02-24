@@ -33,6 +33,7 @@ export class SettingsPage {
               //get the id from the profile page
     this.id = this.navParams.get('id');
     this.getUser();
+
   }
 
   ionViewDidLoad() {

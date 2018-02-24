@@ -21,8 +21,12 @@ import { MySpotsPage } from '../pages/my-spots/my-spots';
 import { SavedSpotsPage } from '../pages/saved-spots/saved-spots';
 import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
+import { RecoverPage } from '../pages/recover/recover';
+
+
 import { EditPasswordPage } from '../pages/edit-password/edit-password';
 import { FilterPage } from '../pages/filter/filter';
+
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
@@ -60,6 +64,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     SettingsPage,
+    RecoverPage,
     EditPasswordPage,
     InboxPage,
     FilterPage
@@ -88,6 +93,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     SettingsPage,
+    RecoverPage,
     EditPasswordPage,
     InboxPage,
     FilterPage

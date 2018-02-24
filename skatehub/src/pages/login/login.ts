@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { RegisterPage } from '../../pages/register/register';
+import { RecoverPage } from '../../pages/recover/recover';
 
 import { AuthProvider } from './../../providers/auth/auth';
 
@@ -22,6 +23,7 @@ export class LoginPage {
 
   registerPage = RegisterPage;
   tabsPage = TabsPage;
+  recoverPage = RecoverPage;
   username: any ="";
   password: any ="";
 
