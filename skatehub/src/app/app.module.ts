@@ -93,15 +93,10 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     SettingsPage,
-<<<<<<< HEAD
-    RecoverPage
-
-=======
     RecoverPage,
     EditPasswordPage,
     InboxPage,
     FilterPage
->>>>>>> 46f9ed07ae89955fff641c0b7864374df474c27a
   ],
   providers: [
     StatusBar,
