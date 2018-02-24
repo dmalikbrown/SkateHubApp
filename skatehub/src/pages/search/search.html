@@ -19,11 +19,11 @@
   <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">	  
     <ion-list-header class="searchListHeader">People</ion-list-header>
 	<!-- TODO Implement button and push for userResultArr-->
-    <ion-item class="listArr" *ngFor= "let user of userResultArr" detail-push>
+    <ion-item button class="listArr" *ngFor= "let user of userResultArr" detail-push (click)="userButtonClick(user)">
       <ion-avatar item-start>
         <img [src]="user.avatar">
       </ion-avatar>
-      <h2>{{ user.username }}</h2>
+	  <h2>{{ user.username }}{{ user.id }}</h2>
     </ion-item>
   </ion-list>
   <!-- User list if searchTerm matches - END -->

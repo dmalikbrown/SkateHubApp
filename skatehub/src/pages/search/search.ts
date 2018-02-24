@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
-import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
-
-
+import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
+import { DetailedUserPage } from './../../pages/detailed-user/detailed-user';
 
 
 
@@ -150,5 +149,22 @@ export class SearchPage {
      console.log('Error: Could not leave SearchPage');
    }
  }
+
+ /*
+ Pushes the user to the DetailedUserPage, when the user is clicked.  
+ @parameters    not sure yet
+ @return        DetailedUserPage, {}
+ */
+ userButtonClick(user){
+    
+   if(user){
+     this.navCtrl.push(DetailedUserPage, {username: user.username, id: user._id});
+ 	 console.log(user.username, user._id, 'Leaving SearchPage, going to DetailedUserPage'); 
+   }
+   else {
+   console.log('Error: SearchPage, attempting push to DetailedUserPage');
+   }
+ }
+
 
 }
