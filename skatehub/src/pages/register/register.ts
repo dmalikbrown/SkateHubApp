@@ -68,6 +68,15 @@ export class RegisterPage {
       alert.present();
       return false;
     }
+    else if(this.username.length > 25 || this.username.length < 5){
+      let alert = this.alertCtrl.create({
+        title: 'Invalid username length',
+        subTitle: "Please contain your username between 5 and 25 characters",
+        buttons: ['Dismiss']
+      });
+      alert.present();
+      return false;
+    }
     return true;
   }
   /*

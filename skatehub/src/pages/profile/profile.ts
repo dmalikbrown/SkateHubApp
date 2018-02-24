@@ -56,6 +56,10 @@ export class ProfilePage {
 
     this.getUser(this.userId);
   }
+
+  ionViewWillLeave(){
+
+  }
 /*
   profilePage(){
     console.log("Profile");
@@ -102,6 +106,7 @@ export class ProfilePage {
           buttons: ["Dismiss"]
         });
         alert.present();
+        return false;
       }
     });
   }
@@ -123,9 +128,15 @@ export class ProfilePage {
       position: pos,
       cssClass: cssClass,
       showCloseButton: showCloseButton,
-      closeButtonText: closeButtonText
+      closeButtonText: closeButtonText,
+      dismissOnPageChange: true
     });
-    toast.present();
+    //Fixes the bug issue #62 .. gotta call dismiss function at some point
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
   }
   mySpotsPage(){
     console.log("My Spots");
@@ -145,7 +156,7 @@ export class ProfilePage {
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage);
+    this.navCtrl.push(SettingsPage, {id: this.userId});
   }
   logout(){
     this.authProvider.logout();

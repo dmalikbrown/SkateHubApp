@@ -1,18 +1,19 @@
 <!-- Start header -->
 <ion-header no-border>
   <ion-navbar color="primary">
-    <ion-buttons end right>
-      <button id = "filter" color="white" ion-button icon-right>
-        Filter
-        <ion-icon name="ios-arrow-down"></ion-icon>
+    <ion-buttons end right (tap)="presentPopover($event)">
+      <button id = "filter" color="white" ion-button icon-only>
+        <ion-icon name="options"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-title (tap)="scrollToTop()">SkateHub</ion-title>
+    <ion-title id = "SkateHub"(tap)="scrollToTop()">
+    SkateHub
+    </ion-title>
 
-    <ion-buttons start left>
+    <ion-buttons start left (tap) = "openInbox()">
       <button color="white" ion-button icon-only>
-        <ion-icon name="ios-chatbubbles"></ion-icon>
+        <ion-icon id = "bubbles" name="ios-chatbubbles"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -23,11 +24,15 @@
 <ion-content>
   <!-- Start State filter -->
   <ion-row justify-content-center>
-    <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
-      <ion-option value="all">All</ion-option>
-      <ion-option value="NC">North Carolina</ion-option>
-      <ion-option value="SC">South Carolina</ion-option>
-    </ion-select>
+    <ion-col offset-6 col-12>
+      <ion-item no-lines>
+        <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
+          <ion-option value="all">All</ion-option>
+          <ion-option value="NC">North Carolina</ion-option>
+          <ion-option value="SC">South Carolina</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
   </ion-row>
   <!-- End state filter -->
 

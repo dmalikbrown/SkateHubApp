@@ -1,6 +1,21 @@
 page-home {
   #filter {
     font-size: 1.2em;
+    text-transform: none;
+  }
+  #SkateHub {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 5 90px 1px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  #bubbles {
+
+    //text-align: center;
   }
   .border-green {
     border-color: map-get($colors, primary);
@@ -12,10 +27,10 @@ page-home {
     border-bottom: .5px solid map-get($colors, primary);
   }
   .state-select .select-placeholder {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .state-select .select-text {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   .state-select .select-icon {
     width: 20px !important;

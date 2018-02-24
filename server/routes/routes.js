@@ -69,13 +69,13 @@ router.post('/register', (req, res, next) => {
   });
   User.getUserByUsername(userObj.username, (err, user) =>{
     if(err){
-      return res.json({sucess: false, msg: "Error with registration, please try again."});
+      return res.json({success: false, msg: "Error with registration, please try again."});
     }
     if(!user){
       //TODO query for email next
       User.getUserByEmail(userObj.email, (err, anotherUser) => {
         if(err){
-          return res.json({sucess: false, msg: "Error with registration, please try again."});
+          return res.json({success: false, msg: "Error with registration, please try again."});
         }
         if(!anotherUser){
           User.addUser(userObj, (err, retUser) =>{
@@ -100,12 +100,12 @@ router.post('/register', (req, res, next) => {
           });
         }
         else{
-          return res.json({sucess: false, msg: "That email exists already, please try another one"});
+          return res.json({success: false, msg: "That email exists already, please try another one"});
         }
       });
     }
     else{
-      return res.json({sucess: false, msg: "That username exists already, please try another one"});
+      return res.json({success: false, msg: "That username exists already, please try another one"});
     }
 
   });
@@ -194,6 +194,125 @@ router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req
   });
 
 });
+
+/*
+The 'comp_pass' route is going to be called when a user is typing in their old
+password. The route hashes the input and compares it to the user's password hash.
+If the hashes match, then we return success true to the app.
+*/
+
+router.post('/comp_pass', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+
+  //grab the user object
+  User.getUserById(req.body.id, (err, user) =>{
+  if(err){
+    return res.json({success: false});
+  }
+  if(!user){
+    return res.json({success: false});
+  }
+  else
+  {
+    //use the comparePassword function to hash the input password and compare
+    //the hashes. Database returns a isMatch value that's a boolean
+    User.comparePassword(req.body.password, user.password, (err, isMatch) => {
+      if(err){
+        return res.json({success: false});
+      }
+      if(isMatch)
+      {
+        //passwords match, let the app know it was successful
+        return res.json({success: true});
+      }
+      else
+        {
+          return res.json({success: false});
+        }
+      });
+  }
+  });
+});
+
+/*
+The 'update' route is going to be called when a user is editing any of their
+information. For now the route is set up to handle "fullName", "username",
+"email", and "password" edits. Attached to the req.body is a type attribute
+that dictates what the user is trying to edit.
+*/
+router.post('/update', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+
+  console.log(req.body);
+  if(req.body.type == "fullName"){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing full name"});
+      }
+      else {
+        return res.json({success: true, msg: "Edited full name!"});
+      }
+    });
+  }
+  if(req.body.type == "username"){
+    //Gotta check if the username exists already
+    User.getUserByUsername(req.body.username, (err, user) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing username"});
+      }
+      if(user){
+        return res.json({success: false, msg: "That username already exists!"});
+      }
+      else {
+        User.update(req.body, (err, x) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "Error editing username"});
+          }
+          else {
+            return res.json({success: true, msg: "Edited username!"});
+          }
+        });
+      }
+    });
+  }
+  if(req.body.type == "email"){
+    //Gotta check if the email already exists
+    User.getUserByEmail(req.body.email, (err, user) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing email"});
+      }
+      if(user){
+        return res.json({success: false, msg: "That email already exists!"});
+      }
+      else {
+        User.update(req.body, (err, x) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "Error editing email"});
+          }
+          else {
+            return res.json({success: true, msg: "Edited email!"});
+          }
+        });
+      }
+    });
+  }
+  if(req.body.type == 'password'){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing password!"});
+      }
+      else {
+        return res.json({success: true, msg: "Edited password!"});
+      }
+    });
+  }
+});
+
 
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});

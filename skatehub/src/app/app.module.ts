@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { InboxPage } from '../pages/inbox/inbox';
 import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -23,9 +24,13 @@ import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
 import { RecoverPage } from '../pages/recover/recover';
 
 
+import { EditPasswordPage } from '../pages/edit-password/edit-password';
+import { FilterPage } from '../pages/filter/filter';
+
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
+import { SpotTypeFilterProvider } from '../providers/spot-type-filter/spot-type-filter';
 
 import { ImagePicker } from '@ionic-native/image-picker';
 import { FileTransfer } from '@ionic-native/file-transfer';
@@ -37,6 +42,8 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+
+
 
 
 @NgModule({
@@ -57,8 +64,10 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     SettingsPage,
-    RecoverPage
-
+    RecoverPage,
+    EditPasswordPage,
+    InboxPage,
+    FilterPage
   ],
   imports: [
     BrowserModule,
@@ -84,8 +93,10 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     SavedSpotsPage,
     DetailedSpotPage,
     SettingsPage,
-    RecoverPage
-
+    RecoverPage,
+    EditPasswordPage,
+    InboxPage,
+    FilterPage
   ],
   providers: [
     StatusBar,
@@ -100,7 +111,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    SpotsProvider
+    SpotsProvider,
+    SpotTypeFilterProvider
   ]
 })
 export class AppModule {}

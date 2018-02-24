@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AuthProvider } from '../../providers/auth/auth';
-import { SpotsProvider } from '../../providers/spots/spots';
+import { AuthProvider } from './../../providers/auth/auth';
+import { SpotsProvider } from './../../providers/spots/spots';
+import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
+
+
+
+
 
 /**
  * Generated class for the SearchPage page.
@@ -70,7 +75,7 @@ export class SearchPage {
         this.spots = data.spots;
       }
       else{
-        //TODO error check;
+      	console.log("SearchPage Error, couldn't retrieve spots from server");
       }
     });
   }
@@ -85,7 +90,7 @@ export class SearchPage {
         this.users = data.users;
       }
       else {
-        //TODO error check;
+      	console.log("SearchPage Error, couldn't retrieve users from server");
       }
     });
   }
@@ -130,4 +135,20 @@ export class SearchPage {
      this.spotsResultArr = [];
    }
  }
+
+ /*
+ Pushes the user to the DetailedSpotPage, when the spot is clicked.  
+ @parameters    spot
+ @return        DetailedSpotPage, {spot: spot, id:this.user.id}
+ */
+ spotButtonClick(spot){
+   if(spot){
+ 	 this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user.id});
+ 	 console.log('Leaving SearchPage, going to DetailedSpotPage'); 
+   }
+   else {
+     console.log('Error: Could not leave SearchPage');
+   }
+ }
+
 }
