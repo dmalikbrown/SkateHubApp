@@ -9,7 +9,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
-
+import { DetailedUserPage } from '../../pages/detailed-user/detailed-user';
+import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
   selector: 'page-home',
@@ -268,5 +269,21 @@ export class HomePage {
     this.content.scrollToTop();
   }
 
+  /*
+  Pushes the user to the respective profile of the avatar clicked.
+  @parameters 	 spot
+  @return        ProfilePage or DetailedUserPage
+  */
+  avatarClick(spot){
+    if(this.authProvider.user.id == spot.userId){
+      this.navCtrl.push(ProfilePage);
+ 	  console.log('Leaving HomePage, going to ProfilePage');
+    } else if(spot.userId) {
+       console.log('Leaving HomePage, going to DetailedUserPage');
+       this.navCtrl.push(DetailedUserPage, {username: spot.username, id: spot.userId});
+    } else {
+   	   console.log('Error: HomePage, attempting push to DetailedUserPage');
+    }
+  }
 
 }
