@@ -52,7 +52,7 @@
         <ion-col>
           <ion-item no-lines>
             <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
-             <ion-avatar class ="border-green" item-start>
+              <ion-avatar button class ="border-green" item-start detail-push (click)="avatarClick(spot)">
               <img [src]="spot.avatar" alt = "">
               <!-- style="border-radius: 50%; width: 50px; height: 50px;" -->
              </ion-avatar>
