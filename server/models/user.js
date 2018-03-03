@@ -109,6 +109,12 @@ module.exports.update = function(edits, callback){
       callback
     );
   }
+  else if(edits.type == "avatar"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {avatar: edits.avatar} },
+      callback
+    );
+  }
   else if(edits.type == "password"){
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(edits.newPassword, salt, (err, hash) => {

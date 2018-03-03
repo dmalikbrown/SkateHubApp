@@ -34,6 +34,13 @@ export class AuthProvider {
     return this.http.get(this.devEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
+  removeImageCloud(obj){
+    let headers = new Headers();
+    headers.append('Authorization', this.token);
+    headers.append('Content-Type','application/json');
+    return this.http.post(this.devEp+"/skatehub/image/remove",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
   update(edits){
       let headers = new Headers();
       headers.append('Authorization', this.token);
