@@ -101,7 +101,7 @@ export class HomePage {
   @return        nothing
   */
   openInbox(){
-      this.navCtrl.push(InboxPage);
+      this.navCtrl.push(InboxPage, {id: this.user.id});
   }
 
   /*

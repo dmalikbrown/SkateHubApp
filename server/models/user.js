@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const Message = require('./message');
+const Spot = require('./spot');
 // User Schema
 const UserSchema = mongoose.Schema(
   {
@@ -24,6 +26,11 @@ const UserSchema = mongoose.Schema(
     }
     ],
     friends: [
+    {
+              id: {type: String}
+    }
+    ],
+    messages: [
     {
               id: {type: String}
     }
@@ -63,7 +70,13 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
   });
 }
 module.exports.addSpot = function(id, spotId, callback){
-  User.update({_id: id},{$push: {spots: spotId}}, callback);
+  User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
+}
+
+module.exports.sendMessage = function(id, messageId, callback){
+  console.log(messageId);
+  console.log(id);
+  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
 }
 
 /*
@@ -120,5 +133,14 @@ module.exports.update = function(edits, callback){
 	  callback
     );
   }
+}
 
+module.exports.removeAccount = function(userObj, callback){
+  User.findOneAndRemove({'_id': userObj.id}, (x)=>{
+      Message.deleteMany({$or: [{sender: userObj.id}, {receiver: userObj.id}]}, (y)=> {
+        Spot.deleteMany({userId: userObj.id}, callback);
+      });
+    });
+// Character.deleteMany({ name: /Stark/, age: { $gte: 18 } }, function (err) {});
+//     {$or:[{region: "NA"},{sector:"Some Sector"}]}
 }

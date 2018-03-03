@@ -1,23 +1,40 @@
 const mongoose = require('mongoose');
+const User = require('./user');
 // User Schema
 const MessageSchema = mongoose.Schema(
   {
+    sender: { type: String },
+    receiver: { type: String },
     messages: [
       {
-        sender: String,
-        receiver: String,
-        message: String
+        sender: {type: String},
+        receiver: {type: String},
+        message: {type: String}
+        //TODO add date sent
       }
     ]
   } , { timestamps: { createdAt: 'created_at' } });
 
-const Spot = module.exports = mongoose.model('Spot', SpotSchema);
+const Message = module.exports = mongoose.model('Message', MessageSchema);
 
 module.exports.getMessageById = function(id, callback){
-  Spot.findById(id, callback);
+  Message.findById(id, callback);
 }
 
 module.exports.addMessage = function(newMessage, callback){
-  console.log(newSpot);
+  console.log(newMessage);
   newMessage.save(callback);
 }
+
+module.exports.pushMessage = function(id, message, callback){
+  Message.findByIdAndUpdate(id, {$push: {messages: message}}, callback);
+}
+
+module.exports.deleteMessage = function(messageObj, callback){
+  Message.findOneAndRemove({'_id': messageObj._id}, (x)=>{
+    User.updateMany({}, {
+        $pull: {'messages': {id: messageObj._id}}
+      }, callback);
+    });
+}
+

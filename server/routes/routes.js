@@ -6,6 +6,7 @@ const cloudinary = require('cloudinary');
 const multiparty = require('multiparty');
 const User = require('../models/user');
 const Spot = require('../models/spot');
+const Message = require('../models/message');
 
 
 cloudinary.config({
@@ -110,6 +111,17 @@ router.post('/register', (req, res, next) => {
 
   });
 
+});
+router.post('/delete', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  User.removeAccount(req.body, (err, val) => {
+    if(err){
+      return res.json({success: false, msg: 'Failed to delete account. Try again.'});
+    }
+    else {
+      return res.json({success: true, msg: 'Account removed!'});
+    }
+  });
 });
 
 router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
@@ -399,7 +411,81 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
 
 });
 
+router.post('/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  if(req.body.threadId !=''){
+    console.log(req.body);
+    Message.pushMessage(req.body.threadId, req.body.messages[0], (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error sending message"});
+      }
+      else {
+        return res.json({success: true, msg: "Message sent!"});
+      }
+    });
+  }
+  else {
+      let newMessage = new Message(req.body);
+      let messageIdObj = {
+        id: newMessage._id.toString()
+      };
+      User.sendMessage(req.body.sender, messageIdObj, (err, someVar) => {
+        console.log("Calling back");
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg: "Error sending message"})
+        }
+        else {
+          console.log("Here");
+          User.sendMessage(req.body.receiver, messageIdObj, (err, aVar) => {
+            if(err){
+              return res.json({success: false, msg: "Error sending message"})
+            }
+            else {
+              Message.addMessage(newMessage, (err, newMsgObj) => {
+                if(err){
+                  return res.json({success: false, msg: "Error sending message"})
+                }
+                else {
+                  return res.json({success: true, msg: "Message sent!", newThread: newMsgObj});
+                }
+              });
+            }
+          });
+        }
+      });
+  }
 
+
+  //TODO account for already created threads
+
+});
+
+router.post('/delete/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  console.log(req.body);
+  Message.deleteMessage(req.body, (err, x) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg: 'Failed to delete messages. Please try again.'});
+    }
+    else {
+      return res.json({success: true, msg: 'Messages have been removed!'});
+    }
+  });
+});
+
+router.get('/message/:threadId', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  let id = req.params.threadId;
+  console.log(req.params.threadId);
+  Message.getMessageById(id, (err, thread) => {
+    if(err) {
+      return res.json({success: false, msg: "Error getting thread"});
+    }
+    else {
+      return res.json({success: true, thread: thread});
+    }
+  })
+});
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
 });
@@ -459,7 +545,8 @@ router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, nex
           savedSpots: user.savedSpots,
           invites: user.invites,
           friends: user.friends,
-          avatar: user.avatar
+          avatar: user.avatar,
+          messages: user.messages
         };
         return res.json({success: true, user: userObj});
       }
