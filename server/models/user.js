@@ -64,7 +64,8 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
 }
 module.exports.addSpot = function(id, spotId, callback){
   User.update({_id: id},{$push: {spots: spotId}}, callback);
-}
+} 
+
 /*
 Update function takes in a edits object that looks like:
 
@@ -73,8 +74,8 @@ Update function takes in a edits object that looks like:
           type: type,
           attributeToBeEdited: newValue
         }
-The different edit types for now are "fullName", "username", "email",
-and "password". This way we only need 1 function.
+The different edit types for now are "fullName", "username", "email", 
+"password", and "savedSpots" . This way we only need 1 function.
 */
 module.exports.update = function(edits, callback){
   if(edits.type == "fullName"){
@@ -105,6 +106,13 @@ module.exports.update = function(edits, callback){
         );
       });
     });
+  }   
+  // TODO set up a way to retrieve savedSpots
+  else if(edits.type == "savedSpots"){ 
+    User.findByIdAndUpdate(edits.id, 
+      { $push: {savedSpots: edits.savedSpots} },
+	  callback
+    );
   }
-
+  
 }

@@ -311,6 +311,18 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
+  if(req.body.type == 'savedSpots'){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "routes: Error saving spot!"});
+      }
+      else {
+        return res.json({success: true, msg: "routes: Saved spot!"});
+      }
+    });
+  } 
+
 });
 
 
