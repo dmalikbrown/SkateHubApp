@@ -25,3 +25,6 @@ module.exports.addSpot = function(newSpot, callback){
   console.log(newSpot);
   newSpot.save(callback);
 }
+module.exports.editSpotAvatar = function(spot, avatarUrl, callback){
+ Spot.findByIdAndUpdate(spot.id, { $set: {'avatar': avatarUrl}, callback});
+}

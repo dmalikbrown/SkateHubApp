@@ -64,7 +64,7 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
 }
 module.exports.addSpot = function(id, spotId, callback){
   User.update({_id: id},{$push: {spots: spotId}}, callback);
-} 
+}
 
 /*
 Update function takes in a edits object that looks like:
@@ -74,7 +74,7 @@ Update function takes in a edits object that looks like:
           type: type,
           attributeToBeEdited: newValue
         }
-The different edit types for now are "fullName", "username", "email", 
+The different edit types for now are "fullName", "username", "email",
 "password", and "savedSpots" . This way we only need 1 function.
 */
 module.exports.update = function(edits, callback){
@@ -96,6 +96,12 @@ module.exports.update = function(edits, callback){
       callback
     );
   }
+  else if(edits.type == "avatar"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {avatar: edits.avatar} },
+      callback
+    );
+  }
   else if(edits.type == "password"){
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(edits.newPassword, salt, (err, hash) => {
@@ -106,13 +112,13 @@ module.exports.update = function(edits, callback){
         );
       });
     });
-  }   
+  }
   // TODO set up a way to retrieve savedSpots
-  else if(edits.type == "savedSpots"){ 
-    User.findByIdAndUpdate(edits.id, 
+  else if(edits.type == "savedSpots"){
+    User.findByIdAndUpdate(edits.id,
       { $push: {savedSpots: edits.savedSpots} },
 	  callback
     );
   }
-  
+
 }

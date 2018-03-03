@@ -123,6 +123,52 @@ router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req
       });
     });
 });
+// router.post('/avatar/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+//   (new multiparty.Form()).parse(req, function(err, fields, files) {
+//       console.log(fields);
+//       User.getUserById(fields.id[0].toLowerCase(), (err, user) =>{
+//         if(err){
+//           console.log(err);
+//           return res.json({success: false, msg: "Failed to upload avatar"});
+//         }
+//         if(!user){
+//             return res.json({success: false, msg: "Failed to upload avatar"});
+//         }
+//         else{
+//
+//           cloudinary.uploader.upload(files.file[0].path, function (resp) {
+//             //console.log(fields.user);
+//             let avatarUrl = resp.url;
+            // let edits = {
+            //   id: user._id,
+            //   type: "avatar",
+            //   avatar: avatarUrl
+            // };
+//             User.update(edits, (err, x) =>{
+//               if(err){
+//                 console.log(err);
+//                 return res.json({success: false, msg: "Failed to upload avatar"});
+//               }
+//               else{
+//                 let len = user.spots.length;
+//                 for(let i = 0; i<len; i++){
+//                   Spot.editSpotAvatar(user.spots[i], avatarUrl, (err, y) => {
+//                     if(err){
+//                       console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+//                       return res.json({success: false, msg: "Error editing avatar."});
+//                     }
+//                   });
+//                 }
+//                 return res.json({success: true});
+//               }
+//             });
+//           });
+//         }
+//       });
+//
+//     });
+//
+// });
 
 router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
@@ -254,6 +300,34 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
+  if(req.body.type == "avatar"){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing avatar"});
+      }
+      else {
+        User.getUserById(req.body.id, (err, user) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "Error editing avatar"});
+          }
+          else {
+            let len = user.spots.length;
+            for(let i = 0; i<len; i++){
+              Spot.editSpotAvatar(user.spots[i], avatarUrl, (err, y) => {
+                if(err){
+                  console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+                  return res.json({success: false, msg: "Error editing avatar."});
+                }
+              });
+            }
+            return res.json({success: true, msg: "Edited avatar!"});
+          }
+        });
+      }
+    });
+  }
   if(req.body.type == "username"){
     //Gotta check if the username exists already
     User.getUserByUsername(req.body.username, (err, user) => {
@@ -321,7 +395,7 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
         return res.json({success: true, msg: "routes: Saved spot!"});
       }
     });
-  } 
+  }
 
 });
 
