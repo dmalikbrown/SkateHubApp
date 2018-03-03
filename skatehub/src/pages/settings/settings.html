@@ -28,83 +28,113 @@
       <!-- <ion-icon name="remove-circle" color="danger" style="font-size: 30px;"></ion-icon> -->
   </ion-row>
   <!-- =====Input fields======== -->
-  <div text-center *ngIf="user">
-      <!-- Full name field -->
-      <ion-item>
-        <ion-label floating color ="primary">Full Name</ion-label>
-        <!-- [disabled] attribute will be set dynamically according
-        to the fNReadOnly boolean var in the .ts file.
-        Meaning, if the fNReadOnly = true, then the input field won't allow
-        typing. If the fNReadOnly = false, then the input field is editable
-      -->
-        <ion-input type="text" [(ngModel)]="fullName"
-        name="fullName" [disabled] ="fNReadOnly" placeholder="fullName"></ion-input>
-
-        <!-- This is the pencil icon.. It will only be displayed if the
-        temporary var editName is false meaning, the user isn't editing their name.
-        The var editName is created in this html file and not in the ts file.
-        This is for quick logic. If the pencil is 'tap' the toggleReadOnly func
-        is called with the first parameter being 'fullName' and the 2nd parameter
-        being true, meaning, we are editing the fullName input so toggle fNReadOnly
-        variable. The boolean parameter is to toggle the keyboard on the user's
-        phone.
-        -->
-          <ion-icon item-end ion-button clear icon-only *ngIf="!editName"
-            (tap) ="toggleReadOnly('fullName', true); editName = true;"
-            name="create" mode="android" ios="md-create" color="primary"
-          class="edit-icon"></ion-icon>
-
-
-        <!-- This is a save badge that is displayed after the user taps the pencil
-        icon. If the user taps the save badge, the toggleReadOnly func is called
-        with the first parameter indicating what is being saved so the input
-        field will be changed back to disabled and a boolean value set to false
-        indicating the keyboard should close. The saveChanges func is called
-        with a parameter indicating what is being saved. The editName var is set
-        to false to re-display the pencil icon again.
-       -->
-
-         <ion-badge *ngIf="editName"
-         (tap)="toggleReadOnly('fullName', false); saveChanges('fullName'); editName = false;"
-         item-end clear tappable>Save</ion-badge>
-
-      </ion-item>
-
-      <!-- Full name field end -->
-
-      <!-- For each of the following fields, the same logic above is applied -->
-     <ion-item>
-       <ion-label floating color ="primary">Username</ion-label>
-       <ion-input type="text"
-       [(ngModel)]="username" name="username"
-       [disabled] ="uNReadOnly" placeholder="username"></ion-input>
-       <ion-icon *ngIf="!editUsername"
-       item-end
-       (tap) ="toggleReadOnly('username', true); editUsername = true;"
-       name="create" mode="android" ios="md-create" color="primary"
-       class="edit-icon"></ion-icon>
-       <ion-badge *ngIf="editUsername" (tap)="toggleReadOnly('username', false); saveChanges('username'); editUsername = false;" item-end>Save</ion-badge>
-     </ion-item>
-     <ion-item>
-       <ion-label floating color ="primary">Email Address</ion-label>
-       <ion-input type="email"
-       [(ngModel)]="email" name="email"
-       [disabled] ="emailReadOnly" placeholder="email"></ion-input>
-       <ion-icon *ngIf="!editEmail"
-       item-end
-       (tap) ="toggleReadOnly('email', true); editEmail = true;"
-       name="create" mode="android" ios="md-create" color="primary"
-       class="edit-icon"></ion-icon>
-       <ion-badge *ngIf="editEmail" (tap)="toggleReadOnly('email', false); saveChanges('email'); editEmail = false;" item-end>Save</ion-badge>
-     </ion-item>
-
-     <!-- When the user wants to edit their Password
-      lets open another page for them to do that.
+  <!-- <div text-center *ngIf="user"> -->
+  <ion-list *ngIf="user" padding-top>
+    <ion-list-header>
+      Profile Information
+    </ion-list-header>
+    <ion-item>
+      <ion-label floating color ="primary">Full Name</ion-label>
+      <!-- [disabled] attribute will be set dynamically according
+      to the fNReadOnly boolean var in the .ts file.
+      Meaning, if the fNReadOnly = true, then the input field won't allow
+      typing. If the fNReadOnly = false, then the input field is editable
     -->
-     <ion-item detail-push (tap)="pushEditPasswordPage()">
-      Edit Password
+      <ion-input type="text" [(ngModel)]="fullName"
+      name="fullName" [disabled] ="fNReadOnly" placeholder="fullName"></ion-input>
+
+      <!-- This is the pencil icon.. It will only be displayed if the
+      temporary var editName is false meaning, the user isn't editing their name.
+      The var editName is created in this html file and not in the ts file.
+      This is for quick logic. If the pencil is 'tap' the toggleReadOnly func
+      is called with the first parameter being 'fullName' and the 2nd parameter
+      being true, meaning, we are editing the fullName input so toggle fNReadOnly
+      variable. The boolean parameter is to toggle the keyboard on the user's
+      phone.
+      -->
+        <ion-icon item-end *ngIf="!editName"
+          (tap) ="toggleReadOnly('fullName', true); editName = true;"
+          name="create" mode="android" ios="md-create" color="primary"
+        class="edit-icon"></ion-icon>
+
+
+      <!-- This is a save badge that is displayed after the user taps the pencil
+      icon. If the user taps the save badge, the toggleReadOnly func is called
+      with the first parameter indicating what is being saved so the input
+      field will be changed back to disabled and a boolean value set to false
+      indicating the keyboard should close. The saveChanges func is called
+      with a parameter indicating what is being saved. The editName var is set
+      to false to re-display the pencil icon again.
+     -->
+
+       <ion-badge *ngIf="editName"
+       (tap)="toggleReadOnly('fullName', false); saveChanges('fullName'); editName = false;"
+       item-end clear tappable>Save</ion-badge>
+
     </ion-item>
 
-  </div>
+    <!-- Full name field end -->
+
+    <!-- For each of the following fields, the same logic above is applied -->
+   <ion-item>
+     <ion-label floating color ="primary">Username</ion-label>
+     <ion-input type="text"
+     [(ngModel)]="username" name="username"
+     [disabled] ="uNReadOnly" placeholder="username"></ion-input>
+     <ion-icon *ngIf="!editUsername"
+     item-end
+     (tap) ="toggleReadOnly('username', true); editUsername = true;"
+     name="create" mode="android" ios="md-create" color="primary"
+     class="edit-icon"></ion-icon>
+     <ion-badge *ngIf="editUsername" (tap)="toggleReadOnly('username', false); saveChanges('username'); editUsername = false;" item-end>Save</ion-badge>
+   </ion-item>
+   <ion-item>
+     <ion-label floating color ="primary">Email Address</ion-label>
+     <ion-input type="email"
+     [(ngModel)]="email" name="email"
+     [disabled] ="emailReadOnly" placeholder="email"></ion-input>
+     <ion-icon *ngIf="!editEmail"
+     item-end
+     (tap) ="toggleReadOnly('email', true); editEmail = true;"
+     name="create" mode="android" ios="md-create" color="primary"
+     class="edit-icon"></ion-icon>
+     <ion-badge *ngIf="editEmail" (tap)="toggleReadOnly('email', false); saveChanges('email'); editEmail = false;" item-end>Save</ion-badge>
+   </ion-item>
+
+
+   <ion-list-header padding-top>
+     Notification Settings
+   </ion-list-header>
+    <ion-item>
+      <ion-label>Allow Notifications</ion-label>
+      <ion-toggle checked="true"></ion-toggle>
+    </ion-item>
+
+    <ion-list-header padding-top>
+      Privacy Settings
+    </ion-list-header>
+    <!-- When the user wants to edit their Password
+     lets open another page for them to do that.
+   -->
+    <ion-item detail-push (tap)="pushEditPasswordPage()">
+      Edit Password
+    </ion-item>
+    <ion-item detail-push (tap)="pushPrivacyPolicyPage()">
+      Privacy Policy
+    </ion-item>
+    <ion-item detail-push (tap)="pushAccountSettingsPage()">
+      User Data
+    </ion-item>
+
+  </ion-list>
+      <!-- Full name field -->
+
+
+  <!-- </div> -->
+
+  <button ion-button icon-left block strong style="background-color: transparent; color: #f53d3d;" (tap) = "logout()" color = "danger">
+    <ion-icon name = "exit"></ion-icon>
+    Logout
+  </button>
 
 </ion-content>

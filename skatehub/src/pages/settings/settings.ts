@@ -1,8 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController,
+  App} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { EditPasswordPage } from '../../pages/edit-password/edit-password';
-
+import { PrivacyPolicyPage } from '../../pages/privacy-policy/privacy-policy';
+import { AccountSettingsPage } from '../../pages/account-settings/account-settings';
+import { LoginPage } from '../../pages/login/login';
 
 /**
  * Generated class for the SettingsPage page.
@@ -29,7 +32,8 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
             public authProvider: AuthProvider,
-            public toastCtrl: ToastController, public alertCtrl: AlertController) {
+            public toastCtrl: ToastController, public alertCtrl: AlertController,
+            public app: App) {
               //get the id from the profile page
     this.id = this.navParams.get('id');
     this.getUser();
@@ -61,6 +65,12 @@ export class SettingsPage {
   */
   pushEditPasswordPage(){
     this.navCtrl.push(EditPasswordPage, {id: this.id});
+  }
+  pushPrivacyPolicyPage(){
+    this.navCtrl.push(PrivacyPolicyPage);
+  }
+  pushAccountSettingsPage(){
+    this.navCtrl.push(AccountSettingsPage, {id: this.id});
   }
 
   /*
@@ -175,6 +185,11 @@ export class SettingsPage {
         toast.dismiss();
       }, 2000);
     });
+  }
+  logout(){
+    this.authProvider.logout();
+    //this.events.publish('logout');
+    this.app.getRootNavs()[0].push(LoginPage);
   }
 
 }

@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { LoginPage } from '../pages/login/login';
+import { MessagePage } from '../pages/message/message';
 import { InboxPage } from '../pages/inbox/inbox';
 import { RegisterPage } from '../pages/register/register';
 import { HomePage } from '../pages/home/home';
@@ -23,10 +24,14 @@ import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
 import { DetailedUserPage } from '../pages/detailed-user/detailed-user';
 import { RecoverPage } from '../pages/recover/recover';
-
+import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
+import { AccountSettingsPage } from '../pages/account-settings/account-settings';
 
 import { EditPasswordPage } from '../pages/edit-password/edit-password';
 import { FilterPage } from '../pages/filter/filter';
+import { ThreadPage } from '../pages/thread/thread';
+import { SeshesPage } from '../pages/seshes/seshes';
+
 
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -44,7 +49,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
-
+import { ElasticDirective } from '../directives/elastic/elastic';
+import { MessageProvider } from '../providers/message/message';
 
 
 @NgModule({
@@ -69,7 +75,13 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     RecoverPage,
     EditPasswordPage,
     InboxPage,
-    FilterPage
+    MessagePage,
+    FilterPage,
+    PrivacyPolicyPage,
+    AccountSettingsPage,
+    ThreadPage,
+    SeshesPage,
+    ElasticDirective
   ],
   imports: [
     BrowserModule,
@@ -99,7 +111,12 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     RecoverPage,
     EditPasswordPage,
     InboxPage,
-    FilterPage
+    PrivacyPolicyPage,
+    AccountSettingsPage,
+    MessagePage,
+    FilterPage,
+    SeshesPage,
+    ThreadPage
   ],
   providers: [
     StatusBar,
@@ -115,7 +132,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     SpotsProvider,
-    SpotTypeFilterProvider
+    SpotTypeFilterProvider,
+    MessageProvider
   ]
 })
 export class AppModule {}

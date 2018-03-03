@@ -48,6 +48,13 @@ export class AuthProvider {
       return this.http.post(this.devEp+"/skatehub/update",edits,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
+  removeAccount(userObj){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.post(this.devEp+"/skatehub/delete",userObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
 
   authenticateUser(user){
     let headers = new Headers();
