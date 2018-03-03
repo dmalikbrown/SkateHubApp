@@ -68,7 +68,7 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
   });
 }
 module.exports.addSpot = function(id, spotId, callback){
-  User.findByIdAndUpdate(id,{$push: {spots: spotId}}, callback);
+  User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
 }
 
 module.exports.sendMessage = function(id, messageId, callback){
