@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from '../../providers/spots/spots';
+import { SeshesPage } from '../../pages/seshes/seshes';
 
 
 /**
@@ -193,8 +194,9 @@ export class NavigatePage {
                           'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(this.map);
   }
-
-
+  openSeshPage(){
+    this.navCtrl.push(SeshesPage);
+  }
 
 
 

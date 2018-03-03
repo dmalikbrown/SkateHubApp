@@ -28,6 +28,11 @@ const UserSchema = mongoose.Schema(
               id: {type: String}
     }
     ],
+    messages: [
+    {
+              id: {type: String}
+    }
+    ],
     avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'}
   } , { timestamps: { createdAt: 'created_at' } });
 
@@ -63,8 +68,14 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
   });
 }
 module.exports.addSpot = function(id, spotId, callback){
-  User.update({_id: id},{$push: {spots: spotId}}, callback);
-} 
+  User.findByIdAndUpdate(id,{$push: {spots: spotId}}, callback);
+}
+
+module.exports.sendMessage = function(id, messageId, callback){
+  console.log(messageId);
+  console.log(id);
+  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
+}
 
 /*
 Update function takes in a edits object that looks like:
