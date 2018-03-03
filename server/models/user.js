@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const Message = require('./message');
+const Spot = require('./spot');
 // User Schema
 const UserSchema = mongoose.Schema(
   {
@@ -85,7 +87,7 @@ Update function takes in a edits object that looks like:
           type: type,
           attributeToBeEdited: newValue
         }
-The different edit types for now are "fullName", "username", "email", 
+The different edit types for now are "fullName", "username", "email",
 "password", and "savedSpots" . This way we only need 1 function.
 */
 module.exports.update = function(edits, callback){
@@ -117,13 +119,22 @@ module.exports.update = function(edits, callback){
         );
       });
     });
-  }   
+  }
   // TODO set up a way to retrieve savedSpots
-  else if(edits.type == "savedSpots"){ 
-    User.findByIdAndUpdate(edits.id, 
+  else if(edits.type == "savedSpots"){
+    User.findByIdAndUpdate(edits.id,
       { $push: {savedSpots: edits.savedSpots} },
 	  callback
     );
   }
-  
+}
+
+module.exports.removeAccount = function(userObj, callback){
+  User.findOneAndRemove({'_id': userObj.id}, (x)=>{
+      Message.deleteMany({$or: [{sender: userObj.id}, {receiver: userObj.id}]}, (y)=> {
+        Spot.deleteMany({userId: userObj.id}, callback);
+      });
+    });
+// Character.deleteMany({ name: /Stark/, age: { $gte: 18 } }, function (err) {});
+//     {$or:[{region: "NA"},{sector:"Some Sector"}]}
 }

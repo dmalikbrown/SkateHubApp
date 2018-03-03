@@ -112,6 +112,17 @@ router.post('/register', (req, res, next) => {
   });
 
 });
+router.post('/delete', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  User.removeAccount(req.body, (err, val) => {
+    if(err){
+      return res.json({success: false, msg: 'Failed to delete account. Try again.'});
+    }
+    else {
+      return res.json({success: true, msg: 'Account removed!'});
+    }
+  });
+});
 
 router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   //multiparty helps handle files and large payloads
@@ -322,7 +333,7 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
         return res.json({success: true, msg: "routes: Saved spot!"});
       }
     });
-  } 
+  }
 
 });
 

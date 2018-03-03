@@ -24,6 +24,9 @@ import { SettingsPage } from '../pages/settings/settings';
 import { DetailedSpotPage } from '../pages/detailed-spot/detailed-spot';
 import { DetailedUserPage } from '../pages/detailed-user/detailed-user';
 import { RecoverPage } from '../pages/recover/recover';
+import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
+import { AccountSettingsPage } from '../pages/account-settings/account-settings';
+
 import { EditPasswordPage } from '../pages/edit-password/edit-password';
 import { FilterPage } from '../pages/filter/filter';
 import { ThreadPage } from '../pages/thread/thread';
@@ -74,6 +77,8 @@ import { MessageProvider } from '../providers/message/message';
     InboxPage,
     MessagePage,
     FilterPage,
+    PrivacyPolicyPage,
+    AccountSettingsPage,
     ThreadPage,
     SeshesPage,
     ElasticDirective
@@ -106,6 +111,8 @@ import { MessageProvider } from '../providers/message/message';
     RecoverPage,
     EditPasswordPage,
     InboxPage,
+    PrivacyPolicyPage,
+    AccountSettingsPage,
     MessagePage,
     FilterPage,
     SeshesPage,
