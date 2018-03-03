@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, AlertController,
-  ToastController} from 'ionic-angular';
+  ToastController, ActionSheetController, Platform} from 'ionic-angular';
+import {Headers} from '@angular/http';
+import { FileTransfer, FileUploadOptions,
+  FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { InvitesPage } from './../../pages/invites/invites';
@@ -9,7 +15,7 @@ import { MySpotsPage } from './../../pages/my-spots/my-spots';
 import { SavedSpotsPage } from './../../pages/saved-spots/saved-spots';
 import { SettingsPage } from './../../pages/settings/settings';
 import { LoginPage } from './../../pages/login/login';
-
+import * as moment from 'moment';
 
 /**
  * Generated class for the ProfilePage page.
@@ -17,6 +23,7 @@ import { LoginPage } from './../../pages/login/login';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+ declare var cordova: any;
 
 @IonicPage()
 @Component({
@@ -28,9 +35,17 @@ export class ProfilePage {
   userId: any;
   user: any;
   defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
+  imagePath: any;
+  imageNewPath: any;
+  imageChosen: any = 0;
+  devEp: any = "http://172.16.104.197:3000";
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,
-              public alertCtrl: AlertController, public toastCtrl: ToastController) {
+              public alertCtrl: AlertController, public toastCtrl: ToastController,
+              public actionSheetCtrl: ActionSheetController, public file: File,
+              public transfer: FileTransfer, public platform: Platform,
+              public camera: Camera, public filePath: FilePath) {
   }
 
   ionViewDidLoad() {
@@ -73,6 +88,7 @@ export class ProfilePage {
       if(data.success){
         this.user = data.user;
         console.log(this.user);
+        this.imagePath = this.user.avatar;
         if(this.checkAvatar() && this.checkStance()){
           let msg = "Update your profile picture and skate stance to enhance your profile!";
           let pos = "top";
@@ -116,6 +132,7 @@ export class ProfilePage {
     }
     return false;
   }
+
   checkStance(){
     if(this.user.stance == '' || !this.user.stance){
       return true;
@@ -231,6 +248,216 @@ export class ProfilePage {
       //this.spotsProvider.switchStance("Goofy");
       return;
     }
+  }
+
+
+
+  /*========= PROFILE EDIT IMAGE STUFF ============*/
+
+
+  uploadPhoto() {
+
+    let filename = this.imagePath.split('/').pop();
+
+    //options for when the img gets uploaded
+    let headers = new Headers();
+    headers.append('Authorization',this.authProvider.token);
+
+    var options = {
+      headers: headers,
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "image/jpg",
+      params: {
+     'id': this.userId,
+      } //send this added parameters to the route
+    };
+
+
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    //send the file to the routes in the router.js file
+    fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
+      options).then((entry) => {
+       this.imagePath = JSON.parse(entry.response).fileUrl.url;
+        // this.imageChosen = 0;
+        //this.navCtrl.setRoot(HomePage);
+
+      }, (err) => {
+        console.log("uploading");
+        console.log(err);
+        let alert = this.alertCtrl.create({
+          title: 'Error Uploading',
+          subTitle: "Try Again",
+          buttons: ['Dismiss']
+        });
+        alert.present();
+
+      });
+
+  }
+
+  editDbAvatar(){
+    let edits = {
+      id: this.userId,
+      type: "avatar",
+      avatar: this.imagePath
+    };
+    this.authProvider.update(edits).subscribe((data)=>{
+      if(data.success){
+        this.imageChosen = 0;
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "success";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+      else {
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "warning";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+    });
+  }
+
+  openEditAvatarAS(){
+    let actionSheet = this.actionSheetCtrl.create({
+       title: 'Edit your avatar',
+       buttons: [
+         {
+           text: 'Use Photo Library',
+           handler: () => {
+             this.actionHandler(1);
+           }
+         },
+         {
+           text: 'Use Camera',
+           handler: () => {
+             this.actionHandler(2);
+           }
+         },
+         {
+           text: 'Cancel',
+           role: 'cancel'
+         }
+       ]
+     });
+
+     actionSheet.present();
+  }
+
+  actionHandler(selection: any) {
+    var options: any;
+    //var camera = this.camera;
+    if (selection == 1) {
+      options = {
+        quality: 75,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        allowEdit: true,
+        encodingType: this.camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        saveToPhotoAlbum: false
+      };
+    } else {
+      options = {
+        quality: 75,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        sourceType: this.camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: this.camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        saveToPhotoAlbum: false
+      };
+    }
+
+    this.camera.getPicture(options).then((imgUrl) => {
+      //console.log("Img URL: "+imgUrl);
+        if (this.platform.is('android') && options.sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+          this.filePath.resolveNativePath(imgUrl)
+            .then(filePath => {
+              let sourceDirectory = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              let sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.lastIndexOf('?'));
+              let newName = moment()+sourceFileName.split('?').shift();
+              this.file.copyFile(sourceDirectory, sourceFileName,cordova.file.cacheDirectory, newName).then((result: any) => {
+                this.imagePath = filePath;
+                this.imageChosen = 1;
+                this.imageNewPath = result.nativeURL;
+                this.uploadPhoto();
+              },(err) => {
+                console.log("file copy "+ err);
+                let alert = this.alertCtrl.create({
+                  title: 'Error Uploading',
+                  subTitle: "Try Again",
+                  buttons: ['Dismiss']
+                });
+                alert.present();
+              });
+        });
+      }
+      else{
+        let sourceDirectory = imgUrl.substring(0, imgUrl.lastIndexOf('/') + 1);
+
+        // var sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.length);
+        let sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.length);
+
+        //console.log("sourceD: "+sourceDirectory);
+
+        let newName = moment()+sourceFileName.split('?').shift();
+
+        this.file.copyFile(sourceDirectory, sourceFileName, cordova.file.cacheDirectory, newName).then((result: any) => {
+
+          this.imagePath = imgUrl;
+          // console.log(this.imagePath);
+          this.imageChosen = 1;
+          this.imageNewPath = result.nativeURL;
+          this.uploadPhoto();
+
+        }, (err) => {
+          console.log("file copy "+ err);
+          let alert = this.alertCtrl.create({
+            title: 'Error Uploading',
+            subTitle: "Try Again",
+            buttons: ['Dismiss']
+          });
+          alert.present();
+        });
+      }
+    }, (err) => {
+      console.log("get picture "+ err);
+      // let alert = this.alertCtrl.create({
+      //   title: 'Error Uploading',
+      //   subTitle: "Try Again",
+      //   buttons: ['Dismiss']
+      // });
+      // alert.present();
+    });
+  }
+  clear(){
+    let obj = {
+      url: this.imagePath
+    };
+    this.authProvider.removeImageCloud(obj).subscribe((data) =>{
+      if(data.success){//if removing url was success
+        this.imagePath = this.user.avatar;
+        this.imageChosen = 0;
+      }
+      else{//if removing url threw error
+        let alert = this.alertCtrl.create({
+          title: 'Error Removing Image',
+          subTitle: "Please try again",
+          buttons: ['Dismiss']
+        });
+        alert.present();
+      }
+    });
   }
 
 }
