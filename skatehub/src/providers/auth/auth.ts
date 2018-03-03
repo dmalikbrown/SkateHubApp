@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthProvider {
 
-  devEp: any = "http://172.16.104.197:3000";
+  devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
   token: any;
   user: any;
