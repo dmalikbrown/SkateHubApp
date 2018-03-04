@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 
-import { MySpotsPage } from './../../pages/my-spots/my-spots';
+import { OtherUserSpotsPage } from '../../pages/other-user-spots/other-user-spots';
 import { FriendsPage } from './../../pages/friends/friends'
 import { SpotsProvider } from './../../providers/spots/spots';
 
@@ -107,6 +107,10 @@ export class DetailedUserPage {
       }
     }
 
+  }
+
+  spotsPage(){
+    this.navCtrl.push(OtherUserSpotsPage, {spots: this.spotsArr, user: this.user});
   }
 
   addFriend(){
