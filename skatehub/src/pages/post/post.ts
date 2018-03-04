@@ -37,7 +37,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://192.168.1.5:3000"; //end point for the server when in dev mode
+  devEp = "http://localhost:3000"; //end point for the server when in dev mode
   prodEp = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -258,7 +258,7 @@ export class PostPage {
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       //send the file to the routes in the router.js file
-      fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
+      fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
         options).then((entry) => {
           //entry is returned from the server.
           console.log(entry);
