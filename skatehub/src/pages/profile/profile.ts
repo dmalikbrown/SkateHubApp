@@ -63,7 +63,6 @@ export class ProfilePage {
   }
   ionViewDidEnter(){
     if(this.authProvider.user){
-      console.log("BITCH");
       this.userId = this.authProvider.user._id;
     }
     else{
