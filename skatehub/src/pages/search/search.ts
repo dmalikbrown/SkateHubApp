@@ -136,14 +136,14 @@ export class SearchPage {
  }
 
  /*
- Pushes the user to the DetailedSpotPage, when the spot is clicked.  
+ Pushes the user to the DetailedSpotPage, when the spot is clicked.
  @parameters    spot
  @return        DetailedSpotPage, {spot: spot, id:this.user.id}
  */
  spotButtonClick(spot){
    if(spot){
  	 this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user.id});
- 	 console.log('Leaving SearchPage, going to DetailedSpotPage'); 
+ 	 console.log('Leaving SearchPage, going to DetailedSpotPage');
    }
    else {
      console.log('Error: Could not leave SearchPage');

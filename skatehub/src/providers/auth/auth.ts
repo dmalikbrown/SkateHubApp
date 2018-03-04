@@ -34,11 +34,25 @@ export class AuthProvider {
     return this.http.get(this.devEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
+  removeImageCloud(obj){
+    let headers = new Headers();
+    headers.append('Authorization', this.token);
+    headers.append('Content-Type','application/json');
+    return this.http.post(this.devEp+"/skatehub/image/remove",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
   update(edits){
       let headers = new Headers();
       headers.append('Authorization', this.token);
       headers.append('Content-Type','application/json');
       return this.http.post(this.devEp+"/skatehub/update",edits,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
+  removeAccount(userObj){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.post(this.devEp+"/skatehub/delete",userObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
 
@@ -54,6 +68,13 @@ export class AuthProvider {
     headers.append('Content-Type','application/json');
     return this.http.post(this.devEp+"/skatehub/register",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
+  }
+  friendRequest(friend){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.post(this.devEp+"/skatehub/friend",friend,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
   }
 
   checkCurrentPassword(passwordObj){

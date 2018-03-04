@@ -6,13 +6,23 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>My Spots</ion-title>
-  </ion-navbar>
+<ion-toolbar no-border-top mode="md">
+  <ion-segment mode="md" ng-model="Categories" color="iosDarkBlue">
+    <ion-segment-button (tap)="loadPostedSpots()" value="postedSpots">
+      Posted Spots
+    </ion-segment-button>
+    <ion-segment-button (tap)="loadSavedSpots()" value="savedSpots">
+      Saved Spots
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
 
 </ion-header>
 
-
 <ion-content padding>
-
+<!-- full configured so that you can pull all the information for the spot. --> 
+<!-- Look at the homepage for inspiration.-->
+<ion-list>
+        <ion-item *ngFor="let spot of spotsArr">{{spot.username}}</ion-item>
+</ion-list>	
 </ion-content>

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const Message = require('./message');
+const Spot = require('./spot');
 // User Schema
 const UserSchema = mongoose.Schema(
   {
@@ -24,6 +26,18 @@ const UserSchema = mongoose.Schema(
     }
     ],
     friends: [
+    {
+              id: {type: String},
+              sender: {type: String},
+              request: {type: Boolean, default: false}
+    }
+    ],
+    messages: [
+    {
+              id: {type: String}
+    }
+    ],
+    messages: [
     {
               id: {type: String}
     }
@@ -63,8 +77,28 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
   });
 }
 module.exports.addSpot = function(id, spotId, callback){
-  User.update({_id: id},{$push: {spots: spotId}}, callback);
+
+  User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
 }
+  
+module.exports.sendMessage = function(id, messageId, callback){
+  console.log(messageId);
+  console.log(id);
+  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
+}
+
+module.exports.friendRequest = function(sender, receiver, callback){
+  User.findByIdAndUpdate(sender.id, {$push: {friends: receiver}}, (cb) => {
+    User.findByIdAndUpdate(receiver.id, {$push: {friends: sender}}, callback);
+  });
+}
+
+module.exports.sendMessage = function(id, messageId, callback){
+  console.log(messageId);
+  console.log(id);
+  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
+}
+
 /*
 Update function takes in a edits object that looks like:
 
@@ -74,7 +108,7 @@ Update function takes in a edits object that looks like:
           attributeToBeEdited: newValue
         }
 The different edit types for now are "fullName", "username", "email",
-and "password". This way we only need 1 function.
+"password", and "savedSpots" . This way we only need 1 function.
 */
 module.exports.update = function(edits, callback){
   if(edits.type == "fullName"){
@@ -95,6 +129,12 @@ module.exports.update = function(edits, callback){
       callback
     );
   }
+  else if(edits.type == "avatar"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {avatar: edits.avatar} },
+      callback
+    );
+  }
   else if(edits.type == "password"){
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(edits.newPassword, salt, (err, hash) => {
@@ -106,5 +146,21 @@ module.exports.update = function(edits, callback){
       });
     });
   }
+  // TODO set up a way to retrieve savedSpots
+  else if(edits.type == "savedSpots"){
+    User.findByIdAndUpdate(edits.id,
+      { $push: {savedSpots: edits.savedSpots} },
+	  callback
+    );
+  }
+}
 
+module.exports.removeAccount = function(userObj, callback){
+  User.findOneAndRemove({'_id': userObj.id}, (x)=>{
+      Message.deleteMany({$or: [{sender: userObj.id}, {receiver: userObj.id}]}, (y)=> {
+        Spot.deleteMany({userId: userObj.id}, callback);
+      });
+    });
+// Character.deleteMany({ name: /Stark/, age: { $gte: 18 } }, function (err) {});
+//     {$or:[{region: "NA"},{sector:"Some Sector"}]}
 }

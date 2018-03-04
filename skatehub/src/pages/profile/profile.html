@@ -15,10 +15,21 @@
   <!-- User avatar and info - START -->
   <ion-row justify-content-center class="top-spacing">
       <ion-avatar *ngIf="user" class= "profile-shift">
-        <img [src]="user.avatar" class = "avatar-border">
+        <img [src]="imagePath" class = "avatar-border">
       </ion-avatar>
-      <ion-icon name="create" mode="android" ios="md-create" style="font-size: 25px; position: relative; color: #ffffff;"></ion-icon>
-      <!-- <ion-icon name="remove-circle" color="danger" style="font-size: 30px;"></ion-icon> -->
+      <ion-icon name="create" mode="android"
+      ios="md-create"
+      style="font-size: 25px; position: relative; color: #ffffff;"
+      (tap) = "openEditAvatarAS()" *ngIf="imageChosen == 0">
+      </ion-icon>
+      <ion-icon name="remove-circle" color="danger" *ngIf="imageChosen == 1"
+      (tap)="clear()"
+      style="font-size: 30px; position: relative;"></ion-icon>
+  </ion-row>
+  <ion-row justify-content-center style="margin-top: 5%;" *ngIf="imageChosen==1">
+    <button (click)="editDbAvatar()" ion-button icon-only color = "white">
+      <ion-icon name = "checkmark" color="green" style="font-size: 75px;"></ion-icon>
+    </button>
   </ion-row>
     <h4 *ngIf="user" no-margin text-center ion-text color = "white" style = "position: relative;">{{user.username}}</h4>
     <p *ngIf="user && (user.stance)" text-center ion-text color = "white" (tap)= "changeStance()" no-margin style = "position: relative;"> Stance: {{user.stance}} </p>
@@ -60,9 +71,6 @@
   <!-- Logout button - END -->
 
 <ion-grid style="background-color: #FFF" class="ion-grid">
-  <!-- <ion-row style="background-color: #505"> -->
-    <!-- <ion-col col-6 style="background-color: #000"> Blah blah blah </ion-col> -->
-  <!-- </ion-row> -->
   <ion-row style="backround-color: #628" class="ion-top-row">
     <ion-col col-6 style="background-color: #ffffff" (tap)= "mySpotsPage()" class="grid-border" class="ion-left-col"> My Spots
       <p> </p>

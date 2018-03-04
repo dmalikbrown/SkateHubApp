@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 
+import { MySpotsPage } from './../../pages/my-spots/my-spots';
+import { FriendsPage } from './../../pages/friends/friends'
+import { SpotsProvider } from './../../providers/spots/spots';
+
 
 /**
  * Similar to DetailedSpotPage. Displays useful information pertaining
@@ -19,8 +23,11 @@ import { AuthProvider } from './../../providers/auth/auth';
 export class DetailedUserPage {
   user: any;
   userId: any;
+  spots: any = [];
+  id: any; 
+  spotsArr: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
 
   ionViewDidLoad() {
@@ -30,9 +37,9 @@ export class DetailedUserPage {
 
 
   /*
-  * Checks to see if the navParams are given. Doesn't check anything. 
+  * Checks to see if the navParams are given. Doesn't check anything.
   * TODO implement some checks
-  */ 
+  */
   ionViewDidEnter(){
     if(this.navParams){
       console.log("if statement, ionViewDidEnter", this.navParams);
@@ -48,18 +55,32 @@ export class DetailedUserPage {
   }
 
   /*
+
   * Gets the user from the server. 
-  * Can be used to get more info from the user.
+  * Can be used to get more info from the user, 
+  * or the spots that the user has authored.
+
   */
   getUser(id){
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
-        this.user = data.user;
-        console.log(this.user);
-	  } else {
-        console.log("Error: UserDetailedPage, failed to get UserId"); 
-      }
-    });
-  } 
+         this.user = data.user; 
+        //this.spots = this.user.spots; 
+        this.spotsProvider.getAllSpots().subscribe((data) => {
+          if (data.success) { 
+            for (const spot of data.spots) { 
+              if (spot.userId == this.navParams.data.id) {
+                this.spotsArr.push(spot);   
+                console.log("++++++++++++", spot.userId, this.navParams.data.id);
+              }
+            }
+          }
+        }); 
+      } else {
+          console.log("Error: DetailedUserPage, failed UserId");
+      } 
+     });
+
+  }
 }
