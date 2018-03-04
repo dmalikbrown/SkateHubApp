@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
@@ -20,9 +20,12 @@ export class DetailedSpotPage {
   isUser: boolean;
   start: any = "";
   destination: any = "";
-
+  // comment and rate spot
+  title: any;
+  description: any;
+  rating: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
-  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController) {
+  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController) {
   }
 
   /*
@@ -47,7 +50,7 @@ export class DetailedSpotPage {
   }
 
   /*
-  Open an action handler that contains 3 buttons: 'Save Spot', 'Report Spot', and
+  Open an action handler that contains 3 buttons: 'Save Spot', and
   'Cancel'.
   @parameters    none
   @return        nothing
@@ -59,13 +62,7 @@ export class DetailedSpotPage {
        {
          text: 'Save Spot',
          handler: () => {
-           console.log('Saved spot clicked');
-         }
-       },
-       {
-         text: 'Report Spot',
-         handler: () => {
-           console.log('Report Spot clicked');
+           console.log('Saved spot clicked'); 
          }
        },
        {
@@ -106,5 +103,35 @@ on the user's device.
             error => console.log('Error launching navigator: ' + error)
     );
   }
-
+  /*
+   * This is opens up a prompt to let the user  
+   * report the spot.
+   */
+  showPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: 'Report Spot',
+      message: "What's wrong with the spot?",
+      inputs: [
+        {
+          name: 'Report Spot',
+          placeholder: 'Report'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log('Saved clicked');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
 }

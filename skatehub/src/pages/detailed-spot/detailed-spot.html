@@ -78,5 +78,21 @@
 </ion-row>
 
 <!--TODO RISK LEVEL  -->
+<ion-row justify-content-center>
+   
+    <ion-item>
+    <ion-range min="0" max="10" [(ngModel)]="saturation" color="secondary">
+      <ion-label range-left>0</ion-label>
+      <ion-label range-right>10</ion-label>
+    </ion-range>
+    </ion-item>   
 
+    <ion-item>
+      <ion-label floating>Review</ion-label>
+      <ion-input [(ngModel)]="description" type="text"></ion-input>
+    </ion-item>
+   
+  <button ion-button full color="#1180a3" (click)="saturation = 0; description =''">Save</button> 
+  <button ion-button full color="#1180a3" (click)="showPrompt()">Report</button>
+</ion-row>
 </ion-content>
