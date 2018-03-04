@@ -5,9 +5,7 @@ Should be changed to be colorful and nice.
 <ion-header>
 
   <ion-navbar>
-  <!-- Needs to be changed. -->
-  <!-- https://www.youtube.com/watch?v=utLaZrrPLrk -->
-  <ion-title>My name is Chef</ion-title>
+
   </ion-navbar>
 </ion-header>
   <ion-content>
@@ -33,5 +31,37 @@ Should be changed to be colorful and nice.
         <!-- <ion-icon name="remove-circle" color="danger" style="font-size: 30px;"></ion-icon> -->
     </ion-row>
       <h4 *ngIf="user" no-margin text-center ion-text color = "white" style = "position: relative;">{{user.username}}</h4>
-      <p *ngIf="user && (user.stance)" text-center ion-text color = "white" (tap)= "changeStance()" no-margin style = "position: relative;"> Stance: {{user.stance}} </p>
+      <p *ngIf="user && (user.stance)" text-center ion-text color = "white" no-margin style = "position: relative;"> Stance: {{user.stance}} </p>
+      <!-- <p text-center ion-text color = "white" no-margin style = "position: relative;"> Add Friend :)</p> -->
+
+      <!-- Add friend and Invite user button -->
+      <!-- <ion-badge item-end (tap)="addFriend()"  class="addFriend">Add Friend :o</ion-badge> -->
+      <!-- <ion-badge item-end (tap)="sendInvite()" class="sendInvite">Send invite </ion-badge> -->
+      <ion-badge item-end (tap)= "addFriend()" class="addFriendClass"> <ion-icon name = "person-add" class ="badgeIcons"> </ion-icon> </ion-badge>
+      <ion-badge item-end (tap)= "sendInvite()" class="sendInviteClass"> <ion-icon name = "paper-plane" class="badgeIcons"> </ion-icon> </ion-badge>
+      <ion-badge item-end (tap)= "sendMessage()" class="sendMessageClass"> <ion-icon id = "bubbles" name="ios-chatbubbles" class="badgeIcons"> </ion-icon> </ion-badge>
+      <!-- End friend/user button -->
+
+      <ion-grid style="background-color: #FFF" class="ion-grid">
+        <ion-row style="backround-color: #628" class="ion-top-row">
+          <ion-col *ngIf="user" col-6 style="background-color: #ffffff" (tap)= "mySpotsPage()" class="grid-border" class="ion-left-col"> Spots
+            <p> </p>
+            <ion-icon name = "archive" class="icons"></ion-icon>
+          </ion-col>
+          <ion-col *ngIf="user" col-6 style="background-color: #ffffff" (tap)= "friendsPage()" class="grid-border"> Friends
+            <p> </p>
+            <ion-icon name = "ios-people" class="icons"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row style="background-color#628" class="ion-row">
+          <ion-col col-6 style="background-color: #ffffff" class="grid-border" class="ion-left-col"> Bio
+            <p> </p>
+            <ion-icon name = "person" class="icons"></ion-icon>
+          </ion-col>
+          <ion-col col-6 style="background-color: #ffffff" class="grid-border"> Pictures
+            <p> </p>
+            <ion-icon name = "image" class="icons"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>

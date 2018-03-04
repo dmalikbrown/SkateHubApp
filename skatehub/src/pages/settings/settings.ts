@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
+
 import { IonicPage, NavController, NavParams, ToastController, AlertController,
   App} from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -6,6 +7,7 @@ import { EditPasswordPage } from '../../pages/edit-password/edit-password';
 import { PrivacyPolicyPage } from '../../pages/privacy-policy/privacy-policy';
 import { AccountSettingsPage } from '../../pages/account-settings/account-settings';
 import { LoginPage } from '../../pages/login/login';
+
 
 /**
  * Generated class for the SettingsPage page.
@@ -34,6 +36,7 @@ export class SettingsPage {
             public authProvider: AuthProvider,
             public toastCtrl: ToastController, public alertCtrl: AlertController,
             public app: App) {
+
               //get the id from the profile page
     this.id = this.navParams.get('id');
     this.getUser();
@@ -186,6 +189,8 @@ export class SettingsPage {
       }, 2000);
     });
   }
+  
+
   logout(){
     this.authProvider.logout();
     //this.events.publish('logout');

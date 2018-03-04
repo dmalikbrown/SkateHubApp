@@ -63,4 +63,11 @@ export class MySpotsPage {
     });
   }
 
+  loadPostedSpots(){
+    console.log("Posted Spots");
+  }
+  loadSavedSpots(){
+    console.log("Saved Spots");
+  }
+
 }

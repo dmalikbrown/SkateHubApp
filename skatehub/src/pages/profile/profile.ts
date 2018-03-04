@@ -75,13 +75,7 @@ export class ProfilePage {
   ionViewWillLeave(){
 
   }
-/*
-  profilePage(){
-    console.log("Profile");
-    //Launches the profile page.
-    //this.navCtrl.push("myProfile");
-  }
-  */
+
   getUser(id){
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
@@ -195,24 +189,6 @@ export class ProfilePage {
         Stance: "Goofy"
       };
       this.user.stance = "Goofy";
-      // let toast = this.toastCtrl.create({
-      //   message: "You swithced stances to Goofy",
-      //   position: 'top',
-      //   cssClass:'link',
-      //   duration: 3000
-      //
-      // });
-      // toast.present();
-      // this.spotsProvider.switchStance(obj).subscribe((data) =>{
-      //   if(data.sucess){
-      //     let toast = this.toastCtrl.create({
-      //       message: "You swithced stances",
-      //       position: 'top',
-      //       cssClass:'link',
-      //       duration: 3000
-      //     });
-      //   }
-      // });
       console.log("made it back to profile.ts");
       return;
     }
@@ -222,14 +198,6 @@ export class ProfilePage {
         Stance: "Regular"
       };
       this.user.stance = "Regular";
-      // let toast = this.toastCtrl.create({
-      //   message: "You swithced stances to Regular",
-      //   position: 'top',
-      //   cssClass:'link',
-      //   duration: 3000
-      // });
-      // toast.present();
-      //this.spotsProvider.switchStance("Regular");
       return;
     }
     else if(this.user.stance == "Regular")
@@ -238,14 +206,6 @@ export class ProfilePage {
         Stance: "Goofy"
       };
       this.user.stance = "Goofy";
-      // let toast = this.toastCtrl.create({
-      //   message: "You swithced stances to Goofy",
-      //   position: 'top',
-      //   cssClass:'link',
-      //   duration: 3000
-      // });
-      // toast.present();
-      //this.spotsProvider.switchStance("Goofy");
       return;
     }
   }

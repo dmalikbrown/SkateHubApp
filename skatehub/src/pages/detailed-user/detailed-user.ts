@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
+
+import { MySpotsPage } from './../../pages/my-spots/my-spots';
+import { FriendsPage } from './../../pages/friends/friends'
 import { SpotsProvider } from './../../providers/spots/spots';
 
 
@@ -34,9 +37,9 @@ export class DetailedUserPage {
 
 
   /*
-  * Checks to see if the navParams are given. Doesn't check anything. 
+  * Checks to see if the navParams are given. Doesn't check anything.
   * TODO implement some checks
-  */ 
+  */
   ionViewDidEnter(){
     if(this.navParams){
       console.log("if statement, ionViewDidEnter", this.navParams);
@@ -52,15 +55,17 @@ export class DetailedUserPage {
   }
 
   /*
+
   * Gets the user from the server. 
   * Can be used to get more info from the user, 
   * or the spots that the user has authored.
+
   */
   getUser(id){
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
-        this.user = data.user; 
+         this.user = data.user; 
         //this.spots = this.user.spots; 
         this.spotsProvider.getAllSpots().subscribe((data) => {
           if (data.success) { 
@@ -76,5 +81,6 @@ export class DetailedUserPage {
           console.log("Error: DetailedUserPage, failed UserId");
       } 
      });
+
   }
 }
