@@ -6,6 +6,7 @@ const cloudinary = require('cloudinary');
 const multiparty = require('multiparty');
 const User = require('../models/user');
 const Spot = require('../models/spot');
+const Message = require('../models/message');
 
 
 cloudinary.config({
@@ -111,6 +112,17 @@ router.post('/register', (req, res, next) => {
   });
 
 });
+router.post('/delete', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  User.removeAccount(req.body, (err, val) => {
+    if(err){
+      return res.json({success: false, msg: 'Failed to delete account. Try again.'});
+    }
+    else {
+      return res.json({success: true, msg: 'Account removed!'});
+    }
+  });
+});
 
 router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   //multiparty helps handle files and large payloads
@@ -123,6 +135,52 @@ router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req
       });
     });
 });
+// router.post('/avatar/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+//   (new multiparty.Form()).parse(req, function(err, fields, files) {
+//       console.log(fields);
+//       User.getUserById(fields.id[0].toLowerCase(), (err, user) =>{
+//         if(err){
+//           console.log(err);
+//           return res.json({success: false, msg: "Failed to upload avatar"});
+//         }
+//         if(!user){
+//             return res.json({success: false, msg: "Failed to upload avatar"});
+//         }
+//         else{
+//
+//           cloudinary.uploader.upload(files.file[0].path, function (resp) {
+//             //console.log(fields.user);
+//             let avatarUrl = resp.url;
+            // let edits = {
+            //   id: user._id,
+            //   type: "avatar",
+            //   avatar: avatarUrl
+            // };
+//             User.update(edits, (err, x) =>{
+//               if(err){
+//                 console.log(err);
+//                 return res.json({success: false, msg: "Failed to upload avatar"});
+//               }
+//               else{
+//                 let len = user.spots.length;
+//                 for(let i = 0; i<len; i++){
+//                   Spot.editSpotAvatar(user.spots[i], avatarUrl, (err, y) => {
+//                     if(err){
+//                       console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+//                       return res.json({success: false, msg: "Error editing avatar."});
+//                     }
+//                   });
+//                 }
+//                 return res.json({success: true});
+//               }
+//             });
+//           });
+//         }
+//       });
+//
+//     });
+//
+// });
 
 router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
@@ -234,6 +292,35 @@ router.post('/comp_pass', passport.authenticate('jwt', {session:false}) ,(req, r
   });
 });
 
+router.post('/friend', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  let id = req.body.id;
+  let recipients = req.body.recipients;
+  let length = recipients.length;
+  let senderObj = {
+    sender: id,
+    id: id,
+    request: false
+  };
+  for (let i = 0; i < length; i++) {
+      let friendObj = {
+        sender: id,
+        id: recipients[i]._id,
+        request: false
+      };
+      User.friendRequest(senderObj, friendObj, (err, someval) => {
+        if(err){
+          return res.json({success: false, msg: "Error Sending friend Request"});
+        }
+        else{
+          return res.json({success: true});
+        }
+      })
+
+  }
+
+});
+
 /*
 The 'update' route is going to be called when a user is editing any of their
 information. For now the route is set up to handle "fullName", "username",
@@ -251,6 +338,34 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
       else {
         return res.json({success: true, msg: "Edited full name!"});
+      }
+    });
+  }
+  if(req.body.type == "avatar"){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error editing avatar"});
+      }
+      else {
+        User.getUserById(req.body.id, (err, user) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "Error editing avatar"});
+          }
+          else {
+            let len = user.spots.length;
+            for(let i = 0; i<len; i++){
+              Spot.editSpotAvatar(user.spots[i], avatarUrl, (err, y) => {
+                if(err){
+                  console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+                  return res.json({success: false, msg: "Error editing avatar."});
+                }
+              });
+            }
+            return res.json({success: true, msg: "Edited avatar!"});
+          }
+        });
       }
     });
   }
@@ -311,9 +426,146 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
+  if(req.body.type == 'savedSpots'){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "routes: Error saving spot!"});
+      }
+      else {
+        return res.json({success: true, msg: "routes: Saved spot!"});
+      }
+    });
+  }
+
+});
+
+router.post('/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  if(req.body.threadId !=''){
+    console.log(req.body);
+    Message.pushMessage(req.body.threadId, req.body.messages[0], (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error sending message"});
+      }
+      else {
+        return res.json({success: true, msg: "Message sent!"});
+      }
+    });
+  }
+  else {
+      let newMessage = new Message(req.body);
+      let messageIdObj = {
+        id: newMessage._id.toString()
+      };
+      User.sendMessage(req.body.sender, messageIdObj, (err, someVar) => {
+        console.log("Calling back");
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg: "Error sending message"})
+        }
+        else {
+          console.log("Here");
+          User.sendMessage(req.body.receiver, messageIdObj, (err, aVar) => {
+            if(err){
+              return res.json({success: false, msg: "Error sending message"})
+            }
+            else {
+              Message.addMessage(newMessage, (err, newMsgObj) => {
+                if(err){
+                  return res.json({success: false, msg: "Error sending message"})
+                }
+                else {
+                  return res.json({success: true, msg: "Message sent!", newThread: newMsgObj});
+                }
+              });
+            }
+          });
+        }
+      });
+  }
+
+
+  //TODO account for already created threads
+
 });
 
 
+router.post('/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  if(req.body.threadId !=''){
+    console.log(req.body);
+    Message.pushMessage(req.body.threadId, req.body.messages[0], (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error sending message"});
+      }
+      else {
+        return res.json({success: true, msg: "Message sent!"});
+      }
+    });
+  }
+  else {
+      let newMessage = new Message(req.body);
+      let messageIdObj = {
+        id: newMessage._id.toString()
+      };
+      User.sendMessage(req.body.sender, messageIdObj, (err, someVar) => {
+        console.log("Calling back");
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg: "Error sending message"})
+        }
+        else {
+          console.log("Here");
+          User.sendMessage(req.body.receiver, messageIdObj, (err, aVar) => {
+            if(err){
+              return res.json({success: false, msg: "Error sending message"})
+            }
+            else {
+              Message.addMessage(newMessage, (err, newMsgObj) => {
+                if(err){
+                  return res.json({success: false, msg: "Error sending message"})
+                }
+                else {
+                  return res.json({success: true, msg: "Message sent!"});
+                }
+              });
+            }
+          });
+        }
+      });
+  }
+
+
+  //TODO account for already created threads
+
+});
+
+router.post('/delete/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  console.log(req.body);
+  Message.deleteMessage(req.body, (err, x) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg: 'Failed to delete messages. Please try again.'});
+    }
+    else {
+      return res.json({success: true, msg: 'Messages have been removed!'});
+    }
+  });
+});
+
+router.get('/message/:threadId', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  let id = req.params.threadId;
+  console.log(req.params.threadId);
+  Message.getMessageById(id, (err, thread) => {
+    if(err) {
+      return res.json({success: false, msg: "Error getting thread"});
+    }
+    else {
+      return res.json({success: true, thread: thread});
+    }
+  })
+});
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
 });
@@ -373,7 +625,8 @@ router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, nex
           savedSpots: user.savedSpots,
           invites: user.invites,
           friends: user.friends,
-          avatar: user.avatar
+          avatar: user.avatar,
+          messages: user.messages
         };
         return res.json({success: true, user: userObj});
       }

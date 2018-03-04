@@ -9,7 +9,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
-
+import { DetailedUserPage } from '../../pages/detailed-user/detailed-user';
+import { ProfilePage } from '../../pages/profile/profile';
 
 @Component({
   selector: 'page-home',
@@ -22,6 +23,7 @@ export class HomePage {
   user: any;
   state: any;
   spots: any = [];
+  savedSpots: any; 
   spotsVarHolder: any = [];
   noSpots: boolean;
   start: any = "";
@@ -99,7 +101,7 @@ export class HomePage {
   @return        nothing
   */
   openInbox(){
-      this.navCtrl.push(InboxPage);
+      this.navCtrl.push(InboxPage, {id: this.user.id});
   }
 
   /*
@@ -223,7 +225,29 @@ export class HomePage {
             success => console.log('Launched navigator'),
             error => console.log('Error launching navigator: ' + error)
     );
+  }  
+  /* Saves the spot to the user that is currently logged in.
+   * Only saves the spot id to the savedSpot field of
+   * the User Schema.
+   */
+  saveSpt(type: string, spot){ 
+     let editObj = {
+       id: this.authProvider.user.id, 
+       type: type,
+       savedSpots: spot, 
+	   }; 
+    console.log('editObj', editObj.savedSpots, spot._id);
+		 
+    this.authProvider.update(editObj).subscribe((data) => {
+	  if(data.success){ 
+        console.log("Successfully saved spot"); 
+      } else {
+        console.log("Error when saving spot");
+      }
+    });
+  
   }
+
   /*
   Open an action handler that contains 3 buttons: 'View Spot', 'Save Spot', and
   'Cancel'.
@@ -242,8 +266,9 @@ export class HomePage {
        },
        {
          text: 'Save Spot',
-         handler: () => {
-           console.log('Saved Spot clicked');
+		   handler: () => { 
+             this.saveSpt('savedSpots', spot); 
+             console.log('Saved Spot clicked');
          }
        },
        {
@@ -268,5 +293,21 @@ export class HomePage {
     this.content.scrollToTop();
   }
 
+  /*
+  Pushes the user to the respective profile of the avatar clicked.
+  @parameters 	 spot
+  @return        ProfilePage or DetailedUserPage
+  */
+  avatarClick(spot){
+    if(this.authProvider.user.id == spot.userId){
+      this.navCtrl.push(ProfilePage);
+ 	  console.log('Leaving HomePage, going to ProfilePage');
+    } else if(spot.userId) {
+       console.log('Leaving HomePage, going to DetailedUserPage');
+       this.navCtrl.push(DetailedUserPage, {username: spot.username, id: spot.userId});
+    } else {
+   	   console.log('Error: HomePage, attempting push to DetailedUserPage');
+    }
+  }
 
 }

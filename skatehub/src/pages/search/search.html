@@ -16,7 +16,7 @@
 
 <ion-content class="searchBackGround">
   <!-- User list if searchTerm matches - START -->
-  <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">	  
+  <ion-list *ngIf="!start && userResultArr.length > 0 && !hideSearch">
     <ion-list-header class="searchListHeader">People</ion-list-header>
 	<!-- TODO Implement button and push for userResultArr-->
     <ion-item button class="listArr" *ngFor= "let user of userResultArr" detail-push (click)="userButtonClick(user)">

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AddFriendPage } from '../../pages/add-friend/add-friend';
 
 /**
  * Generated class for the FriendsPage page.
@@ -20,6 +21,10 @@ export class FriendsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FriendsPage');
+  }
+
+  openAddFriendsPage(){
+    this.navCtrl.push(AddFriendPage);
   }
 
 }
