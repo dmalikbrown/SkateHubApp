@@ -124,7 +124,7 @@ export class AddFriendPage {
   sendRequest(){
     //TODO attach an id obj if there's already a thread made
     this.authProvider.loadUser();
-    this.id = this.authProvider.user.id;
+    this.id = this.authProvider.user._id;
     let friendObj = {
       id: this.id,
       recipients: this.selectedUsers

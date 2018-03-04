@@ -24,8 +24,10 @@ export class DetailedUserPage {
   user: any;
   userId: any;
   spots: any = [];
-  id: any; 
+  id: any;
   spotsArr: any = [];
+  me: any;
+  hasRequested: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
@@ -41,6 +43,10 @@ export class DetailedUserPage {
   * TODO implement some checks
   */
   ionViewDidEnter(){
+    this.authProvider.loadUser();
+    this.me = this.authProvider.user;
+    console.log(this.me);
+
     if(this.navParams){
       console.log("if statement, ionViewDidEnter", this.navParams);
 	  this.userId = this.navParams.data.id;
@@ -56,8 +62,8 @@ export class DetailedUserPage {
 
   /*
 
-  * Gets the user from the server. 
-  * Can be used to get more info from the user, 
+  * Gets the user from the server.
+  * Can be used to get more info from the user,
   * or the spots that the user has authored.
 
   */
@@ -65,22 +71,63 @@ export class DetailedUserPage {
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
-         this.user = data.user; 
-        //this.spots = this.user.spots; 
+         this.user = data.user;
+         this.checkFriends();
+        //this.spots = this.user.spots;
         this.spotsProvider.getAllSpots().subscribe((data) => {
-          if (data.success) { 
-            for (const spot of data.spots) { 
+          if (data.success) {
+            for (const spot of data.spots) {
               if (spot.userId == this.navParams.data.id) {
-                this.spotsArr.push(spot);   
+                this.spotsArr.push(spot);
                 console.log("++++++++++++", spot.userId, this.navParams.data.id);
               }
             }
           }
-        }); 
+        });
       } else {
           console.log("Error: DetailedUserPage, failed UserId");
-      } 
+      }
      });
 
+  }
+
+  checkFriends(){
+    if(this.me.friends){
+      console.log("here bitch");
+      let len = this.me.friends.length;
+      for(let i = 0; i<len; i++){
+        //if statement to check if you've sent a friend request to this user
+        if(this.me.friends[i].id == this.user._id && !this.me.friends[i].request){
+          console.log("also here bitch");
+          this.hasRequested = true;
+        }
+        else {
+          this.hasRequested = false;
+        }
+      }
+    }
+
+  }
+
+  addFriend(){
+    //TODO attach an id obj if there's already a thread made
+    this.authProvider.loadUser();
+    let id = this.authProvider.user._id;
+    let recipients = [];
+    recipients.push(this.user);
+    let friendObj = {
+      id: id,
+      recipients: recipients
+    };
+    this.authProvider.friendRequest(friendObj).subscribe((data) => {
+      if(data.success){
+        this.hasRequested = true;
+      console.log("Success");
+        }
+        else {
+      console.log("Ultimate Failure/Vegeta");
+        }
+    })
+    console.log(friendObj);
   }
 }

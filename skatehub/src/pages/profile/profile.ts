@@ -63,7 +63,8 @@ export class ProfilePage {
   }
   ionViewDidEnter(){
     if(this.authProvider.user){
-      this.userId = this.authProvider.user.id;
+      console.log("BITCH");
+      this.userId = this.authProvider.user._id;
     }
     else{
       this.userId = this.navParams.data.id;
@@ -77,6 +78,7 @@ export class ProfilePage {
   }
 
   getUser(id){
+    console.log(id);
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
@@ -155,7 +157,7 @@ export class ProfilePage {
   }
   friendsPage(){
     console.log("Friends");
-    this.navCtrl.push(FriendsPage);
+    this.navCtrl.push(FriendsPage, {user: this.user});
   }
   invitesPage(){
     console.log("Invites");

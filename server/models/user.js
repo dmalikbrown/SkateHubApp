@@ -80,7 +80,7 @@ module.exports.addSpot = function(id, spotId, callback){
 
   User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
 }
-  
+
 module.exports.sendMessage = function(id, messageId, callback){
   console.log(messageId);
   console.log(id);
@@ -122,6 +122,20 @@ module.exports.update = function(edits, callback){
       { $set: {username: edits.username} },
       callback
     );
+  }
+  else if(edits.type == "accept-request"){
+    // User.update({'_id': edits.id, 'friends.id': edits.friend._id},
+    //   { $set: {'friends.$.request': true}
+    // },
+    // callback);
+    User.findById(edits.id, (err, user)=>{
+       if (err) return handleError(err);
+       if(user.friends){
+         let index = user.friends.findIndex((friend)=> friend.id == edits.friend._id);
+         user.friends[index].request = true;
+         user.save(callback);
+       }
+    });
   }
   else if(edits.type == "email"){
     User.findByIdAndUpdate(edits.id,

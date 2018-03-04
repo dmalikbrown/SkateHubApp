@@ -43,13 +43,20 @@ router.post('/authenticate', (req, res, next) => {
         {
           expiresIn: 2592000
         });
-        let uObj = {
-          id: user._id,
+        let userObj = {
+          _id: user._id,
           fullName: user.fullName,
+          username: user.username,
           email: user.email,
-          username: user.username
+          stance: user.stance,
+          spots: user.spots,
+          savedSpots: user.savedSpots,
+          invites: user.invites,
+          friends: user.friends,
+          avatar: user.avatar,
+          messages: user.messages
         };
-        return res.json({success: true, token: 'JWT '+token, user: uObj });
+        return res.json({success: true, token: 'JWT '+token, user: userObj });
       }
       else
         {
@@ -90,13 +97,20 @@ router.post('/register', (req, res, next) => {
               const token = jwt.sign({_id: retUser._id}, randString, {
                 expiresIn: 2592000// 30 days in seconds
               });
-              let uObj = {
-                id: retUser._id,
+              let userObj = {
+                _id: retUser._id,
                 fullName: retUser.fullName,
+                username: retUser.username,
                 email: retUser.email,
-                username: retUser.username
+                stance: retUser.stance,
+                spots: retUser.spots,
+                savedSpots: retUser.savedSpots,
+                invites: retUser.invites,
+                friends: retUser.friends,
+                avatar: retUser.avatar,
+                messages: retUser.messages
               };
-              return res.json({success: true, token: 'JWT '+token, user: uObj });
+              return res.json({success: true, token: 'JWT '+token, user: userObj });
             }
           });
         }
@@ -338,6 +352,17 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
       else {
         return res.json({success: true, msg: "Edited full name!"});
+      }
+    });
+  }
+  if(req.body.type == "accept-request"){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error accepting request"});
+      }
+      else {
+        return res.json({success: true, msg: "Accepted request!"});
       }
     });
   }
@@ -617,6 +642,7 @@ router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, nex
       }
       else {
         let userObj = {
+          _id: user._id,
           fullName: user.fullName,
           username: user.username,
           email: user.email,
