@@ -33,9 +33,7 @@ module.exports.pushMessage = function(id, message, callback){
 
 //TODO remove message threads
 module.exports.deleteMessage = function(messageObj, callback){
-  Message.findOneAndRemove({'_id': messageObj._id}, (x)=>{
-    User.updateMany({}, {
-        $pull: {'messages': {id: messageObj._id}}
-      }, callback);
-    });
+  console.log("MessageObj");
+  console.log(messageObj);
+  Message.findOneAndRemove({'_id': messageObj._id}, callback);
 }

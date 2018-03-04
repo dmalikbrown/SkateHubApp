@@ -172,3 +172,8 @@ module.exports.removeAccount = function(userObj, callback){
 // Character.deleteMany({ name: /Stark/, age: { $gte: 18 } }, function (err) {});
 //     {$or:[{region: "NA"},{sector:"Some Sector"}]}
 }
+module.exports.removeThreads = function(messageObj, callback){
+  User.updateMany({}, {
+      $pull: {'messages': {id: messageObj._id}}
+    }, callback);
+}

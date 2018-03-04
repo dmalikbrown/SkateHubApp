@@ -565,7 +565,16 @@ router.post('/delete/message', passport.authenticate('jwt', {session:false}), (r
       return res.json({success: false, msg: 'Failed to delete messages. Please try again.'});
     }
     else {
-      return res.json({success: true, msg: 'Messages have been removed!'});
+      User.removeThreads(req.body, (err, somval) => {
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg: 'Failed to delete messages. Please try again.'});
+        }
+        else {
+            return res.json({success: true, msg: 'Messages have been removed!'});
+        }
+      });
+
     }
   });
 });
