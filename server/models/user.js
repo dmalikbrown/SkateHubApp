@@ -93,12 +93,6 @@ module.exports.friendRequest = function(sender, receiver, callback){
   });
 }
 
-module.exports.sendMessage = function(id, messageId, callback){
-  console.log(messageId);
-  console.log(id);
-  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
-}
-
 /*
 Update function takes in a edits object that looks like:
 
