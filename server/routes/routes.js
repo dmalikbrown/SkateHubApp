@@ -373,21 +373,12 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
         return res.json({success: false, msg: "Error editing avatar"});
       }
       else {
-        User.getUserById(req.body.id, (err, user) => {
+        Spot.editSpotAvatar(req.body.id, req.body.avatar, (err, y) => {
           if(err){
-            console.log(err);
-            return res.json({success: false, msg: "Error editing avatar"});
+            console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+            return res.json({success: false, msg: "Error editing avatar."});
           }
           else {
-            let len = user.spots.length;
-            for(let i = 0; i<len; i++){
-              Spot.editSpotAvatar(user.spots[i], avatarUrl, (err, y) => {
-                if(err){
-                  console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
-                  return res.json({success: false, msg: "Error editing avatar."});
-                }
-              });
-            }
             return res.json({success: true, msg: "Edited avatar!"});
           }
         });
