@@ -38,7 +38,7 @@ export class ProfilePage {
   imagePath: any;
   imageNewPath: any;
   imageChosen: any = 0;
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://192.168.1.5:3000";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,

@@ -37,7 +37,7 @@ export class PostPage {
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
-  devEp = "http://localhost:3000"; //end point for the server when in dev mode
+  devEp = "http://192.168.1.5:3000"; //end point for the server when in dev mode
   prodEp = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -382,7 +382,7 @@ export class PostPage {
     else{
       console.log("ready to post!");
       let obj = {
-        id: this.user.id,
+        id: this.user._id,
         name: this.spotName,
         location: this.address,
         types: this.skateTypes,
