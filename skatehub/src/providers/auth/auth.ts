@@ -69,6 +69,13 @@ export class AuthProvider {
     return this.http.post(this.devEp+"/skatehub/register",user,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
+  friendRequest(friend){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.post(this.devEp+"/skatehub/friend",friend,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
 
   checkCurrentPassword(passwordObj){
     let headers = new Headers();

@@ -26,11 +26,12 @@ import { DetailedUserPage } from '../pages/detailed-user/detailed-user';
 import { RecoverPage } from '../pages/recover/recover';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { AccountSettingsPage } from '../pages/account-settings/account-settings';
-
 import { EditPasswordPage } from '../pages/edit-password/edit-password';
 import { FilterPage } from '../pages/filter/filter';
 import { ThreadPage } from '../pages/thread/thread';
 import { SeshesPage } from '../pages/seshes/seshes';
+import { AddFriendPage } from '../pages/add-friend/add-friend';
+
 
 
 
@@ -77,6 +78,7 @@ import { MessageProvider } from '../providers/message/message';
     InboxPage,
     MessagePage,
     FilterPage,
+    AddFriendPage,
     PrivacyPolicyPage,
     AccountSettingsPage,
     ThreadPage,
@@ -111,6 +113,7 @@ import { MessageProvider } from '../providers/message/message';
     RecoverPage,
     EditPasswordPage,
     InboxPage,
+    AddFriendPage,
     PrivacyPolicyPage,
     AccountSettingsPage,
     MessagePage,

@@ -292,6 +292,35 @@ router.post('/comp_pass', passport.authenticate('jwt', {session:false}) ,(req, r
   });
 });
 
+router.post('/friend', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  let id = req.body.id;
+  let recipients = req.body.recipients;
+  let length = recipients.length;
+  let senderObj = {
+    sender: id,
+    id: id,
+    request: false
+  };
+  for (let i = 0; i < length; i++) {
+      let friendObj = {
+        sender: id,
+        id: recipients[i]._id,
+        request: false
+      };
+      User.friendRequest(senderObj, friendObj, (err, someval) => {
+        if(err){
+          return res.json({success: false, msg: "Error Sending friend Request"});
+        }
+        else{
+          return res.json({success: true});
+        }
+      })
+
+  }
+
+});
+
 /*
 The 'update' route is going to be called when a user is editing any of their
 information. For now the route is set up to handle "fullName", "username",
@@ -448,6 +477,57 @@ router.post('/message', passport.authenticate('jwt', {session:false}), (req, res
                 }
                 else {
                   return res.json({success: true, msg: "Message sent!", newThread: newMsgObj});
+                }
+              });
+            }
+          });
+        }
+      });
+  }
+
+
+  //TODO account for already created threads
+
+});
+
+
+router.post('/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  if(req.body.threadId !=''){
+    console.log(req.body);
+    Message.pushMessage(req.body.threadId, req.body.messages[0], (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error sending message"});
+      }
+      else {
+        return res.json({success: true, msg: "Message sent!"});
+      }
+    });
+  }
+  else {
+      let newMessage = new Message(req.body);
+      let messageIdObj = {
+        id: newMessage._id.toString()
+      };
+      User.sendMessage(req.body.sender, messageIdObj, (err, someVar) => {
+        console.log("Calling back");
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg: "Error sending message"})
+        }
+        else {
+          console.log("Here");
+          User.sendMessage(req.body.receiver, messageIdObj, (err, aVar) => {
+            if(err){
+              return res.json({success: false, msg: "Error sending message"})
+            }
+            else {
+              Message.addMessage(newMessage, (err, newMsgObj) => {
+                if(err){
+                  return res.json({success: false, msg: "Error sending message"})
+                }
+                else {
+                  return res.json({success: true, msg: "Message sent!"});
                 }
               });
             }

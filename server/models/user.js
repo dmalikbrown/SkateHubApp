@@ -27,6 +27,13 @@ const UserSchema = mongoose.Schema(
     ],
     friends: [
     {
+              id: {type: String},
+              sender: {type: String},
+              request: {type: Boolean, default: false}
+    }
+    ],
+    messages: [
+    {
               id: {type: String}
     }
     ],
@@ -70,7 +77,20 @@ module.exports.comparePassword = function(candidatePass, hash, callback){
   });
 }
 module.exports.addSpot = function(id, spotId, callback){
+
   User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
+}
+  
+module.exports.sendMessage = function(id, messageId, callback){
+  console.log(messageId);
+  console.log(id);
+  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
+}
+
+module.exports.friendRequest = function(sender, receiver, callback){
+  User.findByIdAndUpdate(sender.id, {$push: {friends: receiver}}, (cb) => {
+    User.findByIdAndUpdate(receiver.id, {$push: {friends: sender}}, callback);
+  });
 }
 
 module.exports.sendMessage = function(id, messageId, callback){
