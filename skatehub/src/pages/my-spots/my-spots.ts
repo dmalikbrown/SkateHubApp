@@ -17,11 +17,13 @@ import { SpotsProvider } from './../../providers/spots/spots';
   templateUrl: 'my-spots.html',
 })
 export class MySpotsPage {
-  // myspots 		
+  // myspots
   spots: any = [];
-  id: any; 
-  user: any; 
+  id: any;
+  user: any;
   spotsArr: any = [];
+  mySpots: any;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
 
@@ -34,8 +36,8 @@ export class MySpotsPage {
     }
     else{
       this.user = this.navParams.data;
-	} 
-    /* 
+	}
+    /*
 	 * Gets the user by the user id. Gets all the spots
 	 * then we check to see if the user id is the same
 	 * as the spot user id and add it to the spotsArr.
@@ -45,20 +47,20 @@ export class MySpotsPage {
     this.authProvider.getUser(this.user.id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
-        this.user = data.user; 
-        //this.spots = this.user.spots; 
+        this.user = data.user;
+        //this.spots = this.user.spots;
         this.spotsProvider.getAllSpots().subscribe((data) => {
-          if (data.success) { 
-            for (const spot of data.spots) { 
+          if (data.success) {
+            for (const spot of data.spots) {
               if (spot.userId == this.authProvider.user.id) {
-                this.spotsArr.push(spot);   
+                this.spotsArr.push(spot);
                 console.log("++++++++++++", spot.userId, this.authProvider.user.id);
               }
             }
           }
         });
 	  } else {
-         console.log("Error: mySpotsPage, failed UserId"); 
+         console.log("Error: mySpotsPage, failed UserId");
       }
     });
   }
