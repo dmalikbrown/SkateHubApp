@@ -23,7 +23,7 @@ export class HomePage {
   user: any;
   state: any;
   spots: any = [];
-  savedSpots: any; 
+  savedSpots: any;
   spotsVarHolder: any = [];
   noSpots: boolean;
   start: any = "";
@@ -101,7 +101,7 @@ export class HomePage {
   @return        nothing
   */
   openInbox(){
-      this.navCtrl.push(InboxPage, {id: this.user.id});
+      this.navCtrl.push(InboxPage, {id: this.user._id});
   }
 
   /*
@@ -225,27 +225,27 @@ export class HomePage {
             success => console.log('Launched navigator'),
             error => console.log('Error launching navigator: ' + error)
     );
-  }  
+  }
   /* Saves the spot to the user that is currently logged in.
    * Only saves the spot id to the savedSpot field of
    * the User Schema.
    */
-  saveSpt(type: string, spot){ 
+  saveSpt(type: string, spot){
      let editObj = {
-       id: this.authProvider.user.id, 
+       id: this.authProvider.user._id,
        type: type,
-       savedSpots: spot, 
-	   }; 
+       savedSpots: {id: spot._id},
+	   };
     console.log('editObj', editObj.savedSpots, spot._id);
-		 
+
     this.authProvider.update(editObj).subscribe((data) => {
-	  if(data.success){ 
-        console.log("Successfully saved spot"); 
+	  if(data.success){
+        console.log("Successfully saved spot");
       } else {
         console.log("Error when saving spot");
       }
     });
-  
+
   }
 
   /*
@@ -260,14 +260,14 @@ export class HomePage {
        {
          text: 'View Spot',
          handler: () => {//push the DetailedSpotPage with params - spot and user id
-           this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user.id});
+           this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
            console.log('Go to Post clicked');
          }
        },
        {
          text: 'Save Spot',
-		   handler: () => { 
-             this.saveSpt('savedSpots', spot); 
+		   handler: () => {
+             this.saveSpt('savedSpots', spot);
              console.log('Saved Spot clicked');
          }
        },
@@ -299,7 +299,7 @@ export class HomePage {
   @return        ProfilePage or DetailedUserPage
   */
   avatarClick(spot){
-    if(this.authProvider.user.id == spot.userId){
+    if(this.authProvider.user._id == spot.userId){
       this.navCtrl.push(ProfilePage);
  	  console.log('Leaving HomePage, going to ProfilePage');
     } else if(spot.userId) {

@@ -7,7 +7,7 @@
 <ion-header>
 
 <ion-toolbar no-border-top mode="md">
-  <ion-segment mode="md" ng-model="Categories" color="iosDarkBlue">
+  <ion-segment mode="md" [(ngModel)]="categories" color="iosDarkBlue">
     <ion-segment-button (tap)="loadPostedSpots()" value="postedSpots">
       Posted Spots
     </ion-segment-button>
@@ -23,6 +23,17 @@
 <!-- full configured so that you can pull all the information for the spot. -->
 <!-- Look at the homepage for inspiration.-->
 <ion-list>
-        <ion-item *ngFor="let spot of spotsArr">{{spot.username}}</ion-item>
+
+
 </ion-list>
+
+<div [ngSwitch]="categories">
+    <ion-list *ngSwitchCase="'postedSpots'">
+      <ion-item *ngFor="let spot of spotsArr">{{spot.name}}</ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'savedSpots'">
+      <ion-item *ngFor="let spot of savedSpotsArr">{{spot.name}}</ion-item>
+    </ion-list>
+  </div>
 </ion-content>

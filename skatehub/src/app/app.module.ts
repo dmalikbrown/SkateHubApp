@@ -31,7 +31,7 @@ import { FilterPage } from '../pages/filter/filter';
 import { ThreadPage } from '../pages/thread/thread';
 import { SeshesPage } from '../pages/seshes/seshes';
 import { AddFriendPage } from '../pages/add-friend/add-friend';
-
+import { OtherUserSpotsPage } from '../pages/other-user-spots/other-user-spots';
 
 
 
@@ -83,6 +83,7 @@ import { MessageProvider } from '../providers/message/message';
     AccountSettingsPage,
     ThreadPage,
     SeshesPage,
+    OtherUserSpotsPage,
     ElasticDirective
   ],
   imports: [
@@ -119,7 +120,8 @@ import { MessageProvider } from '../providers/message/message';
     MessagePage,
     FilterPage,
     SeshesPage,
-    ThreadPage
+    ThreadPage,
+    OtherUserSpotsPage
   ],
   providers: [
     StatusBar,

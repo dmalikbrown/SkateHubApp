@@ -99,7 +99,16 @@ export class ThreadPage {
     this.authProvider.loadToken();
     this.messageProvider.sendMessage(newMsgObj, this.authProvider.token).subscribe((data)=>{
       if(data.success){
-        this.getThread();
+
+        let id = '';
+        if(data.newThread){
+          id = data.newThread._id;
+        }
+        else {
+          id = this.thread.id;
+        }
+        this.getThread(id);
+        this.startInterval(id);
         // this.resetTextAreaHeight();
         this.message = "";
         this.scrollToBottom();
@@ -109,6 +118,11 @@ export class ThreadPage {
       }
     });
 
+  }
+  startInterval(id){
+    setInterval(() => {
+         this.getThread(id);
+    }, 30000);
   }
 
 }

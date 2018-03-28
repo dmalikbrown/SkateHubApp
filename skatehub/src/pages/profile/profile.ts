@@ -38,7 +38,9 @@ export class ProfilePage {
   imagePath: any;
   imageNewPath: any;
   imageChosen: any = 0;
+  stance: any;
   devEp: any = "http://localhost:3000";
+  prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,
@@ -63,7 +65,7 @@ export class ProfilePage {
   }
   ionViewDidEnter(){
     if(this.authProvider.user){
-      this.userId = this.authProvider.user.id;
+      this.userId = this.authProvider.user._id;
     }
     else{
       this.userId = this.navParams.data.id;
@@ -77,6 +79,7 @@ export class ProfilePage {
   }
 
   getUser(id){
+    console.log(id);
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
@@ -155,7 +158,7 @@ export class ProfilePage {
   }
   friendsPage(){
     console.log("Friends");
-    this.navCtrl.push(FriendsPage);
+    this.navCtrl.push(FriendsPage, {user: this.user});
   }
   invitesPage(){
     console.log("Invites");
@@ -185,29 +188,48 @@ export class ProfilePage {
 
     if(this.user.stance == null)
     {
-      let obj = {
-        Stance: "Goofy"
-      };
+		
       this.user.stance = "Goofy";
-      console.log("made it back to profile.ts");
-      return;
+      console.log("Goofy stance has been chosen.");
     }
     else if(this.user.stance == "Goofy")
     {
-      let obj = {
-        Stance: "Regular"
-      };
       this.user.stance = "Regular";
-      return;
+      console.log("Regular stance has been chosen.");
+			// return;
     }
     else if(this.user.stance == "Regular")
     {
-      let obj = {
-        Stance: "Goofy"
-      };
       this.user.stance = "Goofy";
-      return;
+      console.log("Last elif, Goofy stance has been chosen.");
+      //  return;
     }
+    let edits = {
+            id: this.userId,
+            type: "stance",
+            stance: this.user.stance
+    };
+
+    this.authProvider.update(edits).subscribe((data)=>{
+      if(data.success){
+        console.log(this.user.stance, "data success");	  
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "success";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+      else {
+        console.log("data was not a success.");	  
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "warning";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+    });
   }
 
 
@@ -238,7 +260,7 @@ export class ProfilePage {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     //send the file to the routes in the router.js file
-    fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
+    fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
       options).then((entry) => {
        this.imagePath = JSON.parse(entry.response).fileUrl.url;
         // this.imageChosen = 0;
