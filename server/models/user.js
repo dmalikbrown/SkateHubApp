@@ -143,6 +143,12 @@ module.exports.update = function(edits, callback){
       callback
     );
   }
+  else if(edits.type == "stance"){
+    User.findByIdAndUpdate(edits.id,
+      { $set: {stance: edits.stance} },
+      callback
+    );
+  }
   else if(edits.type == "password"){
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(edits.newPassword, salt, (err, hash) => {

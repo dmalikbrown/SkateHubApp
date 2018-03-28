@@ -38,6 +38,7 @@ export class ProfilePage {
   imagePath: any;
   imageNewPath: any;
   imageChosen: any = 0;
+  stance: any;
   devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
@@ -187,29 +188,48 @@ export class ProfilePage {
 
     if(this.user.stance == null)
     {
-      let obj = {
-        Stance: "Goofy"
-      };
+		
       this.user.stance = "Goofy";
-      console.log("made it back to profile.ts");
-      return;
+      console.log("Goofy stance has been chosen.");
     }
     else if(this.user.stance == "Goofy")
     {
-      let obj = {
-        Stance: "Regular"
-      };
       this.user.stance = "Regular";
-      return;
+      console.log("Regular stance has been chosen.");
+			// return;
     }
     else if(this.user.stance == "Regular")
     {
-      let obj = {
-        Stance: "Goofy"
-      };
       this.user.stance = "Goofy";
-      return;
+      console.log("Last elif, Goofy stance has been chosen.");
+      //  return;
     }
+    let edits = {
+            id: this.userId,
+            type: "stance",
+            stance: this.user.stance
+    };
+
+    this.authProvider.update(edits).subscribe((data)=>{
+      if(data.success){
+        console.log(this.user.stance, "data success");	  
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "success";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+      else {
+        console.log("data was not a success.");	  
+        let msg = data.msg;
+        let pos = "top";
+        let cssClass = "warning";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+      }
+    });
   }
 
 
