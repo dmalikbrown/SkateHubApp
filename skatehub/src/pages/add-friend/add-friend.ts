@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 
 /**
@@ -27,7 +27,8 @@ export class AddFriendPage {
   recipients: any = [];
   id: string = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+      public authProvider: AuthProvider, public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -131,10 +132,21 @@ export class AddFriendPage {
     };
     this.authProvider.friendRequest(friendObj).subscribe((data) => {
       if(data.success){
-      console.log("Success");
+          console.log("Success");
+          let toast = this.toastCtrl.create({
+            message: "Successfully sent friend request",
+            position: "top",
+            showCloseButton: true,
+            dismissOnPageChange: true
+          });
+          toast.present().then(() => {
+            setTimeout(() => {
+              toast.dismiss();
+            }, 2000);
+          });
         }
         else {
-      console.log("Ultimate Failure/Vegeta");
+          console.log("Ultimate Failure/Vegeta");
         }
     })
     console.log(friendObj);
