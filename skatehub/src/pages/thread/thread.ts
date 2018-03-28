@@ -116,6 +116,7 @@ export class ThreadPage {
           id = this.thread.id;
         }
         this.getThread(id);
+        this.startInterval(id);
         // this.resetTextAreaHeight();
         this.message = "";
         this.scrollToBottom();
@@ -125,6 +126,11 @@ export class ThreadPage {
       }
     });
 
+  }
+  startInterval(id){
+    setInterval(() => {
+         this.getThread(id);
+    }, 30000);
   }
 
 }

@@ -5,96 +5,66 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title text-center position = "absolute">Friends</ion-title>
+  <ion-navbar color="white">
+    <ion-title text-center>Friends</ion-title>
     <ion-buttons end right (tap) = "openAddFriendsPage()">
       <button clear id = "add" ion-button icon-only>
         <ion-icon color="primary" name="person-add"></ion-icon>
         <!-- <ion-icon color="primary" name="add"></ion-icon> -->
       </button>
     </ion-buttons>
-
     </ion-navbar>
+    <ion-segment [(ngModel)]="friendType" color="primary" mode="md">
+      <ion-segment-button value="friends">
+        Friends
+      </ion-segment-button>
+      <ion-segment-button value="requests">
+        Requests
+      </ion-segment-button>
+    </ion-segment>
 </ion-header>
 
-<ion-content class="list-avatar-page">
+<ion-content class="list-avatar-page" padding>
+  <div [ngSwitch]="friendType">
+    <ion-list *ngSwitchCase="'friends'">
+      <ion-item-sliding *ngFor="let friend of friends">
+        <ion-item id="thread-item" no-lines>
+          <ion-avatar item-start>
+            <img [src]="friend.avatar">
+          </ion-avatar>
+          <h2>{{friend.username}}</h2>
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
 
-    <ion-list>
-  <ion-item>
-    <ion-avatar item-start>
-      <img src="assets/imgs/profileGeneric.jpg">
-    </ion-avatar>
-    <h2>Username</h2>
-    <ion-badge item-end>skating!</ion-badge>
-      </ion-item>
-</ion-list>
+    </ion-list>
 
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>skating!</ion-badge>
-  </ion-item>
-</ion-list>
+    <ion-list *ngSwitchCase="'requests'">
+      <ion-item-sliding *ngFor="let request of requests">
+        <ion-item id="thread-item" no-lines>
+          <ion-avatar item-start>
+            <img [src]="request.avatar">
+          </ion-avatar>
+          <h2>{{request.username}}</h2>
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="primary" (tap)="acceptFriendRequest(request)">
+            <ion-icon name="checkmark"></ion-icon>
+            Accept
+          </button>
+        </ion-item-options>
+        <ion-item-options side="right">
+          <button ion-button color="danger">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+</ion-content>

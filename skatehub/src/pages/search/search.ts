@@ -4,6 +4,7 @@ import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
 import { DetailedUserPage } from './../../pages/detailed-user/detailed-user';
+import { ProfilePage } from './../../pages/profile/profile';
 
 
 
@@ -151,19 +152,18 @@ export class SearchPage {
  }
 
  /*
- Pushes the user to the DetailedUserPage, when the user is clicked.  
+ Pushes the user to the DetailedUserPage, when the user is clicked.
  @parameters    not sure yet
  @return        DetailedUserPage, {}
  */
  userButtonClick(user){
-    
-   if(user){
-     this.navCtrl.push(DetailedUserPage, {username: user.username, id: user._id});
- 	 console.log(user.username, user._id, 'Leaving SearchPage, going to DetailedUserPage'); 
+   if(this.authProvider.user._id == user._id){
+     this.navCtrl.push(ProfilePage);
    }
-   else {
-   console.log('Error: SearchPage, attempting push to DetailedUserPage');
+   else if(user._id) {
+      this.navCtrl.push(DetailedUserPage, {username: user.username, id: user._id});
    }
+
  }
 
 

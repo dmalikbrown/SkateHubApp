@@ -44,12 +44,12 @@
       class="message-input" placeholder="Start a message">
       </ion-textarea>
     </form>
-    <ion-buttons *ngIf="message.length == 0" end right id="pr-share-btn">
+    <ion-buttons *ngIf="message.length == 0" end id="pr-share-btn">
       <button ion-button icon-only>
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-buttons *ngIf="message.length > 0" end right id="pr-share-btn" (tap) = "sendMessage()">
+    <ion-buttons *ngIf="message.length > 0" end id="pr-share-btn" (tap) = "sendMessage()">
       <button ion-button icon-only>
         <ion-icon color="primary" name="send"></ion-icon>
       </button>

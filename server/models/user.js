@@ -80,7 +80,7 @@ module.exports.addSpot = function(id, spotId, callback){
 
   User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
 }
-  
+
 module.exports.sendMessage = function(id, messageId, callback){
   console.log(messageId);
   console.log(id);
@@ -91,12 +91,6 @@ module.exports.friendRequest = function(sender, receiver, callback){
   User.findByIdAndUpdate(sender.id, {$push: {friends: receiver}}, (cb) => {
     User.findByIdAndUpdate(receiver.id, {$push: {friends: sender}}, callback);
   });
-}
-
-module.exports.sendMessage = function(id, messageId, callback){
-  console.log(messageId);
-  console.log(id);
-  User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
 }
 
 /*
@@ -122,6 +116,20 @@ module.exports.update = function(edits, callback){
       { $set: {username: edits.username} },
       callback
     );
+  }
+  else if(edits.type == "accept-request"){
+    // User.update({'_id': edits.id, 'friends.id': edits.friend._id},
+    //   { $set: {'friends.$.request': true}
+    // },
+    // callback);
+    User.findById(edits.id, (err, user)=>{
+       if (err) return handleError(err);
+       if(user.friends){
+         let index = user.friends.findIndex((friend)=> friend.id == edits.friend._id);
+         user.friends[index].request = true;
+         user.save(callback);
+       }
+    });
   }
   else if(edits.type == "email"){
     User.findByIdAndUpdate(edits.id,
@@ -163,4 +171,9 @@ module.exports.removeAccount = function(userObj, callback){
     });
 // Character.deleteMany({ name: /Stark/, age: { $gte: 18 } }, function (err) {});
 //     {$or:[{region: "NA"},{sector:"Some Sector"}]}
+}
+module.exports.removeThreads = function(messageObj, callback){
+  User.updateMany({}, {
+      $pull: {'messages': {id: messageObj._id}}
+    }, callback);
 }

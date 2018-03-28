@@ -44,7 +44,7 @@ export class MessagePage {
   }
 
   openThreadPage(){
-    this.navCtrl.push(ThreadPage, {id: this.authProvider.user.id, recipients: this.selectedUsers});
+    this.navCtrl.push(ThreadPage, {id: this.authProvider.user._id, recipients: this.selectedUsers});
   }
 
   getUsers(){

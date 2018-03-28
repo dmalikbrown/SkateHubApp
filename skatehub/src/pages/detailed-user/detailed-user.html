@@ -37,14 +37,17 @@ Should be changed to be colorful and nice.
       <!-- Add friend and Invite user button -->
       <!-- <ion-badge item-end (tap)="addFriend()"  class="addFriend">Add Friend :o</ion-badge> -->
       <!-- <ion-badge item-end (tap)="sendInvite()" class="sendInvite">Send invite </ion-badge> -->
-      <ion-badge item-end (tap)= "addFriend()" class="addFriendClass"> <ion-icon name = "person-add" class ="badgeIcons"> </ion-icon> </ion-badge>
+      <ion-badge *ngIf="!hasRequested" item-end (tap)= "addFriend()" class="addFriendClass"> <ion-icon name = "person-add" class ="badgeIcons"> </ion-icon> </ion-badge>
+      <ion-badge *ngIf="hasRequested" item-end class="addFriendClass"> <ion-icon name = "clock" class ="badgeIcons"> </ion-icon> </ion-badge>
+
+
       <ion-badge item-end (tap)= "sendInvite()" class="sendInviteClass"> <ion-icon name = "paper-plane" class="badgeIcons"> </ion-icon> </ion-badge>
       <ion-badge item-end (tap)= "sendMessage()" class="sendMessageClass"> <ion-icon id = "bubbles" name="ios-chatbubbles" class="badgeIcons"> </ion-icon> </ion-badge>
       <!-- End friend/user button -->
 
       <ion-grid style="background-color: #FFF" class="ion-grid">
         <ion-row style="backround-color: #628" class="ion-top-row">
-          <ion-col *ngIf="user" col-6 style="background-color: #ffffff" (tap)= "mySpotsPage()" class="grid-border" class="ion-left-col"> Spots
+          <ion-col *ngIf="user" col-6 style="background-color: #ffffff" (tap)= "spotsPage()" class="grid-border" class="ion-left-col"> Spots
             <p> </p>
             <ion-icon name = "archive" class="icons"></ion-icon>
           </ion-col>

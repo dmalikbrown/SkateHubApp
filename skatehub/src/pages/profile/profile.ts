@@ -39,6 +39,7 @@ export class ProfilePage {
   imageNewPath: any;
   imageChosen: any = 0;
   devEp: any = "http://localhost:3000";
+  prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,
@@ -63,7 +64,7 @@ export class ProfilePage {
   }
   ionViewDidEnter(){
     if(this.authProvider.user){
-      this.userId = this.authProvider.user.id;
+      this.userId = this.authProvider.user._id;
     }
     else{
       this.userId = this.navParams.data.id;
@@ -77,6 +78,7 @@ export class ProfilePage {
   }
 
   getUser(id){
+    console.log(id);
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
@@ -155,7 +157,7 @@ export class ProfilePage {
   }
   friendsPage(){
     console.log("Friends");
-    this.navCtrl.push(FriendsPage);
+    this.navCtrl.push(FriendsPage, {user: this.user});
   }
   invitesPage(){
     console.log("Invites");
@@ -238,7 +240,7 @@ export class ProfilePage {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     //send the file to the routes in the router.js file
-    fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
+    fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
       options).then((entry) => {
        this.imagePath = JSON.parse(entry.response).fileUrl.url;
         // this.imageChosen = 0;
