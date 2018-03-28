@@ -453,7 +453,17 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
-
+  if(req.body.type == 'stance'){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "routes: Error setting stance!"});
+      }
+      else {
+        return res.json({success: true, msg: "routes: Set stance!"});
+      }
+    });
+  }
 });
 
 router.post('/message', passport.authenticate('jwt', {session:false}), (req, res, next) => {
