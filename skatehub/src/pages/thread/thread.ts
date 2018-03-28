@@ -20,7 +20,7 @@ export class ThreadPage {
   recipients: any = [];
   id: string = "";
   message: string = "";
-  thread: any;
+  thread: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public messageProvider: MessageProvider, public authProvider: AuthProvider) {
@@ -43,21 +43,13 @@ export class ThreadPage {
       this.content.scrollToBottom(300);
     }, 1000);
   }
-  getThread(threadId){
-    this.messageProvider.getThread(threadId, this.authProvider.token)
+  getThread(){
+    if(!this.thread) return;
+    this.messageProvider.getThread(this.thread.id, this.authProvider.token)
         .then((someObs) => {
           someObs.subscribe((data) => {
             if(data.success){
-              console.log(data);
-              if(!this.thread){
-
-                let dummyThread = {
-                  thread: data.thread,
-                  id: data.thread._id
-                };
-                this.thread = dummyThread;
-                return;
-              }
+              // console.log(data);
               this.thread.thread.messages = data.thread.messages;
             }
             else {
@@ -98,7 +90,6 @@ export class ThreadPage {
 
     msgArr.push(messageObj);
     console.log(msgArr);
-    console.log(threadId);
     let newMsgObj = {
       threadId: threadId,
       sender: this.id,
@@ -108,14 +99,7 @@ export class ThreadPage {
     this.authProvider.loadToken();
     this.messageProvider.sendMessage(newMsgObj, this.authProvider.token).subscribe((data)=>{
       if(data.success){
-        let id = '';
-        if(data.newThread){
-          id = data.newThread._id;
-        }
-        else {
-          id = this.thread.id;
-        }
-        this.getThread(id);
+        this.getThread();
         // this.resetTextAreaHeight();
         this.message = "";
         this.scrollToBottom();
