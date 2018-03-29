@@ -49,6 +49,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { OneSignal } from '@ionic-native/onesignal';
 
 import { ElasticDirective } from '../directives/elastic/elastic';
 import { MessageProvider } from '../providers/message/message';
@@ -126,6 +127,7 @@ import { MessageProvider } from '../providers/message/message';
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     ImagePicker,
     FileTransfer,
     File,

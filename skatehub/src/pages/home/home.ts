@@ -6,6 +6,7 @@ import { SpotsProvider } from './../../providers/spots/spots';
 import { SpotTypeFilterProvider } from './../../providers/spot-type-filter/spot-type-filter';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
+import { OneSignal } from '@ionic-native/onesignal'
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
@@ -35,7 +36,7 @@ export class HomePage {
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
             public geolocation: Geolocation, public actionSheet: ActionSheetController,
             public popoverCtrl: PopoverController, public event: Events,
-            public spotTfp: SpotTypeFilterProvider) {
+            public spotTfp: SpotTypeFilterProvider, public oneSignal: OneSignal) {
 
               //whenever an event is published with the name 'filter:event', return
               //this code... when a user filters, run this code essentially
@@ -43,6 +44,7 @@ export class HomePage {
                 this.filterArray = data;
                 this.spots = this.filterSpots(data);
               });
+
   }
   /*
   Performs a 'filter' function on the spotsVarHolder (the array that will always
@@ -139,6 +141,7 @@ export class HomePage {
     else{
       this.user = this.navParams.data;
     }
+    this.sendOneSignalTags();
   }
 
   /*
@@ -308,6 +311,28 @@ export class HomePage {
     } else {
    	   console.log('Error: HomePage, attempting push to DetailedUserPage');
     }
+  }
+
+  sendOneSignalTags(){
+    // this.authProvider.loadUser();
+    // this.oneSignal.addSubscriptionObserver().subscribe((state) => {
+    //   if (!state.from.subscribed && state.to.subscribed) {
+    //     console.log("Subscribed for OneSignal push notifications!")
+    //     // get player ID
+    //     console.log(state.to.userId);
+    //
+    //     console.log(tags);
+    //     this.oneSignal.deleteTags(["user_id", "user_email"]);
+    //     this.oneSignal.sendTags(tags);
+    //   }
+    //   console.log("Push Subscription state changed: " + JSON.stringify(state));
+    // });
+    let tags = {
+      user_id: this.user._id,
+      user_email: this.user.email
+    };
+    this.oneSignal.deleteTags(["user_id", "user_email"]);
+    this.oneSignal.sendTags(tags);
   }
 
 }
