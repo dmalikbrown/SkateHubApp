@@ -17,14 +17,20 @@ page-home {
 
     //text-align: center;
   }
-  .border-green {
+  .border-transparent {
     border-color: map-get($colors, primary);
     border-style: solid;
     border-width: medium;
     border-radius: 50%;
+    opacity: .4
   }
   .border-bottom-green {
     border-bottom: .5px solid map-get($colors, primary);
+  }
+  .bot-border{
+    //border-color: map-get($colors, primary);
+    border-bottom-style: inset;
+    border-width: thick;
   }
   .state-select .select-placeholder {
     font-size: 1.2em;

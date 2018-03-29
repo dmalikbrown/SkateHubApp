@@ -1,8 +1,8 @@
 <!-- Start header -->
 <ion-header no-border>
-  <ion-navbar color="primary">
+  <ion-navbar color="white">
     <ion-buttons end right (tap)="presentPopover($event)">
-      <button id = "filter" color="white" ion-button icon-only>
+      <button id = "filter" color="primary" ion-button icon-only>
         <ion-icon name="options"></ion-icon>
       </button>
     </ion-buttons>
@@ -12,7 +12,7 @@
     </ion-title>
 
     <ion-buttons start left (tap) = "openInbox()">
-      <button color="white" ion-button icon-only>
+      <button color="primary" ion-button icon-only>
         <ion-icon id = "bubbles" name="ios-chatbubbles"></ion-icon>
       </button>
     </ion-buttons>
@@ -23,17 +23,19 @@
 
 <ion-content>
   <!-- Start State filter -->
-  <ion-row justify-content-center>
-    <ion-col offset-6 col-12>
-      <ion-item no-lines>
-        <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
-          <ion-option value="all">All</ion-option>
-          <ion-option value="NC">North Carolina</ion-option>
-          <ion-option value="SC">South Carolina</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-  </ion-row>
+  <ion-item-divider>
+    <ion-row justify-content-center >
+      <ion-col offset-6 col-12>
+        <ion-item no-lines>
+          <ion-select class ="state-select border-bottom-green" (ionChange) ="filterByState()" no-padding padding-top [(ngModel)]="state" placeholder = "View By State">
+            <ion-option value="all">All</ion-option>
+            <ion-option value="NC">North Carolina</ion-option>
+            <ion-option value="SC">South Carolina</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-item-divider>
   <!-- End state filter -->
 
   <!-- If no spots have been posted - START -->
