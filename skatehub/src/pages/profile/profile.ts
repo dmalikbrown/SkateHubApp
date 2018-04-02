@@ -84,7 +84,8 @@ export class ProfilePage {
       //TODO with some user stuff
       if(data.success){
         this.user = data.user;
-        console.log(this.user);
+        this.authProvider.updateUser(this.user);
+        // console.log(this.user);
         this.imagePath = this.user.avatar;
         if(this.checkAvatar() && this.checkStance()){
           let msg = "Update your profile picture and skate stance to enhance your profile!";
@@ -188,7 +189,7 @@ export class ProfilePage {
 
     if(this.user.stance == null)
     {
-		
+
       this.user.stance = "Goofy";
       console.log("Goofy stance has been chosen.");
     }
@@ -212,7 +213,7 @@ export class ProfilePage {
 
     this.authProvider.update(edits).subscribe((data)=>{
       if(data.success){
-        console.log(this.user.stance, "data success");	  
+        console.log(this.user.stance, "data success");
         let msg = data.msg;
         let pos = "top";
         let cssClass = "success";
@@ -221,7 +222,7 @@ export class ProfilePage {
         this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
       }
       else {
-        console.log("data was not a success.");	  
+        console.log("data was not a success.");
         let msg = data.msg;
         let pos = "top";
         let cssClass = "warning";

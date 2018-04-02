@@ -39,15 +39,22 @@ export class FriendsPage {
       let dummyFriends = [];
       dummyReq = this.user.friends.filter((friend) => friend.request == false && friend.sender != this.user._id);
       dummyFriends = this.user.friends.filter((friend) => friend.request == true);
-
+      // console.log(dummyReq);
       let reqL = dummyReq.length;
       let fL = dummyFriends.length;
 
       for(let i = 0; i<reqL; i++){
-        this.getUsersFromArr(dummyReq[i].id, 'request');
+        this.getUsersFromArr(dummyReq[i].sender, 'request');
       }
       for(let i = 0; i<fL; i++){
-        this.getUsersFromArr(dummyFriends[i].id, 'friends');
+        let idVal = "";
+        if(dummyFriends[i].id == this.user._id){
+          idVal = dummyFriends[i].sender;
+        }
+        else {
+          idVal = dummyFriends[i].id;
+        }
+        this.getUsersFromArr(idVal, 'friends');
       }
 
     }
@@ -58,7 +65,9 @@ export class FriendsPage {
     this.authProvider.getUser(this.user._id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
+        this.authProvider.updateUser(this.user);
         this.user = data.user;
+        this.filters();
       }
       else {
         //TODO Error alert
@@ -105,7 +114,6 @@ export class FriendsPage {
         this.requests = [];
         this.friends = [];
         this.getUser();
-        this.filters();
       }
       else {
         console.log("yO BITCH");
