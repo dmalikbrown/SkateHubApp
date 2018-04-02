@@ -141,6 +141,8 @@ export class HomePage {
     else{
       this.user = this.navParams.data;
     }
+  }
+  ionViewDidLoad(){
     this.sendOneSignalTags();
   }
 

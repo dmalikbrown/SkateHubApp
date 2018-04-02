@@ -40,15 +40,20 @@ export class MyApp {
   }
   setUpNotifications(){
     this.oneSignal.startInit(this.appId);
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    //This runs when the app is open and a notification comes
     this.oneSignal.handleNotificationReceived().subscribe((data) => {
         // do something when notification is received
         console.log("NOTIFICATION HAS GOTTEN TO ME!!!!");
     });
+    //This runs when a user opens a notification
     this.oneSignal.handleNotificationOpened().subscribe((data) => {
       // do something when a notification is opened
-      console.log("NOTIFICATION WAS OPENED!!!");
-      console.log(data);
+      // console.log("NOTIFICATION WAS OPENED!!!");
+      //The type of notification is stored as {type: string}
+      //ex {type: "message"}
+      //TODO push certain pages based on the type
+      console.log(data.notification.payload.additionalData);
     });
     this.oneSignal.endInit();
   }

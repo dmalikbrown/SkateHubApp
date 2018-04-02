@@ -17,7 +17,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SpotsProvider {
 
-  devEp: any = "http://10.31.7.145:3000";
+  devEp: any = "http://10.31.9.78:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public http: Http, public authProvider: AuthProvider) {

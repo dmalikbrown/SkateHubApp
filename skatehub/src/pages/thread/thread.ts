@@ -140,9 +140,10 @@ export class ThreadPage {
           //TODO send notification
           console.log(destinationId);
           let notificationObj: OSNotification = {
-              headings: {en: "You've got a message!"},
+              headings: {en: "Direct Message"},
               isAppInFocus: true,
               shown: true,
+              data: {type: "message"},
               payload: {
                 //id of the template for a new message
                 notificationID: "0e126167-022e-4b8d-87c9-bba9308bec50",
@@ -150,13 +151,10 @@ export class ThreadPage {
                 body: "Message details",
                 sound: "",
                 actionButtons: [],
-                rawPayload: "",
-                additionalData: {
-                  type: "message"
-                }
+                rawPayload: ""
               },
               displayType: 1,
-              contents: {en: "message incoming!!!"},
+              contents: {en: this.authProvider.user.username+": "+this.message},
               include_player_ids: [destinationId]
             };
           this.oneSignal.postNotification(notificationObj)
