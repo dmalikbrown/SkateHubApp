@@ -121,6 +121,11 @@ export class AuthProvider {
     });
   }
 
+  updateUser(user){
+    this.storage.set('userInfo', JSON.stringify(user));
+    this.user = user;
+  }
+
   loadToken(){
     this.storage.get('id_token').then(token => {
       this.token = token;

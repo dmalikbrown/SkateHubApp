@@ -21,7 +21,6 @@ export class AddFriendPage {
   userResultArr: any = [];
   selectedUsers: any = [];
   selectedUsersString: any = "";
-  ableToStartThread: boolean = true;
 
   //Send Request
   recipients: any = [];
@@ -45,6 +44,8 @@ export class AddFriendPage {
   }
 
   ionViewDidEnter(){
+    this.authProvider.loadUser();
+    this.id = this.authProvider.user._id;
     this.getUsers();
   }
 
@@ -55,7 +56,19 @@ export class AddFriendPage {
   getUsers(){
     this.authProvider.getAllUsers().subscribe((data)=>{
       if(data.success){
-        this.users = data.users;
+        this.users = data.users.filter(user => {
+          // console.log(user.friends);
+          let arr = user.friends.filter(friend => friend.sender == this.id || friend.id == this.id);
+          if(user._id != this.id && arr.length == 0){
+            // console.log("true");
+            return true;
+          }
+          else {
+            // console.log("false");
+            return false;
+          }
+        });
+        // console.log(this.users);
       }
       else {
         console.log("SearchPage Error, couldn't retrieve users from server");
@@ -90,7 +103,7 @@ export class AddFriendPage {
       //   this.userResultArr[i].checked = false;
       // }
     else if(!userObj.checked){
-      this.ableToStartThread = false;
+
       userObj.checked = true;
       this.searchTerm = "";
       this.searchTerm += this.temp+userObj.username+", ";;
@@ -124,8 +137,7 @@ export class AddFriendPage {
 
   sendRequest(){
     //TODO attach an id obj if there's already a thread made
-    this.authProvider.loadUser();
-    this.id = this.authProvider.user._id;
+
     let friendObj = {
       id: this.id,
       recipients: this.selectedUsers
@@ -150,5 +162,5 @@ export class AddFriendPage {
         }
     })
     console.log(friendObj);
-}
+  }
 }

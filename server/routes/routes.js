@@ -311,25 +311,25 @@ router.post('/friend', passport.authenticate('jwt', {session:false}) ,(req, res,
   let id = req.body.id;
   let recipients = req.body.recipients;
   let length = recipients.length;
-  let senderObj = {
-    sender: id,
-    id: id,
-    request: false
-  };
+  // let senderObj = {
+  //   sender: id,
+  //   id: id,
+  //   request: false
+  // };
   for (let i = 0; i < length; i++) {
       let friendObj = {
         sender: id,
         id: recipients[i]._id,
         request: false
       };
-      User.friendRequest(senderObj, friendObj, (err, someval) => {
+      User.friendRequest(friendObj, (err, someval) => {
         if(err){
           return res.json({success: false, msg: "Error Sending friend Request"});
         }
         else{
           return res.json({success: true});
         }
-      })
+      });
 
   }
 
