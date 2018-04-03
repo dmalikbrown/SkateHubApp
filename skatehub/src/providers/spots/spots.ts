@@ -58,5 +58,18 @@ export class SpotsProvider {
     console.log("Change Stance Spots.ts");
     console.log(obj);
   }
-
+  update(obj){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+	return this.http.post(this.devEp+"/skatehub/spot/update",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+  getSpotById(id){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/spots/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
 }

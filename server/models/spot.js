@@ -10,7 +10,9 @@ const SpotSchema = mongoose.Schema(
     avatar: {type: String},
     username: {type: String},
     images: [{type: String}],
-    rating: {type: Number},
+    rating:[ 
+		  {type: Number}
+	],
     riskLevel: {type: Number},
     lightingLevel: {type: String}
   } , { timestamps: { createdAt: 'created_at' } });
@@ -18,6 +20,7 @@ const SpotSchema = mongoose.Schema(
 const Spot = module.exports = mongoose.model('Spot', SpotSchema);
 
 module.exports.getSpotById = function(id, callback){
+  console.log("Finding spot, models getSpotById");
   Spot.findById(id, callback);
 }
 
@@ -27,4 +30,30 @@ module.exports.addSpot = function(newSpot, callback){
 }
 module.exports.editSpotAvatar = function(userId, avatarUrl, callback){
  Spot.updateMany({'userId': userId}, { $set: {'avatar': avatarUrl}}, callback);
+}
+
+/*
+Update function takes in a edits object that looks like:
+
+          edits = {
+          id : id,
+          type: type,
+          attributeToBeEdited: newValue
+        }
+        edits = {
+          id : spot._id,
+          type: rate,
+          attributeToBeEdited: rating 
+		}
+For reference, look more at the update function for update
+user.
+*/
+module.exports.update = function(edits, callback){
+  if(edits.type == "rate"){
+    //Spot.findByIdAndUpdate(id, {$push: {rating: edits.rating}}, callback);  	
+    Spot.findByIdAndUpdate(edits.id,
+      { $push: {rating: edits.rating} },
+      callback
+    );
+  }
 }

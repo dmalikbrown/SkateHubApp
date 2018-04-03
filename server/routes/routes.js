@@ -245,6 +245,28 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
 
 });
 
+
+/*
+ * The 'update' route is going to be called when a user is editing any information
+ * pertaining to a spot. Can be used the same way as updating a user.
+ */
+
+router.post('/spot/update', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+
+  console.log(req.body);
+  if(req.body.type == "rate"){
+    Spot.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "Error saving rating to spot"});
+      }
+      else {
+        return res.json({success: true, msg: "Saved spot rating!"});
+      }
+    });
+  }
+});
+
 router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
   /*
@@ -638,6 +660,39 @@ router.get('/all', passport.authenticate('jwt', {session:false}) ,(req, res, nex
       }
     });
 });
+router.get('/spots/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let id = req.params.id;
+    Spot.getSpotById(id, (err, spot) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading Spot"});
+      }
+      if(!spot){
+        console.log("HOW DID THIS HAPPEN? --- getting Spot");
+        return res.json({success: false, msg:"Error loading"});
+      }
+      else {	 
+  
+      let spotObj = {
+        _id: spot._id,
+        name: spot.name,
+        location: spot.location,
+        types: spot.type,
+        description: spot.description,
+        userId: spot.id,
+        avatar: spot.avatar,
+        username: spot.username,
+        images: spot.images,
+        rating: spot.rating,
+        riskLevel: spot.riskLevel,
+        lightingLevel: spot.lightingLevel		      
+	  };
+        return res.json({success: true, spot: spotObj});	
+      }
+    });
+});
+
 router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   // console.log(req.params.id);
     let id = req.params.id;

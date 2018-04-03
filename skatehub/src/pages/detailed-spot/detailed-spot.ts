@@ -1,7 +1,9 @@
+import { AuthProvider } from '../../providers/auth/auth';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { SpotsProvider } from './../../providers/spots/spots';
 
 /**
  * Generated class for the DetailedSpotPage page.
@@ -23,9 +25,10 @@ export class DetailedSpotPage {
   // comment and rate spot
   title: any;
   description: any;
-  rating: any;
+  rating: number;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
-  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController) {
+  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
+  public spotsProvider: SpotsProvider) {
   }
 
   /*
@@ -39,9 +42,10 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
+    console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
-      this.isUser = true;
+		this.isUser = true;
     }
     else
     {
@@ -103,6 +107,28 @@ on the user's device.
             error => console.log('Error launching navigator: ' + error)
     );
   }
+  /*
+   * Saves only the rating for right now.   
+   * TODO if length of ratings array is greater than 10.
+   * Display average. 
+   */
+  saveButton(){
+	 let obj = {
+	 	id: this.spot._id,
+		type: "rate",
+		rating: this.rating
+	 };
+     this.spotsProvider.update(obj).subscribe((data) => {		 
+       if(data.success){
+	     console.log("Successfully rated spot");
+         this.spot.rating.push(this.rating);
+         console.log("this.spot.rating: ", this.spot.rating); 
+	   } else {
+         console.log("Error when rating spot", data);
+       }
+	 });	 
+  }
+		
   /*
    * This is opens up a prompt to let the user  
    * report the spot.
