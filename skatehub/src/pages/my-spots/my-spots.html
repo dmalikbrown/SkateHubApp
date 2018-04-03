@@ -40,7 +40,6 @@
 
     <ion-list *ngSwitchCase="'savedSpots'">
       <ion-item *ngFor="let spot of savedSpotsArr">
-        <ion-item *ngFor="let spot of spotsArr">
           <ion-thumbnail item-start>
             <img [src]="spot.images[0]">
             </ion-thumbnail>
@@ -50,7 +49,6 @@
                 View
               </button>
             </ion-buttons>
-        </ion-item>
       </ion-item>
     </ion-list>
   </div>
