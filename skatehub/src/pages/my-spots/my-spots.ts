@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
+import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 
 
 /**
@@ -25,7 +26,7 @@ export class MySpotsPage {
   savedSpotsArr: any = [];
   categories: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
+  constructor(public navCtrl: NavController,public actionSheet: ActionSheetController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
 
   ionViewDidLoad() {
@@ -88,4 +89,8 @@ export class MySpotsPage {
     console.log("Saved Spots");
   }
 
+  openDetailedSpot(spot){
+      this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
+      console.log('Go to Post clicked');
+    }
 }
