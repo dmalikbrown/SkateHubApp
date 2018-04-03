@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { AuthProvider } from '../../providers/auth/auth';
 
 /**
@@ -27,7 +28,8 @@ export class AddFriendPage {
   id: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-      public authProvider: AuthProvider, public toastCtrl: ToastController) {
+      public authProvider: AuthProvider, public toastCtrl: ToastController,
+      public oneSignal: OneSignal) {
   }
 
   ionViewDidLoad() {
@@ -155,6 +157,55 @@ export class AddFriendPage {
             setTimeout(() => {
               toast.dismiss();
             }, 2000);
+          });
+          this.authProvider.getOneSignalDevices().subscribe((results) => {
+            // console.log(results);
+            // console.log("RECEIPIENT");
+            // console.log(recipient);
+            let len = results.total_count;
+            let recLen = this.selectedUsers.length;
+            let destinationIds = [];
+            for(let i = 0; i<recLen; i++){
+              for(let j = 0; j<len; j++){
+
+                if(results.players[j].tags.user_id == this.selectedUsers[i]._id){
+                  // let destinationId = results.players[i].tags.player_id;
+                  // console.log("DID THIS CODE EVEN RUN???");
+                  destinationIds.push(results.players[i].id);
+                  // console.log(destinationIds);
+                  break;
+                }
+              }
+            }
+
+            //TODO send notification
+            console.log(destinationIds);
+            let notificationObj: OSNotification = {
+                headings: {en: "New Friend Request"},
+                isAppInFocus: true,
+                shown: true,
+                data: {type: "friend"},
+                payload: {
+                  //id of the template for a new request
+                  notificationID: "fe62f88f-dec5-48d0-97c3-ebbd2172e010",
+                  title: "New Friend Request",
+                  body: "You have a new friend request.",
+                  sound: "",
+                  actionButtons: [],
+                  rawPayload: ""
+                },
+                displayType: 1,
+                contents: {en: this.authProvider.user.username+" has sent you a friend request."},
+                include_player_ids: destinationIds
+              };
+            this.oneSignal.postNotification(notificationObj)
+                          .then((someData) => {
+                            console.log(someData);
+                          })
+                          .catch((someErr) => {
+                            console.log(someErr);
+                          })
+
           });
         }
         else {

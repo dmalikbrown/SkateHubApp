@@ -6,7 +6,7 @@ import { SpotsProvider } from './../../providers/spots/spots';
 import { SpotTypeFilterProvider } from './../../providers/spot-type-filter/spot-type-filter';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
-import { OneSignal } from '@ionic-native/onesignal'
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
@@ -141,9 +141,10 @@ export class HomePage {
     else{
       this.user = this.navParams.data;
     }
+    this.sendOneSignalTags();
   }
   ionViewDidLoad(){
-    this.sendOneSignalTags();
+
   }
 
   /*
@@ -245,7 +246,44 @@ export class HomePage {
 
     this.authProvider.update(editObj).subscribe((data) => {
 	  if(data.success){
-        console.log("Successfully saved spot");
+        // console.log("Successfully saved spot");
+        this.authProvider.getOneSignalDevices().subscribe((results) => {
+          let len = results.total_count;
+          let destinationId = "";
+          for(let i = 0; i<len; i++){
+            if(results.players[i].tags.user_id == spot.userId){
+              destinationId = results.players[i].id;
+              break;
+            }
+          }
+          console.log(destinationId);
+          let notificationObj: OSNotification = {
+              headings: {en: ""},
+              isAppInFocus: true,
+              shown: true,
+              data: {type: "saved"},
+              payload: {
+                //id of the template for a new message
+                notificationID: "4b19b742-5509-4a06-bfeb-73da3286540f",
+                title: "Spot Saved",
+                body: "Someone has saved your spot.",
+                sound: "",
+                actionButtons: [],
+                rawPayload: ""
+              },
+              displayType: 1,
+              contents: {en: this.authProvider.user.username+" has saved your spot "+spot.name},
+              include_player_ids: [destinationId]
+            };
+          this.oneSignal.postNotification(notificationObj)
+                        .then((someData) => {
+                          console.log(someData);
+                        })
+                        .catch((someErr) => {
+                          console.log(someErr);
+                        })
+
+        });
       } else {
         console.log("Error when saving spot");
       }
@@ -333,6 +371,7 @@ export class HomePage {
       user_id: this.user._id,
       user_email: this.user.email
     };
+    console.log("sending tags");
     this.oneSignal.deleteTags(["user_id", "user_email"]);
     this.oneSignal.sendTags(tags);
   }
