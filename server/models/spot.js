@@ -10,11 +10,14 @@ const SpotSchema = mongoose.Schema(
     avatar: {type: String},
     username: {type: String},
     images: [{type: String}],
-    rating:[ 
-		  {type: Number}
+    rating: [ 
+      {type: Number}
 	],
     riskLevel: {type: Number},
-    lightingLevel: {type: String}
+    lightingLevel: {type: String},
+    comment: [
+      {type: String}
+	]
   } , { timestamps: { createdAt: 'created_at' } });
 
 const Spot = module.exports = mongoose.model('Spot', SpotSchema);
@@ -46,13 +49,20 @@ Update function takes in a edits object that looks like:
           attributeToBeEdited: rating 
 		}
 For reference, look more at the update function for update
-user.
+user. Can be used to update ratings and comments with room 
+for more
 */
 module.exports.update = function(edits, callback){
   if(edits.type == "rate"){
     //Spot.findByIdAndUpdate(id, {$push: {rating: edits.rating}}, callback);  	
     Spot.findByIdAndUpdate(edits.id,
       { $push: {rating: edits.rating} },
+      callback
+    );
+  }
+  if(edits.type == "comment"){
+    Spot.findByIdAndUpdate(edits.id,
+      { $push: {comment: edits.comment} },
       callback
     );
   }

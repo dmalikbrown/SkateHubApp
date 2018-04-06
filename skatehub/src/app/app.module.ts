@@ -52,6 +52,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 import { ElasticDirective } from '../directives/elastic/elastic';
 import { MessageProvider } from '../providers/message/message';
+import { CommentProvider } from '../providers/comment/comment';
+import { ReportProvider } from '../providers/report/report';
 
 
 @NgModule({
@@ -138,7 +140,9 @@ import { MessageProvider } from '../providers/message/message';
     AuthProvider,
     SpotsProvider,
     SpotTypeFilterProvider,
-    MessageProvider
+    MessageProvider,
+    CommentProvider,
+    ReportProvider
   ]
 })
 export class AppModule {}

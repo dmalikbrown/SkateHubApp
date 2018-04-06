@@ -7,7 +7,8 @@ const multiparty = require('multiparty');
 const User = require('../models/user');
 const Spot = require('../models/spot');
 const Message = require('../models/message');
-
+const Comment = require('../models/comment');
+const Report = require('../models/report');
 
 cloudinary.config({
   cloud_name: "skatehub",
@@ -244,6 +245,53 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
   })
 
 });
+/*
+ * This route allows comments to be stored. 
+ * I thought that maybe it should be stored
+ * within a subdivision of spot but since comments
+ * has it's own schema. An executive decison was 
+ * made.
+ */
+router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+ 
+  let commentObj = new Comment({ 
+    userId: req.body.userId,
+    spotId: req.body.spotId,
+    comment: req.body.comment
+  });
+  Comment.addComment(commentObj, (err,comment) =>{
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when adding comment"});
+    }
+    else{ 
+      return res.json({success: true, comment});
+    }
+  });
+});
+/*
+ * This allows us to save reports submitted by the user.
+ *
+ */
+router.post('/report', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+ 
+  let reportObj = new Report({ 
+    userId: req.body.userId,
+    spotId: req.body.spotId,
+    report: req.body.report
+  });
+  Report.addReport(reportObj, (err,report) =>{
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when adding report"});
+    }
+    else{ 
+      return res.json({success: true, report});
+    }
+  });
+});
 
 
 /*
@@ -265,6 +313,18 @@ router.post('/spot/update', passport.authenticate('jwt', {session:false}), (req,
       }
     });
   }
+  if(req.body.type == "comment"){
+        Spot.update(req.body, (err, x) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "Error saving comment id to spot"});
+          }
+          else {
+            return res.json({success: true, msg: "Saved spot comment id!"});
+          }
+        });
+      }
+
 });
 
 router.post('/image/remove', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
@@ -692,15 +752,65 @@ router.get('/spots/:id', passport.authenticate('jwt', {session:false}) ,(req, re
       }
     });
 });
-
+/*
+ * This allows us to get the comments by id. If we wanted to.
+ * What is returned is all the info pertaining to that comment.
+ */
+router.get('/comment/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let id = req.params.id;
+    Comment.getCommentById(id, (err, comment) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading comment"});
+      }
+      if(!comment){
+        console.log("HOW DID THIS HAPPEN? --- getting Comment");
+        return res.json({success: false, msg:"Error loading"});
+      }
+      else {	 
+  
+      let commentObj = {
+        _id: comment._id, 
+        userId: comment.userId,
+        spotId: comment.spotId,
+        comment: comment.comment		      
+       };
+        return res.json({success: true, comment: commentObj});	
+      }
+    });
+});
+router.get('/report/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let id = req.params.id;
+    Report.getReportById(id, (err, report) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading report"});
+      }
+      if(!report){
+        console.log("HOW DID THIS HAPPEN? --- getting Report");
+        return res.json({success: false, msg:"Error loading"});
+      }
+      else {	 
+  
+      let reportObj = {
+        _id: report._id, 
+        userId: report.userId,
+        spotId: report.spotId,
+        report: report.report		      
+       };
+        return res.json({success: true, report: reportObj});	
+      }
+    });
+});
 router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   // console.log(req.params.id);
     let id = req.params.id;
     User.getUserById(id, (err, user) =>{
       if(err){
         console.log(err);
-        return res.json({success: false, msg:"Error loading"});
-      }
+        return res.json({success: false, msg:"Error loading"});      }
       if(!user){
         console.log("HOW DID THIS HAPPEN? --- getting user");
         return res.json({success: false, msg:"Error loading"});
