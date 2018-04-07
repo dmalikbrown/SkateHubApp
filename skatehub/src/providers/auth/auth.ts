@@ -15,6 +15,7 @@ export class AuthProvider {
   prodEp: any = "https://skatehub.herokuapp.com";
   token: any;
   user: any;
+  appId: string = '3cc2428a-8bb2-4de9-befb-fa4d34429ffb';
 
   constructor(public http: Http, public storage: Storage) {
   //  console.log('Hello AuthProvider Provider');
@@ -32,6 +33,13 @@ export class AuthProvider {
     headers.append('Authorization', this.token);
     headers.append('Content-Type','application/json');
     return this.http.get(this.devEp+"/skatehub/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+  addInvites(invite){
+    let headers = new Headers();
+    headers.append('Authorization', this.token);
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.devEp+"/skatehub/add/invites",invite,{headers: headers})
       .map(res => res.json());
   }
   removeImageCloud(obj){
@@ -77,6 +85,17 @@ export class AuthProvider {
         .map(res => res.json());
   }
 
+  getOneSignalDevices(){
+    // "Authorization: Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj" \
+    //  "https://onesignal.com/api/v1/players?app_id={appId}&limit=300&offset=0"
+    let headers = new Headers();
+    headers.append('Authorization', "Basic NjY4NTA1MzItZjI5OC00NDE2LTk5NGItNGFhNmJmM2M0OWU5");
+    headers.append('Content-Type','application/json');
+    return this.http.get("https://onesignal.com/api/v1/players?app_id="+this.appId+"&offset=0",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+
+  }
+
   checkCurrentPassword(passwordObj){
     let headers = new Headers();
     headers.append('Authorization', this.token);
@@ -119,6 +138,11 @@ export class AuthProvider {
     this.storage.get('userInfo').then(user => {
       this.user = JSON.parse(user);
     });
+  }
+
+  updateUser(user){
+    this.storage.set('userInfo', JSON.stringify(user));
+    this.user = user;
   }
 
   loadToken(){

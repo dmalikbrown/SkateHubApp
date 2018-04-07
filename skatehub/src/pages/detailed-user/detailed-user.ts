@@ -45,19 +45,11 @@ export class DetailedUserPage {
   ionViewDidEnter(){
     this.authProvider.loadUser();
     this.me = this.authProvider.user;
-    console.log(this.me);
+    // console.log(this.me);
 
-    if(this.navParams){
-      console.log("if statement, ionViewDidEnter", this.navParams);
-	  this.userId = this.navParams.data.id;
-	  console.log("stringify", JSON.stringify(this.userId));
-    }
-	else{
-	  console.log("Error: ionViewDidEnter, navParams");
-      this.userId = this.navParams;
-	}
+    this.userId = this.navParams.get('id');
     console.log("outside of if statement, ionViewDidEnter");
-    this.getUser(this.navParams.data.id);
+    this.getUser(this.userId);
   }
 
   /*
@@ -93,10 +85,12 @@ export class DetailedUserPage {
 
   checkFriends(){
     if(this.me.friends){
-      console.log("here bitch");
+      // console.log("here bitch");
       let len = this.me.friends.length;
+      console.log(this.me.friends);
       for(let i = 0; i<len; i++){
         //if statement to check if you've sent a friend request to this user
+        //TODO if the user im viewing sent me a friend request allow acception
         if(this.me.friends[i].id == this.user._id && !this.me.friends[i].request){
           console.log("also here bitch");
           this.hasRequested = true;

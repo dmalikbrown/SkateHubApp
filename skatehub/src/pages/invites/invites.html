@@ -7,87 +7,54 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Invites</ion-title>
-    </ion-navbar>
+    <ion-buttons end right (tap)="openSessionModal()">
+      <button color="primary" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+        <ion-icon name="flash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
-<ion-content class="list-avatar-page">
+<ion-content>
 
-    <ion-list>
-  <ion-item>
-    <ion-avatar item-start>
-      <img src="assets/imgs/profileGeneric.jpg">
-    </ion-avatar>
-    <h2>Username</h2>
-    <ion-badge item-end>Accept!</ion-badge>
+    <ion-list *ngIf="!emptyRequests">
+      <ion-list-header>
+        Requests
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let invite of requested">
+        <ion-item no-lines>
+          <ion-thumbnail item-start>
+            <img [src]="invite.spot.images[0]">
+          </ion-thumbnail>
+          <h2 text-wrap>{{invite.spot.name}}</h2>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="success" (tap)="acceptInvite(invite)">
+            <ion-icon name="checkmark"></ion-icon>
+            Going
+          </button>
+        </ion-item-options>
+        <ion-item-options side="left" (tap)="declineInvite(invite)">
+          <button ion-button color="danger">
+            <ion-icon name="close"></ion-icon>
+            Decline
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-item-divider *ngIf="!emptyInvites && !emptyRequests">
+    </ion-item-divider>
+    <ion-list *ngIf="!emptyInvites">
+      <ion-list-header>
+        Your Invites
+      </ion-list-header>
+
+      <ion-item no-lines *ngFor="let invite of accepted">
+        <ion-thumbnail item-start>
+          <img [src]="invite.spot.images[0]">
+        </ion-thumbnail>
+        <h2 text-wrap>{{invite.spot.name}}</h2>
       </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
-
-<ion-list>
-<ion-item>
-<ion-avatar item-start>
-  <img src="assets/imgs/profileGeneric.jpg">
-</ion-avatar>
-<h2>Username</h2>
-<ion-badge item-end>Accept!</ion-badge>
-  </ion-item>
-</ion-list>
+    </ion-list>
+</ion-content>

@@ -7,8 +7,10 @@ const multiparty = require('multiparty');
 const User = require('../models/user');
 const Spot = require('../models/spot');
 const Message = require('../models/message');
+const Invite = require('../models/invite');
 const Comment = require('../models/comment');
 const Report = require('../models/report');
+
 
 cloudinary.config({
   cloud_name: "skatehub",
@@ -138,7 +140,67 @@ router.post('/delete', passport.authenticate('jwt', {session:false}) ,(req, res,
     }
   });
 });
+router.post('/create/invite', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  console.log(req.body);
+  let newInvite = new Invite(req.body);
+  Invite.addInvite(newInvite, (err, invite) => {
+    if(err){
+      return res.json({success: false, msg: 'Failed to create invite. Try again.'});
+    }
+    else {
+      let inviteObj = {
+        id: invite._id
+      };
+      User.addInvite(invite.sender, inviteObj, (err, val) => {
+        if(err){
+          return res.json({success: false, msg: 'Failed to create invite. Try again.'});
+        }
+        else {
+          return res.json({success: true, invite: invite});
+        }
+      });
+    }
+  });
+});
+router.post('/add/invites', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+  let inviteObj = req.body;
+  let userInviteObj = {
+    id: inviteObj.inviteId
+  };
 
+  User.addInvite(inviteObj.userId, userInviteObj, (err, someVal)=> {
+    if(err){
+      return res.json({success: false, msg: 'Failed to create invite. Try again.'});
+    }
+    else {
+      return res.json({success: true});
+    }
+  });
+});
+router.post('/accept/invite', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+  let inviteObj = req.body;
+
+  Invite.addAccepted(inviteObj.inviteId, inviteObj.userId, (err, someVal)=> {
+    if(err){
+      return res.json({success: false, msg: 'Failed to accept invite. Try again.'});
+    }
+    else {
+      return res.json({success: true});
+    }
+  });
+});
+router.post('/decline/invite', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+  let inviteObj = req.body;
+
+  Invite.addDeclined(inviteObj.inviteId, inviteObj.userId, (err, someVal)=> {
+    if(err){
+      return res.json({success: false, msg: 'Failed to decline invite. Try again.'});
+    }
+    else {
+      return res.json({success: true});
+    }
+  });
+});
 router.post('/image/upload', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   //multiparty helps handle files and large payloads
   (new multiparty.Form()).parse(req, function(err, fields, files) {
@@ -393,25 +455,25 @@ router.post('/friend', passport.authenticate('jwt', {session:false}) ,(req, res,
   let id = req.body.id;
   let recipients = req.body.recipients;
   let length = recipients.length;
-  let senderObj = {
-    sender: id,
-    id: id,
-    request: false
-  };
+  // let senderObj = {
+  //   sender: id,
+  //   id: id,
+  //   request: false
+  // };
   for (let i = 0; i < length; i++) {
       let friendObj = {
         sender: id,
         id: recipients[i]._id,
         request: false
       };
-      User.friendRequest(senderObj, friendObj, (err, someval) => {
+      User.friendRequest(friendObj, (err, someval) => {
         if(err){
           return res.json({success: false, msg: "Error Sending friend Request"});
         }
         else{
           return res.json({success: true});
         }
-      })
+      });
 
   }
 
@@ -683,6 +745,19 @@ router.get('/message/:threadId', passport.authenticate('jwt', {session:false}), 
     }
   })
 });
+
+router.get('/invite/:inviteId', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  let id = req.params.inviteId;
+  // console.log(req.params.threadId);
+  Invite.getInviteById(id, (err, invite) => {
+    if(err) {
+      return res.json({success: false, msg: "Error getting invite"});
+    }
+    else {
+      return res.json({success: true, invite: invite});
+    }
+  })
+});
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
 });
@@ -732,8 +807,8 @@ router.get('/spots/:id', passport.authenticate('jwt', {session:false}) ,(req, re
         console.log("HOW DID THIS HAPPEN? --- getting Spot");
         return res.json({success: false, msg:"Error loading"});
       }
-      else {	 
-  
+      else {
+
       let spotObj = {
         _id: spot._id,
         name: spot.name,
@@ -746,9 +821,9 @@ router.get('/spots/:id', passport.authenticate('jwt', {session:false}) ,(req, re
         images: spot.images,
         rating: spot.rating,
         riskLevel: spot.riskLevel,
-        lightingLevel: spot.lightingLevel		      
+        lightingLevel: spot.lightingLevel
 	  };
-        return res.json({success: true, spot: spotObj});	
+        return res.json({success: true, spot: spotObj});
       }
     });
 });

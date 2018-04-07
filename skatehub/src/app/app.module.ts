@@ -32,7 +32,7 @@ import { ThreadPage } from '../pages/thread/thread';
 import { SeshesPage } from '../pages/seshes/seshes';
 import { AddFriendPage } from '../pages/add-friend/add-friend';
 import { OtherUserSpotsPage } from '../pages/other-user-spots/other-user-spots';
-
+import { AddSessionPage } from '../pages/add-session/add-session';
 
 
 import { AuthProvider } from '../providers/auth/auth';
@@ -49,11 +49,15 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { OneSignal } from '@ionic-native/onesignal';
 
 import { ElasticDirective } from '../directives/elastic/elastic';
 import { MessageProvider } from '../providers/message/message';
+
+import { InviteProvider } from '../providers/invite/invite';
 import { CommentProvider } from '../providers/comment/comment';
 import { ReportProvider } from '../providers/report/report';
+
 
 
 @NgModule({
@@ -86,6 +90,7 @@ import { ReportProvider } from '../providers/report/report';
     ThreadPage,
     SeshesPage,
     OtherUserSpotsPage,
+    AddSessionPage,
     ElasticDirective
   ],
   imports: [
@@ -123,11 +128,13 @@ import { ReportProvider } from '../providers/report/report';
     FilterPage,
     SeshesPage,
     ThreadPage,
-    OtherUserSpotsPage
+    OtherUserSpotsPage,
+    AddSessionPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     ImagePicker,
     FileTransfer,
     File,
@@ -141,6 +148,7 @@ import { ReportProvider } from '../providers/report/report';
     SpotsProvider,
     SpotTypeFilterProvider,
     MessageProvider,
+    InviteProvider,
     CommentProvider,
     ReportProvider
   ]
