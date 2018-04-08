@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from '../../providers/spots/spots';
 import { SeshesPage } from '../../pages/seshes/seshes';
-
+import { SavedSpotsPage } from '../../pages/saved-spots/saved-spots'
 
 /**
 * Generated class for the NavigatePage page.
@@ -22,8 +22,9 @@ export class NavigatePage {
 
 
   map: any;
+  spotsArr: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public spotsProvider: SpotsProvider,
               public authProvider: AuthProvider) {
   }
 
@@ -147,7 +148,13 @@ export class NavigatePage {
           if(this.authProvider.user){
             username = this.authProvider.user.username;
           }
+          let icon = {
+            url: this.authProvider.user.avatar,
+            scaledSize: new google.maps.Size(40, 40)
+          }
           var marker = new google.maps.Marker({
+            //icon: 'http://maps.google.com/mapfiles/ms/icons/man',
+            icon: icon,
             position: pos,
             map: this.map,
             draggable: true,
@@ -196,8 +203,39 @@ export class NavigatePage {
   }
   openSeshPage(){
     this.navCtrl.push(SeshesPage);
+
   }
+//TODO Pull spots arr loop through array and add markers
+//OR make this below function to have the param spot and Call
+//When a spot is saved or posted
+ionViewDidEnter(){
+this.spotsProvider.getAllSpots().subscribe((data ) => {
+  if(data.success){
+    this.spotsArr = data.spots;
+    let len = this.spotsArr.length;
+    for(let i = 0; i < len; i++){
+      this.addSpotMarker(this.spotsArr[i].coordinates,this.spotsArr[i]);
+    }
+  }
+  else{
+    console.log("NAW FAM TRY THAT SHIT AGAIN AINT NO SPOTS BISH")
+  }
+})
+}
 
-
+addSpotMarker(spotPos,spot){
+var marker = new google.maps.Marker({
+  icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+  position: spotPos,
+  map: this.map,
+  draggable: true,
+  animation: google.maps.Animation.DROP,
+  label: {
+    text: spot.name,
+    fontFamily: 'sans-serif',
+    color: 'white'
+    }
+})
+}
 
 }

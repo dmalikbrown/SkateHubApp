@@ -8,7 +8,7 @@
 
 <ion-toolbar no-border-top mode="md">
   <ion-segment mode="md" [(ngModel)]="categories" color="iosDarkBlue">
-    <ion-segment-button (tap)="loadPostedSpots()" value="postedSpots">
+    <ion-segment-button (tap)="loadPostedSpots()" valu e="postedSpots">
       Posted Spots
     </ion-segment-button>
     <ion-segment-button (tap)="loadSavedSpots()" value="savedSpots">
@@ -19,20 +19,37 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 <!-- full configured so that you can pull all the information for the spot. -->
 <!-- Look at the homepage for inspiration.-->
-<ion-list>
-
-</ion-list>
 
 <div [ngSwitch]="categories">
     <ion-list *ngSwitchCase="'postedSpots'">
-      <ion-item *ngFor="let spot of spotsArr">{{spot.name}}</ion-item>
+      <ion-item *ngFor="let spot of spotsArr">
+        <ion-thumbnail item-start>
+          <img [src]="spot.images[0]">
+          </ion-thumbnail>
+          <h2 text-wrap>{{spot.name}}</h2>
+          <ion-buttons item-end (tap) = "openDetailedSpot(spot)">
+            <button ion-button clear icon-only>
+              View
+            </button>
+          </ion-buttons>
+      </ion-item>
     </ion-list>
 
     <ion-list *ngSwitchCase="'savedSpots'">
-      <ion-item *ngFor="let spot of savedSpotsArr">{{spot.name}}</ion-item>
+      <ion-item *ngFor="let spot of savedSpotsArr">
+          <ion-thumbnail item-start>
+            <img [src]="spot.images[0]">
+            </ion-thumbnail>
+            <h2 text-wrap>{{spot.name}}</h2>
+            <ion-buttons item-end (tap) = "openDetailedSpot(spot)">
+              <button ion-button clear icon-only>
+                View
+              </button>
+            </ion-buttons>
+      </ion-item>
     </ion-list>
   </div>
 </ion-content>

@@ -93,6 +93,26 @@ on the user's device.
 @parameters    none
 @return        nothing
 */
+saveSpt(type: string, spot){
+   let editObj = {
+     id: this.authProvider.user._id,
+     type: type,
+     savedSpots: {id: spot._id},
+   };
+  console.log('editObj', editObj.savedSpots, spot._id);
+
+  this.authProvider.update(editObj).subscribe((data) => {
+  if(data.success){
+      console.log("Successfully saved spot");
+    } else {
+      console.log("Error when saving spot");
+    }
+  });
+
+}
+  saveSpot(spot){
+    this.saveSpt('savedSpots', spot);
+  }
   openNavigation(){
     //grab the user's current location
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -127,7 +147,7 @@ on the user's device.
        rating: this.rating
 	 };
 
-     let commentObj = {	 
+     let commentObj = {
 	     userId: this.spot.userId,
        username: this.spot.username,
        spotId: this.spot._id,
