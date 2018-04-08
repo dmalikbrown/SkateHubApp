@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { AuthProvider } from './../../providers/auth/auth';
+
 
 /**
  * Generated class for the DetailedSpotPage page.
@@ -24,7 +26,7 @@ export class DetailedSpotPage {
   title: any;
   description: any;
   rating: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,public authProvider: AuthProvider,
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController) {
   }
 
@@ -62,7 +64,7 @@ export class DetailedSpotPage {
        {
          text: 'Save Spot',
          handler: () => {
-           console.log('Saved spot clicked'); 
+           console.log('Saved spot clicked');
          }
        },
        {
@@ -83,6 +85,26 @@ on the user's device.
 @parameters    none
 @return        nothing
 */
+saveSpt(type: string, spot){
+   let editObj = {
+     id: this.authProvider.user._id,
+     type: type,
+     savedSpots: {id: spot._id},
+   };
+  console.log('editObj', editObj.savedSpots, spot._id);
+
+  this.authProvider.update(editObj).subscribe((data) => {
+  if(data.success){
+      console.log("Successfully saved spot");
+    } else {
+      console.log("Error when saving spot");
+    }
+  });
+
+}
+  saveSpot(spot){
+    this.saveSpt('savedSpots', spot);
+  }
   openNavigation(){
     //grab the user's current location
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -104,7 +126,7 @@ on the user's device.
     );
   }
   /*
-   * This is opens up a prompt to let the user  
+   * This is opens up a prompt to let the user
    * report the spot.
    */
   showPrompt() {
