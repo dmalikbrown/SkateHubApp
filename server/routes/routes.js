@@ -278,7 +278,8 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
         description: req.body.description,
         images: req.body.images,
         lightingLevel: req.body.lightingLvl,
-        riskLevel: req.body.riskLvl
+        riskLevel: req.body.riskLvl,
+        coordinates: req.body.coordinates
       });
       Spot.addSpot(spotObj, (err,spot) =>{
         if(err){
@@ -308,16 +309,16 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
 
 });
 /*
- * This route allows comments to be stored. 
+ * This route allows comments to be stored.
  * I thought that maybe it should be stored
  * within a subdivision of spot but since comments
- * has it's own schema. An executive decison was 
+ * has it's own schema. An executive decison was
  * made.
  */
 router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
- 
-  let commentObj = new Comment({ 
+
+  let commentObj = new Comment({
     userId: req.body.userId,
     spotId: req.body.spotId,
     comment: req.body.comment
@@ -327,7 +328,7 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
       console.log(err);
       return res.json({success: false, msg:"Error when adding comment"});
     }
-    else{ 
+    else{
       return res.json({success: true, comment});
     }
   });
@@ -338,8 +339,8 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
  */
 router.post('/report', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
   console.log(req.body);
- 
-  let reportObj = new Report({ 
+
+  let reportObj = new Report({
     userId: req.body.userId,
     spotId: req.body.spotId,
     report: req.body.report
@@ -349,7 +350,7 @@ router.post('/report', passport.authenticate('jwt', {session:false}) ,(req, res,
       console.log(err);
       return res.json({success: false, msg:"Error when adding report"});
     }
-    else{ 
+    else{
       return res.json({success: true, report});
     }
   });
@@ -843,15 +844,15 @@ router.get('/comment/:id', passport.authenticate('jwt', {session:false}) ,(req, 
         console.log("HOW DID THIS HAPPEN? --- getting Comment");
         return res.json({success: false, msg:"Error loading"});
       }
-      else {	 
-  
+      else {
+
       let commentObj = {
-        _id: comment._id, 
+        _id: comment._id,
         userId: comment.userId,
         spotId: comment.spotId,
-        comment: comment.comment		      
+        comment: comment.comment
        };
-        return res.json({success: true, comment: commentObj});	
+        return res.json({success: true, comment: commentObj});
       }
     });
 });
@@ -867,15 +868,15 @@ router.get('/report/:id', passport.authenticate('jwt', {session:false}) ,(req, r
         console.log("HOW DID THIS HAPPEN? --- getting Report");
         return res.json({success: false, msg:"Error loading"});
       }
-      else {	 
-  
+      else {
+
       let reportObj = {
-        _id: report._id, 
+        _id: report._id,
         userId: report.userId,
         spotId: report.spotId,
-        report: report.report		      
+        report: report.report
        };
-        return res.json({success: true, report: reportObj});	
+        return res.json({success: true, report: reportObj});
       }
     });
 });

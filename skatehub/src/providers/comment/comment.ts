@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class CommentProvider {
-		
+
   devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
