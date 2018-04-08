@@ -1,10 +1,13 @@
+
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { AuthProvider } from './../../providers/auth/auth';
-
-
+import { SpotsProvider } from './../../providers/spots/spots';
+import { CommentProvider } from './../../providers/comment/comment';
+import { ReportProvider } from './../../providers/report/report';
 /**
  * Generated class for the DetailedSpotPage page.
  *
@@ -25,9 +28,13 @@ export class DetailedSpotPage {
   // comment and rate spot
   title: any;
   description: any;
-  rating: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,public authProvider: AuthProvider,
-  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController) {
+  rating: number;
+  comment: any;
+  report: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
+  public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
+  public spotsProvider: SpotsProvider, public commentProvider: CommentProvider, public reportProvider: ReportProvider,
+  public oneSignal: OneSignal, public authProvider: AuthProvider) {
   }
 
   /*
@@ -41,9 +48,10 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
+    console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
-      this.isUser = true;
+		this.isUser = true;
     }
     else
     {
@@ -126,6 +134,114 @@ saveSpt(type: string, spot){
     );
   }
   /*
+   * Once the save button is clicked, both the rating that
+   * was selected with the slide bar
+   * and the comment that the user put into the text area
+   * is saved.
+   *
+   */
+  saveButton(){
+	 let ratingObj = {
+       id: this.spot._id,
+       type: "rate",
+       rating: this.rating
+	 };
+
+     let commentObj = {
+	     userId: this.spot.userId,
+       username: this.spot.username,
+       spotId: this.spot._id,
+       comment: this.comment
+	 };
+	 /*
+	  * After creating our rate obj and comment obj,
+	  * we can have some fun.
+	  *
+	  * First, we create the comment. Comments have their
+	  * own schema because they can get complex if many users
+	  * decide to comment on a spot.
+	  */
+	 this.commentProvider.addComment(commentObj).subscribe((data) => {
+	   if(data.success){
+	     let spotComment = {
+           id: this.spot._id,
+           type: "comment",
+           comment: data.comment._id
+		 };
+		 /*
+		  * After successfully saving the comment to the db, we
+		  * can update the spot with the id of the newly created
+		  * comment.
+		  */
+		 console.log("Successfully commented on spot");
+	     this.spotsProvider.update(spotComment).subscribe((data) => {
+			  if(data.success){
+          this.authProvider.getOneSignalDevices().subscribe((results) => {
+            // console.log(results);
+            // console.log("RECEIPIENT");
+            // console.log(recipient);
+            let recipient = this.spot.userId;
+            let len = results.total_count;
+            let destinationId = "";
+            for(let i = 0; i<len; i++){
+              if(results.players[i].tags.user_id == recipient){
+                // let destinationId = results.players[i].tags.player_id;
+                // console.log("DID THIS CODE EVEN RUN???");
+                destinationId = results.players[i].id;
+                console.log(destinationId);
+                break;
+              }
+            }
+            //TODO send notification
+            console.log(destinationId);
+            let notificationObj: OSNotification = {
+                headings: {en: "New Comment"},
+                isAppInFocus: true,
+                shown: true,
+                data: {type: "comment"},
+                payload: {
+                  //id of the template for a new message
+                  notificationID: "ada9fc69-030b-44e7-aba5-104c6b6b4e77",
+                  title: "New Comment",
+                  body: "some new comment",
+                  sound: "",
+                  actionButtons: [],
+                  rawPayload: ""
+                },
+                displayType: 1,
+                contents: {en: this.authProvider.user.username+" commented on your spot."},
+                include_player_ids: [destinationId]
+              };
+            this.oneSignal.postNotification(notificationObj)
+                          .then((someData) => {
+                            console.log(someData);
+                          })
+                          .catch((someErr) => {
+                            console.log(someErr);
+                          })
+
+          });
+			    console.log("Successfully saved comment id to Spot");
+			  } else {
+			    console.log("Error when saving comment id to Spot");
+			  }
+		 });
+	   } else {
+		   console.log("Error when commenting on spot");
+	   }
+	 });
+     this.spotsProvider.update(ratingObj).subscribe((data) => {
+       if(data.success){
+         console.log("Successfully rated spot");
+         this.spot.rating.push(this.rating);
+			   //console.log("this.spot.rating: ", this.spot.rating);
+	   } else {
+         console.log("Error when rating spot", data);
+       }
+	 });
+  }
+
+  /*
    * This is opens up a prompt to let the user
    * report the spot.
    */
@@ -135,7 +251,7 @@ saveSpt(type: string, spot){
       message: "What's wrong with the spot?",
       inputs: [
         {
-          name: 'Report Spot',
+          name: 'reportSpot',
           placeholder: 'Report'
         },
       ],
@@ -149,7 +265,22 @@ saveSpt(type: string, spot){
         {
           text: 'Save',
           handler: data => {
-            console.log('Saved clicked');
+		    console.log('Saved clicked');
+			let reportObj = {
+              userId: this.spot.userId,
+              spotId: this.spot._id,
+              report: data.reportSpot
+			};
+			/*
+			 * Adding the report to the spot.
+			 */
+		    this.reportProvider.addReport(reportObj).subscribe((data) =>{
+              if(data.success){
+                console.log("Successfully reported spot", data);
+              } else {
+                console.log("Error when reporting spot", data);
+              }
+            });
           }
         }
       ]

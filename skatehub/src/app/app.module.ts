@@ -32,8 +32,8 @@ import { ThreadPage } from '../pages/thread/thread';
 import { SeshesPage } from '../pages/seshes/seshes';
 import { AddFriendPage } from '../pages/add-friend/add-friend';
 import { OtherUserSpotsPage } from '../pages/other-user-spots/other-user-spots';
-
-
+import { AddSessionPage } from '../pages/add-session/add-session';
+import { CommentsPage } from '../pages/comments/comments';
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
@@ -49,9 +49,15 @@ import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { OneSignal } from '@ionic-native/onesignal';
 
 import { ElasticDirective } from '../directives/elastic/elastic';
 import { MessageProvider } from '../providers/message/message';
+
+import { InviteProvider } from '../providers/invite/invite';
+import { CommentProvider } from '../providers/comment/comment';
+import { ReportProvider } from '../providers/report/report';
+
 
 
 @NgModule({
@@ -84,7 +90,9 @@ import { MessageProvider } from '../providers/message/message';
     ThreadPage,
     SeshesPage,
     OtherUserSpotsPage,
-    ElasticDirective
+    AddSessionPage,
+    ElasticDirective,
+    CommentsPage
   ],
   imports: [
     BrowserModule,
@@ -121,11 +129,14 @@ import { MessageProvider } from '../providers/message/message';
     FilterPage,
     SeshesPage,
     ThreadPage,
-    OtherUserSpotsPage
+    OtherUserSpotsPage,
+    AddSessionPage,
+    CommentsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     ImagePicker,
     FileTransfer,
     File,
@@ -138,7 +149,10 @@ import { MessageProvider } from '../providers/message/message';
     AuthProvider,
     SpotsProvider,
     SpotTypeFilterProvider,
-    MessageProvider
+    MessageProvider,
+    InviteProvider,
+    CommentProvider,
+    ReportProvider
   ]
 })
 export class AppModule {}

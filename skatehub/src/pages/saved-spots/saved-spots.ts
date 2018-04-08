@@ -21,7 +21,8 @@ export class SavedSpotsPage {
   id: any; 
   user: any; 
   saveSpotsArr: any = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+              public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
 
   ionViewDidLoad() {

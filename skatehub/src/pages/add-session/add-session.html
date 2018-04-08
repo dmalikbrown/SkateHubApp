@@ -1,0 +1,62 @@
+<!--
+  Generated template for the AddSessionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start (tap)="closeModal()">
+      <button color="primary" ion-button icon-only>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Create New Session</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list radio-group [(ngModel)]="choosenSpot"
+  *ngIf="spots.length > 0" (ionChange)="toggleReq()">
+    <ion-list-header>
+      Choose the skate spot
+    </ion-list-header>
+    <div style="height: 100%; overflow-y: hidden;">
+      <ion-item *ngFor="let spot of spots">
+        <ion-thumbnail item-start>
+          <img [src] = "spot.images[0]">
+        </ion-thumbnail>
+        <ion-label>{{spot.name}}</ion-label>
+        <ion-radio [value]="spot"></ion-radio>
+      </ion-item>
+    </div>
+  </ion-list>
+  <ion-list *ngIf="hasFriends">
+    <ion-list-header>
+      Invite your friends
+    </ion-list-header>
+    <div style="height: 100%; overflow-y: hidden;">
+      <ion-item *ngFor="let user of friends; let i = index;">
+        <ion-avatar item-start>
+          <img [src] = "user.avatar">
+        </ion-avatar>
+        <h2>{{user.username}}</h2>
+        <p>{{user.fullName}}</p>
+        <ion-badge *ngIf="!user.checked" item-end (tap)="pushUser(user)"> Add </ion-badge>
+        <ion-buttons *ngIf="user.checked" item-end (tap)="removeUser(user, i)">
+          <button ion-button clear icon-only>
+            <ion-icon color="danger" name="close" class="fs-18"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <!-- <ion-note>Your session will start 30 mins after creating it</ion-note> -->
+  <button ion-button full [disabled]="!reqMeet" (tap)="startSession()">Start Session</button>
+
+</ion-content>

@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { MessageProvider } from '../../providers/message/message';
 import { AuthProvider } from '../../providers/auth/auth';
 /**
@@ -23,7 +24,8 @@ export class ThreadPage {
   thread: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public messageProvider: MessageProvider, public authProvider: AuthProvider) {
+              public messageProvider: MessageProvider, public authProvider: AuthProvider,
+              public oneSignal: OneSignal) {
     this.recipients = this.navParams.get('recipients');
     this.id = this.navParams.get('id');
     this.thread = this.navParams.get('thread');
@@ -48,7 +50,7 @@ export class ThreadPage {
         .then((someObs) => {
           someObs.subscribe((data) => {
             if(data.success){
-              console.log(data);
+              // console.log(data);
               if(!this.thread){
 
                 let dummyThread = {
@@ -77,7 +79,7 @@ export class ThreadPage {
     let threadId = '';
     let recipient = "";
     if(this.thread){
-      console.log(this.thread);
+      // console.log(this.thread);
       threadId = this.thread.id;
       if(this.thread.thread.receiver == this.id){
         recipient = this.thread.thread.sender;
@@ -97,8 +99,8 @@ export class ThreadPage {
     };
 
     msgArr.push(messageObj);
-    console.log(msgArr);
-    console.log(threadId);
+    // console.log(msgArr);
+    // console.log(threadId);
     let newMsgObj = {
       threadId: threadId,
       sender: this.id,
@@ -120,6 +122,50 @@ export class ThreadPage {
         // this.resetTextAreaHeight();
         this.message = "";
         this.scrollToBottom();
+        this.authProvider.getOneSignalDevices().subscribe((results) => {
+          console.log(results);
+          console.log("RECEIPIENT");
+          console.log(recipient);
+          let len = results.total_count;
+          let destinationId = "";
+          for(let i = 0; i<len; i++){
+            if(results.players[i].tags.user_id == recipient){
+              // let destinationId = results.players[i].tags.player_id;
+              console.log("DID THIS CODE EVEN RUN???");
+              destinationId = results.players[i].id;
+              console.log(destinationId);
+              break;
+            }
+          }
+          //TODO send notification
+          console.log(destinationId);
+          let notificationObj: OSNotification = {
+              headings: {en: "Direct Message"},
+              isAppInFocus: true,
+              shown: true,
+              data: {type: "message"},
+              payload: {
+                //id of the template for a new message
+                notificationID: "0e126167-022e-4b8d-87c9-bba9308bec50",
+                title: "New Message",
+                body: "Message details",
+                sound: "",
+                actionButtons: [],
+                rawPayload: ""
+              },
+              displayType: 1,
+              contents: {en: this.authProvider.user.username+": "+this.message},
+              include_player_ids: [destinationId]
+            };
+          this.oneSignal.postNotification(notificationObj)
+                        .then((someData) => {
+                          console.log(someData);
+                        })
+                        .catch((someErr) => {
+                          console.log(someErr);
+                        })
+
+        });
       }
       else {
         console.log(data.msg);
@@ -132,5 +178,16 @@ export class ThreadPage {
          this.getThread(id);
     }, 30000);
   }
+
+
+/*
+TODO Post notification info
+var notificationObj = { contents: {en: "Message with Action Buttons and Deep link"},
+                          include_player_ids: [ids.userId],
+                          data: {data_key: "data_value", openURL: "https://imgur.com/"},
+
+                          buttons: [{"id": "id1", "text": "Deep Link with URL", "icon": "ic_menu_share"}, {"id": "id2", "text": "just button2", "icon": "ic_menu_send"}]
+                          };
+*/
 
 }

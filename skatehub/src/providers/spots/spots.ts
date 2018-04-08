@@ -17,7 +17,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class SpotsProvider {
 
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://10.31.6.67:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public http: Http, public authProvider: AuthProvider) {
@@ -53,10 +53,22 @@ export class SpotsProvider {
     return this.http.get(this.devEp+"/skatehub/spots/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
-
   switchStance(obj){
     console.log("Change Stance Spots.ts");
     console.log(obj);
   }
-
+  update(obj){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+	return this.http.post(this.devEp+"/skatehub/spot/update",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+  getSpotById(id){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/spots/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
 }

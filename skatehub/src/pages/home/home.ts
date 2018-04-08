@@ -6,11 +6,13 @@ import { SpotsProvider } from './../../providers/spots/spots';
 import { SpotTypeFilterProvider } from './../../providers/spot-type-filter/spot-type-filter';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { DetailedSpotPage } from '../../pages/detailed-spot/detailed-spot';
 import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
 import { DetailedUserPage } from '../../pages/detailed-user/detailed-user';
 import { ProfilePage } from '../../pages/profile/profile';
+import { CommentsPage } from '../../pages/comments/comments';
 
 @Component({
   selector: 'page-home',
@@ -35,7 +37,7 @@ export class HomePage {
             public alertCtrl: AlertController, public launchNavigator: LaunchNavigator,
             public geolocation: Geolocation, public actionSheet: ActionSheetController,
             public popoverCtrl: PopoverController, public event: Events,
-            public spotTfp: SpotTypeFilterProvider) {
+            public spotTfp: SpotTypeFilterProvider, public oneSignal: OneSignal) {
 
               //whenever an event is published with the name 'filter:event', return
               //this code... when a user filters, run this code essentially
@@ -43,6 +45,7 @@ export class HomePage {
                 this.filterArray = data;
                 this.spots = this.filterSpots(data);
               });
+
   }
   /*
   Performs a 'filter' function on the spotsVarHolder (the array that will always
@@ -139,6 +142,10 @@ export class HomePage {
     else{
       this.user = this.navParams.data;
     }
+    this.sendOneSignalTags();
+  }
+  ionViewDidLoad(){
+
   }
 
   /*
@@ -240,7 +247,44 @@ export class HomePage {
 
     this.authProvider.update(editObj).subscribe((data) => {
 	  if(data.success){
-        console.log("Successfully saved spot");
+        // console.log("Successfully saved spot");
+        this.authProvider.getOneSignalDevices().subscribe((results) => {
+          let len = results.total_count;
+          let destinationId = "";
+          for(let i = 0; i<len; i++){
+            if(results.players[i].tags.user_id == spot.userId){
+              destinationId = results.players[i].id;
+              break;
+            }
+          }
+          console.log(destinationId);
+          let notificationObj: OSNotification = {
+              headings: {en: ""},
+              isAppInFocus: true,
+              shown: true,
+              data: {type: "saved"},
+              payload: {
+                //id of the template for a new message
+                notificationID: "4b19b742-5509-4a06-bfeb-73da3286540f",
+                title: "Spot Saved",
+                body: "Someone has saved your spot.",
+                sound: "",
+                actionButtons: [],
+                rawPayload: ""
+              },
+              displayType: 1,
+              contents: {en: this.authProvider.user.username+" has saved your spot "+spot.name},
+              include_player_ids: [destinationId]
+            };
+          this.oneSignal.postNotification(notificationObj)
+                        .then((someData) => {
+                          console.log(someData);
+                        })
+                        .catch((someErr) => {
+                          console.log(someErr);
+                        })
+
+        });
       } else {
         console.log("Error when saving spot");
       }
@@ -310,4 +354,30 @@ export class HomePage {
     }
   }
 
+  sendOneSignalTags(){
+    // this.authProvider.loadUser();
+    // this.oneSignal.addSubscriptionObserver().subscribe((state) => {
+    //   if (!state.from.subscribed && state.to.subscribed) {
+    //     console.log("Subscribed for OneSignal push notifications!")
+    //     // get player ID
+    //     console.log(state.to.userId);
+    //
+    //     console.log(tags);
+    //     this.oneSignal.deleteTags(["user_id", "user_email"]);
+    //     this.oneSignal.sendTags(tags);
+    //   }
+    //   console.log("Push Subscription state changed: " + JSON.stringify(state));
+    // });
+    let tags = {
+      user_id: this.user._id,
+      user_email: this.user.email
+    };
+    console.log("sending tags");
+    this.oneSignal.deleteTags(["user_id", "user_email"]);
+    this.oneSignal.sendTags(tags);
+  }
+
+  openComments(spot){
+    this.navCtrl.push(CommentsPage, {spot: spot});
+  }
 }

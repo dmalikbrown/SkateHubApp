@@ -81,7 +81,7 @@
 <ion-row justify-content-center>
    
     <ion-item>
-    <ion-range min="0" max="10" [(ngModel)]="saturation" color="secondary">
+    <ion-range min="0" max="10" [(ngModel)]="rating" color="secondary">
       <ion-label range-left>0</ion-label>
       <ion-label range-right>10</ion-label>
     </ion-range>
@@ -89,10 +89,11 @@
 
     <ion-item>
       <ion-label floating>Review</ion-label>
-      <ion-input [(ngModel)]="description" type="text"></ion-input>
+      <ion-input [(ngModel)]="comment" type="text"></ion-input>
     </ion-item>
-   
-  <button ion-button full color="#1180a3" (click)="saturation = 0; description =''">Save</button> 
+
+	<!--  (click)="saveButton(saturation); saturation=0; description =''" -->
+  <button ion-button full color="#1180a3" (click)="saveButton()">Save</button> 
   <button ion-button full color="#1180a3" (click)="showPrompt()">Report</button>
 </ion-row>
 </ion-content>

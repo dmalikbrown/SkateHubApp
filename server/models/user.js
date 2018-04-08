@@ -37,11 +37,6 @@ const UserSchema = mongoose.Schema(
               id: {type: String}
     }
     ],
-    messages: [
-    {
-              id: {type: String}
-    }
-    ],
     avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'}
   } , { timestamps: { createdAt: 'created_at' } });
 
@@ -80,6 +75,10 @@ module.exports.addSpot = function(id, spotId, callback){
 
   User.findByIdAndUpdate(id, {$push: {spots: spotId}}, callback);
 }
+module.exports.addInvite = function(id, inviteObj, callback){
+
+  User.findByIdAndUpdate(id, {$push: {invites: inviteObj}}, callback);
+}
 
 module.exports.sendMessage = function(id, messageId, callback){
   console.log(messageId);
@@ -87,9 +86,9 @@ module.exports.sendMessage = function(id, messageId, callback){
   User.findByIdAndUpdate(id, {$push: {messages: messageId}}, callback);
 }
 
-module.exports.friendRequest = function(sender, receiver, callback){
-  User.findByIdAndUpdate(sender.id, {$push: {friends: receiver}}, (cb) => {
-    User.findByIdAndUpdate(receiver.id, {$push: {friends: sender}}, callback);
+module.exports.friendRequest = function(receiver, callback){
+  User.findByIdAndUpdate(receiver.sender, {$push: {friends: receiver}}, (cb) => {
+    User.findByIdAndUpdate(receiver.id, {$push: {friends: receiver}}, callback);
   });
 }
 
@@ -123,11 +122,23 @@ module.exports.update = function(edits, callback){
     // },
     // callback);
     User.findById(edits.id, (err, user)=>{
-       if (err) return handleError(err);
+       if (err) throw err;
        if(user.friends){
-         let index = user.friends.findIndex((friend)=> friend.id == edits.friend._id);
+         console.log(user.friends);
+         let index = user.friends.findIndex((friend)=> friend.sender == edits.friend._id);
+         // console.log(user.friends[index]);
          user.friends[index].request = true;
-         user.save(callback);
+
+         user.save((err, val) => {
+           User.findById(edits.friend._id, (err, otherUser) => {
+             if(err) throw err;
+             if(otherUser.friends){
+               let otherIndex = otherUser.friends.findIndex((friend)=> friend.sender == edits.friend._id);
+               otherUser.friends[otherIndex].request = true;
+               otherUser.save(callback);
+             }
+           });
+         });
        }
     });
   }
