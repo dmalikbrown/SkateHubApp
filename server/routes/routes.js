@@ -320,6 +320,7 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
 
   let commentObj = new Comment({
     userId: req.body.userId,
+	username: req.body.username,	  
     spotId: req.body.spotId,
     comment: req.body.comment
   });
@@ -847,8 +848,10 @@ router.get('/comment/:id', passport.authenticate('jwt', {session:false}) ,(req, 
       else {
 
       let commentObj = {
-        _id: comment._id,
-        userId: comment.userId,
+
+        _id: comment._id, 
+        userId: comment.userId, 
+    		username: comment.username,	 
         spotId: comment.spotId,
         comment: comment.comment
        };

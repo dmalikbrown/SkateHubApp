@@ -96,7 +96,7 @@
         <ion-col col-4>
         </ion-col>
         <!-- Skate button - START -->
-        <ion-col >
+        <ion-col>
           <button color="primary" ion-button clear icon-left strong (tap)="openNavigation(spot)">
             <ion-icon name="pin"></ion-icon>
             Skate
@@ -104,18 +104,32 @@
         </ion-col>
         <!-- Skate button - END -->
       </ion-row>
+	  
       <!-- Types and skate button - END -->
       <!-- View Comments - START -->
-      <ion-row no-padding>
-        <ion-col pull-9>
-          <strong>
+      <ion-row style="width: 100%;">
+		<ion-col no-padding>
+            <!--
+             Spot Description as well as the username of the user.
+			 When the username or comment is clicked, it goes 
+			 to the profile.
+           -->
+		   <button ion-item no-lines (click)="avatarClick(spot)">
+		     <h3>{{spot.username}}</h3>
+			 <p>{{spot.description}}</p> 
+		   </button>   
+		</ion-col>
+	  </ion-row>
+	  <ion-row>
+	    <ion-col pull-6>
             <!--
              If there are comments use an array and then the length of that array.
              Would need to add tap functionality to display the comments.
            -->
-            <p> View comments (0)</p>
-          </strong>
-        </ion-col>
+		   <button color="black" ion-button clear strong (tap)="openComments(spot)">
+		     <p>View comments({{spot.comment.length}})</p>
+		   </button>
+        </ion-col>   
       </ion-row>
       <!-- View Comments - END -->
     </ion-row>

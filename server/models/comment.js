@@ -5,6 +5,7 @@ const User = require('./user');
 const CommentSchema = mongoose.Schema(
   {
     userId: { type: String },
+    username: { type: String },
     spotId: { type: String },
     comment: [
         {type: String}

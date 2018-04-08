@@ -126,8 +126,10 @@ on the user's device.
        type: "rate",
        rating: this.rating
 	 };
-     let commentObj = {
-       userId: this.spot.userId,
+
+     let commentObj = {	 
+	     userId: this.spot.userId,
+       username: this.spot.username,
        spotId: this.spot._id,
        comment: this.comment
 	 };

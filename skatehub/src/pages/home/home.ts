@@ -12,6 +12,7 @@ import { InboxPage } from '../../pages/inbox/inbox';
 import { FilterPage } from '../../pages/filter/filter';
 import { DetailedUserPage } from '../../pages/detailed-user/detailed-user';
 import { ProfilePage } from '../../pages/profile/profile';
+import { CommentsPage } from '../../pages/comments/comments';
 
 @Component({
   selector: 'page-home',
@@ -376,4 +377,7 @@ export class HomePage {
     this.oneSignal.sendTags(tags);
   }
 
+  openComments(spot){
+    this.navCtrl.push(CommentsPage, {spot: spot});
+  }
 }

@@ -33,7 +33,7 @@ import { SeshesPage } from '../pages/seshes/seshes';
 import { AddFriendPage } from '../pages/add-friend/add-friend';
 import { OtherUserSpotsPage } from '../pages/other-user-spots/other-user-spots';
 import { AddSessionPage } from '../pages/add-session/add-session';
-
+import { CommentsPage } from '../pages/comments/comments';
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
@@ -91,7 +91,8 @@ import { ReportProvider } from '../providers/report/report';
     SeshesPage,
     OtherUserSpotsPage,
     AddSessionPage,
-    ElasticDirective
+    ElasticDirective,
+    CommentsPage
   ],
   imports: [
     BrowserModule,
@@ -129,7 +130,8 @@ import { ReportProvider } from '../providers/report/report';
     SeshesPage,
     ThreadPage,
     OtherUserSpotsPage,
-    AddSessionPage
+    AddSessionPage,
+    CommentsPage
   ],
   providers: [
     StatusBar,
