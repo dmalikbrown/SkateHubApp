@@ -34,6 +34,8 @@ export class PostPage {
   currentLocationBoolean: boolean = false; //boolean if user wants to set spot addy to their location
   riskLvl: any;
   lighting: any;
+  lat: any;
+  lng: any;
   address: any = ""; //typically going to be a string
   resultArr: any = []; //typically going to be an array of strings
   skateTypes: any = []; //typically going to be an array of strings
@@ -258,7 +260,7 @@ export class PostPage {
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       //send the file to the routes in the router.js file
-      fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
+      fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
         options).then((entry) => {
           //entry is returned from the server.
           console.log(entry);
@@ -339,6 +341,8 @@ export class PostPage {
     this.geolocation.getCurrentPosition().then((resp) => {
        // resp.coords.latitude
        // resp.coords.longitude
+      this.lat = resp.coords.latitude;
+      this.lng = resp.coords.longitude;
        this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude)
           .then((result: NativeGeocoderReverseResult) =>{
             console.log(JSON.stringify(result));
@@ -389,7 +393,11 @@ export class PostPage {
         description: this.spotDescription,
         images: this.resultArr,
         lightingLvl: this.lighting,
-        riskLvl: this.riskLvl
+        riskLvl: this.riskLvl,
+        coordinates: {
+          lat: this.lat,
+          lng: this.lng
+        }
       };
       //TODO make server call with needed attributes
       console.log(obj);

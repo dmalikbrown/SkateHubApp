@@ -1,8 +1,10 @@
-import { AuthProvider } from '../../providers/auth/auth';
+
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { CommentProvider } from './../../providers/comment/comment';
 import { ReportProvider } from './../../providers/report/report';
@@ -31,7 +33,8 @@ export class DetailedSpotPage {
   report: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
-  public spotsProvider: SpotsProvider, public commentProvider: CommentProvider, public reportProvider: ReportProvider) {
+  public spotsProvider: SpotsProvider, public commentProvider: CommentProvider, public reportProvider: ReportProvider,
+  public oneSignal: OneSignal, public authProvider: AuthProvider) {
   }
 
   /*
@@ -69,7 +72,7 @@ export class DetailedSpotPage {
        {
          text: 'Save Spot',
          handler: () => {
-           console.log('Saved spot clicked'); 
+           console.log('Saved spot clicked');
          }
        },
        {
@@ -123,20 +126,20 @@ on the user's device.
        type: "rate",
        rating: this.rating
 	 };
-     let commentObj = {	 
+     let commentObj = {
        userId: this.spot.userId,
        spotId: this.spot._id,
        comment: this.comment
 	 };
-	 /* 
-	  * After creating our rate obj and comment obj, 
-	  * we can have some fun. 
-	  * 
+	 /*
+	  * After creating our rate obj and comment obj,
+	  * we can have some fun.
+	  *
 	  * First, we create the comment. Comments have their
 	  * own schema because they can get complex if many users
 	  * decide to comment on a spot.
 	  */
-	 this.commentProvider.addComment(commentObj).subscribe((data) => {		 
+	 this.commentProvider.addComment(commentObj).subscribe((data) => {
 	   if(data.success){
 	     let spotComment = {
            id: this.spot._id,
@@ -145,12 +148,57 @@ on the user's device.
 		 };
 		 /*
 		  * After successfully saving the comment to the db, we
-		  * can update the spot with the id of the newly created 
+		  * can update the spot with the id of the newly created
 		  * comment.
 		  */
-		 console.log("Successfully commented on spot");  
+		 console.log("Successfully commented on spot");
 	     this.spotsProvider.update(spotComment).subscribe((data) => {
 			  if(data.success){
+          this.authProvider.getOneSignalDevices().subscribe((results) => {
+            // console.log(results);
+            // console.log("RECEIPIENT");
+            // console.log(recipient);
+            let recipient = this.spot.userId;
+            let len = results.total_count;
+            let destinationId = "";
+            for(let i = 0; i<len; i++){
+              if(results.players[i].tags.user_id == recipient){
+                // let destinationId = results.players[i].tags.player_id;
+                // console.log("DID THIS CODE EVEN RUN???");
+                destinationId = results.players[i].id;
+                console.log(destinationId);
+                break;
+              }
+            }
+            //TODO send notification
+            console.log(destinationId);
+            let notificationObj: OSNotification = {
+                headings: {en: "New Comment"},
+                isAppInFocus: true,
+                shown: true,
+                data: {type: "comment"},
+                payload: {
+                  //id of the template for a new message
+                  notificationID: "ada9fc69-030b-44e7-aba5-104c6b6b4e77",
+                  title: "New Comment",
+                  body: "some new comment",
+                  sound: "",
+                  actionButtons: [],
+                  rawPayload: ""
+                },
+                displayType: 1,
+                contents: {en: this.authProvider.user.username+" commented on your spot."},
+                include_player_ids: [destinationId]
+              };
+            this.oneSignal.postNotification(notificationObj)
+                          .then((someData) => {
+                            console.log(someData);
+                          })
+                          .catch((someErr) => {
+                            console.log(someErr);
+                          })
+
+          });
 			    console.log("Successfully saved comment id to Spot");
 			  } else {
 			    console.log("Error when saving comment id to Spot");
@@ -160,19 +208,19 @@ on the user's device.
 		   console.log("Error when commenting on spot");
 	   }
 	 });
-     this.spotsProvider.update(ratingObj).subscribe((data) => {		 
+     this.spotsProvider.update(ratingObj).subscribe((data) => {
        if(data.success){
          console.log("Successfully rated spot");
          this.spot.rating.push(this.rating);
-			   //console.log("this.spot.rating: ", this.spot.rating); 
+			   //console.log("this.spot.rating: ", this.spot.rating);
 	   } else {
          console.log("Error when rating spot", data);
        }
-	 });	 
+	 });
   }
-		
+
   /*
-   * This is opens up a prompt to let the user  
+   * This is opens up a prompt to let the user
    * report the spot.
    */
   showPrompt() {
@@ -199,17 +247,17 @@ on the user's device.
 			let reportObj = {
               userId: this.spot.userId,
               spotId: this.spot._id,
-              report: data.reportSpot  
+              report: data.reportSpot
 			};
 			/*
 			 * Adding the report to the spot.
 			 */
 		    this.reportProvider.addReport(reportObj).subscribe((data) =>{
-              if(data.success){ 
+              if(data.success){
                 console.log("Successfully reported spot", data);
               } else {
                 console.log("Error when reporting spot", data);
-              } 
+              }
             });
           }
         }
