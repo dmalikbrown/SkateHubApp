@@ -24,7 +24,7 @@ export class MySpotsPage {
   user: any;
   spotsArr: any = [];
   savedSpotsArr: any = [];
-  categories: any;
+  categories: any = "postedSpots";
 
   constructor(public navCtrl: NavController,public actionSheet: ActionSheetController, public navParams: NavParams, public authProvider: AuthProvider, public spotsProvider: SpotsProvider) {
   }
@@ -63,7 +63,8 @@ export class MySpotsPage {
                 this.spotsArr.push(spot);
                 console.log("++++++++++++", spot.userId, this.authProvider.user._id);
               }
-            }
+			}
+			console.log("spotsArr: ", this.spotsArr);
             if(this.user.savedSpots){
               let len = this.user.savedSpots.length;
               for(let i = 0; i<len; i++){

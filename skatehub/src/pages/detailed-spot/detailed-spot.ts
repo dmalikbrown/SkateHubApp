@@ -1,6 +1,6 @@
 
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
@@ -34,7 +34,7 @@ export class DetailedSpotPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
   public spotsProvider: SpotsProvider, public commentProvider: CommentProvider, public reportProvider: ReportProvider,
-  public oneSignal: OneSignal, public authProvider: AuthProvider) {
+  public oneSignal: OneSignal, public authProvider: AuthProvider, public toastCtrl: ToastController) {
   }
 
   /*
@@ -86,30 +86,45 @@ export class DetailedSpotPage {
    });
    actionSheet.present(); //display the action sheet after creating
 }
-
+  toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      position: pos,
+      cssClass: cssClass,
+      showCloseButton: showCloseButton,
+      closeButtonText: closeButtonText,
+      dismissOnPageChange: true
+    });
+    //Fixes the bug issue #62 .. gotta call dismiss function at some point
+    toast.present().then(() => {
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    });
+  }
 /*
 Open a navigation action handler that contains the different navigation apps
 on the user's device.
 @parameters    none
 @return        nothing
 */
-saveSpt(type: string, spot){
-   let editObj = {
-     id: this.authProvider.user._id,
-     type: type,
-     savedSpots: {id: spot._id},
-   };
-  console.log('editObj', editObj.savedSpots, spot._id);
+  saveSpt(type: string, spot){
+    let editObj = {
+      id: this.authProvider.user._id,
+      type: type,
+      savedSpots: {id: spot._id},
+    };
+    console.log('editObj', editObj.savedSpots, spot._id);
 
-  this.authProvider.update(editObj).subscribe((data) => {
-  if(data.success){
-      console.log("Successfully saved spot");
-    } else {
-      console.log("Error when saving spot");
-    }
-  });
+    this.authProvider.update(editObj).subscribe((data) => {
+      if(data.success){
+        console.log("Successfully saved spot");
+	  } else {
+        console.log("Error when saving spot");
+      }
+    });
 
-}
+  }
   saveSpot(spot){
     this.saveSpt('savedSpots', spot);
   }
@@ -134,25 +149,17 @@ saveSpt(type: string, spot){
     );
   }
   /*
-   * Once the save button is clicked, both the rating that
-   * was selected with the slide bar
-   * and the comment that the user put into the text area
-   * is saved.
-   *
+   * Once the save comment button is clicked, 
+   * the comment that the user put into 
+   * the text area is saved.
    */
-  saveButton(){
-	 let ratingObj = {
-       id: this.spot._id,
-       type: "rate",
-       rating: this.rating
-	 };
-
-     let commentObj = {
-	     userId: this.spot.userId,
-       username: this.spot.username,
-       spotId: this.spot._id,
-       comment: this.comment
-	 };
+  saveComment(){
+    let commentObj = {
+      userId: this.authProvider.user._id,
+      username: this.authProvider.user.username,
+      spotId: this.spot._id,
+      comment: this.comment
+	};
 	 /*
 	  * After creating our rate obj and comment obj,
 	  * we can have some fun.
@@ -161,21 +168,21 @@ saveSpt(type: string, spot){
 	  * own schema because they can get complex if many users
 	  * decide to comment on a spot.
 	  */
-	 this.commentProvider.addComment(commentObj).subscribe((data) => {
-	   if(data.success){
-	     let spotComment = {
-           id: this.spot._id,
-           type: "comment",
-           comment: data.comment._id
-		 };
+	this.commentProvider.addComment(commentObj).subscribe((data) => {
+	  if(data.success){
+	    let spotComment = {
+          id: this.spot._id,
+          type: "comment",
+          comment: data.comment._id
+		};
 		 /*
 		  * After successfully saving the comment to the db, we
 		  * can update the spot with the id of the newly created
 		  * comment.
 		  */
-		 console.log("Successfully commented on spot");
-	     this.spotsProvider.update(spotComment).subscribe((data) => {
-			  if(data.success){
+	   console.log("Successfully created a comment!");
+	   this.spotsProvider.update(spotComment).subscribe((data) => {
+	     if(data.success){
           this.authProvider.getOneSignalDevices().subscribe((results) => {
             // console.log(results);
             // console.log("RECEIPIENT");
@@ -222,32 +229,84 @@ saveSpt(type: string, spot){
 
           });
 			    console.log("Successfully saved comment id to Spot");
+				/*
+				 * Instead of putting this higher up, I choose to throw a toast at a user 
+				 * here because all we really care about is whether or not the id
+				 * of the comment is saved to the spot.
+				 */
+                let msg = "Successfully commented on spot!";
+                let pos = "top";
+                let cssClass = "success";
+                let showCloseButton = true;
+                let closeButtonText = "Ok";
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
 			  } else {
-			    console.log("Error when saving comment id to Spot");
-			  }
-		 });
-	   } else {
-		   console.log("Error when commenting on spot");
+                console.log("Error when saving comment id to Spot");
+                let msg = "Error when commenting on spot!";
+                let pos = "top";
+                let cssClass = "warning";
+                let showCloseButton = true;
+                let closeButtonText = "Ok";
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);       
+			  }        
+		 });           
+	   } else {        
+         console.log("Error when creating a comment!");
+         let msg = "Please try commenting again!";
+         let pos = "top";
+         let cssClass = "warning";
+         let showCloseButton = true;
+         let closeButtonText = "Ok";
+         this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
 	   }
-	 });
-     this.spotsProvider.update(ratingObj).subscribe((data) => {
-       if(data.success){
-         console.log("Successfully rated spot");
-         this.spot.rating.push(this.rating);
-			   //console.log("this.spot.rating: ", this.spot.rating);
-	   } else {
-         console.log("Error when rating spot", data);
-       }
 	 });
   }
 
+  /*
+   * Created saveRating so the code can be more readable.
+   * saveComment is a big chunk of code.
+   * Once the saveRating button is clicked, the rating
+   * the user supplied is saved.
+   */
+		
+  saveRating(){
+    if (this.rating == null){
+      this.rating = 0;
+	}	  
+	let ratingObj = {
+       id: this.spot._id,
+       type: "rate",
+       rating: this.rating
+	};
+	  
+    this.spotsProvider.update(ratingObj).subscribe((data) => {
+      if(data.success){
+        console.log("Successfully rated spot");
+        this.spot.rating.push(this.rating);
+        let msg = "Successfully rated spot!";
+        let pos = "top";
+        let cssClass = "success";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);  
+	  } else {
+        console.log("Error when rating spot", data);
+        let msg = "Error when rating spot!";
+        let pos = "top";
+        let cssClass = "warning";
+        let showCloseButton = true;
+        let closeButtonText = "Ok";
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 	
+	  }
+	 });
+  }
   /*
    * This is opens up a prompt to let the user
    * report the spot.
    */
   showPrompt() {
     let prompt = this.alertCtrl.create({
-      title: 'Report Spot',
+      title: 'Save Report',
       message: "What's wrong with the spot?",
       inputs: [
         {
@@ -265,20 +324,33 @@ saveSpt(type: string, spot){
         {
           text: 'Save',
           handler: data => {
-		    console.log('Saved clicked');
-			let reportObj = {
-              userId: this.spot.userId,
+            console.log('Saved clicked');
+            let reportObj = {
+              userId: this.authProvider.user._id,
               spotId: this.spot._id,
               report: data.reportSpot
-			};
-			/*
-			 * Adding the report to the spot.
-			 */
+            };
+            /*
+             * Adding the report to the spot.
+             */
 		    this.reportProvider.addReport(reportObj).subscribe((data) =>{
-              if(data.success){
+              console.log(data);	
+              if(data.success){	  
                 console.log("Successfully reported spot", data);
+                let msg = "Successfully reported spot!";
+                let pos = "top";
+                let cssClass = "success";
+                let showCloseButton = true;
+                let closeButtonText = "Ok";
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 		  
               } else {
-                console.log("Error when reporting spot", data);
+                console.log("Error when reporting spot!", data);
+                let msg = "Error when reporting spot!";
+                let pos = "top";
+                let cssClass = "warning";
+                let showCloseButton = true;
+                let closeButtonText = "Ok";
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
               }
             });
           }

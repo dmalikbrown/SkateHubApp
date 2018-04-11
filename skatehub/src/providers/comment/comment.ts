@@ -34,4 +34,13 @@ export class CommentProvider {
     return this.http.get(this.devEp+"/skatehub/comment/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
+  getAllComments(spotId){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+		  return this.http.get(this.devEp+"/skatehub/comments/spots/all/"+spotId, {headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+
+
 }

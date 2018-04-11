@@ -220,7 +220,7 @@ export class ProfilePage {
     this.authProvider.update(edits).subscribe((data)=>{
       if(data.success){
         console.log(this.user.stance, "data success");
-        let msg = data.msg;
+        let msg = "Successfully changed stance!";
         let pos = "top";
         let cssClass = "success";
         let showCloseButton = true;
@@ -229,7 +229,7 @@ export class ProfilePage {
       }
       else {
         console.log("data was not a success.");
-        let msg = data.msg;
+        let msg = "Failed at changing stance!";
         let pos = "top";
         let cssClass = "warning";
         let showCloseButton = true;
