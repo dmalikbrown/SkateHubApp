@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthProvider {
 
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://192.168.1.5:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
   token: any;
   user: any;
@@ -26,6 +26,13 @@ export class AuthProvider {
       headers.append('Authorization', this.token);
       headers.append('Content-Type','application/json');
       return this.http.get(this.devEp+"/skatehub/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+        .map(res => res.json());
+  }
+  getNotifications(id){
+      let headers = new Headers();
+      headers.append('Authorization', this.token);
+      headers.append('Content-Type','application/json');
+      return this.http.get(this.devEp+"/skatehub/notifications/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
   getAllUsers(){

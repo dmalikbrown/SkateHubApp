@@ -103,7 +103,63 @@ saveSpt(type: string, spot){
 
   this.authProvider.update(editObj).subscribe((data) => {
   if(data.success){
-      console.log("Successfully saved spot");
+    this.authProvider.getOneSignalDevices().subscribe((results) => {
+      let len = results.total_count;
+      let destinationId = "";
+      for(let i = 0; i<len; i++){
+        if(results.players[i].tags.user_id == spot.userId){
+          destinationId = results.players[i].id;
+          break;
+        }
+      }
+      console.log(destinationId);
+      let notificationObj: OSNotification = {
+          headings: {en: ""},
+          isAppInFocus: true,
+          shown: true,
+          data: {type: "saved"},
+          payload: {
+            //id of the template for a new message
+            notificationID: "4b19b742-5509-4a06-bfeb-73da3286540f",
+            title: "Spot Saved",
+            body: "Someone has saved your spot.",
+            sound: "",
+            actionButtons: [],
+            rawPayload: ""
+          },
+          displayType: 1,
+          contents: {en: this.authProvider.user.username+" has saved your spot "+spot.name},
+          include_player_ids: [destinationId]
+        };
+      this.oneSignal.postNotification(notificationObj)
+                    .then((someData) => {
+                      console.log(someData);
+                      let notification = {
+                        type: "saved",
+                        description: this.authProvider.user.username+" has saved your spot "+spot.name,
+                        sender: this.authProvider.user._id,
+                        receiver: spot.userId,
+                        obj: spot._id
+                      };
+                      let edit = {
+                        type: "notification",
+                        notification: notification,
+                        id: spot.userId,
+                      };
+                      this.authProvider.update(edit).subscribe((ret)=> {
+                          if(ret.success){
+                            //do nothing
+                          }
+                          else {
+                            console.log(ret.msg);
+                          }
+                      });
+                    })
+                    .catch((someErr) => {
+                      console.log(someErr);
+                    })
+
+    });
     } else {
       console.log("Error when saving spot");
     }
@@ -215,6 +271,26 @@ saveSpt(type: string, spot){
             this.oneSignal.postNotification(notificationObj)
                           .then((someData) => {
                             console.log(someData);
+                            let notification = {
+                              type: "comment",
+                              description: this.authProvider.user.username+" commented on your spot.",
+                              sender: this.authProvider.user._id,
+                              receiver: recipient,
+                              obj: data.comment._id
+                            };
+                            let edit = {
+                              type: "notification",
+                              notification: notification,
+                              id: recipient,
+                            };
+                            this.authProvider.update(edit).subscribe((ret)=> {
+                                if(ret.success){
+                                  //do nothing
+                                }
+                                else {
+                                  console.log(ret.msg);
+                                }
+                            });
                           })
                           .catch((someErr) => {
                             console.log(someErr);

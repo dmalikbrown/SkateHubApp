@@ -39,7 +39,7 @@ export class ProfilePage {
   imageNewPath: any;
   imageChosen: any = 0;
   stance: any;
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://10.31.8.50:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -267,7 +267,7 @@ export class ProfilePage {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     //send the file to the routes in the router.js file
-    fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
+    fileTransfer.upload(this.imageNewPath, encodeURI(this.devEp+'/skatehub/image/upload'),
       options).then((entry) => {
        this.imagePath = JSON.parse(entry.response).fileUrl.url;
         // this.imageChosen = 0;

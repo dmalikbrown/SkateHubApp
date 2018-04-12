@@ -7,10 +7,10 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Active Seshes</ion-title>
-    <ion-buttons end right (tap) = "newSesh()">
-      <button clear id = "add" ion-button icon-only>
-        <ion-icon color="primary" name="add"></ion-icon>
+    <ion-title>Session</ion-title>
+    <ion-buttons *ngIf="!hasJoined" end right (tap) = "joinSession()">
+      <button ion-button>
+        Join Session
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,5 +19,82 @@
 
 
 <ion-content padding>
+  <ion-item no-lines>
+    <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
+     <ion-avatar class ="border-green" item-start *ngIf = "spot">
+      <img [src]="spot.avatar" alt = "">
+     </ion-avatar>
+     <h3 *ngIf = "spot"><strong>{{spot.username}}</strong></h3>
+     <!-- <ion-icon *ngIf = "!isUser" name = "more" item-end (tap) = "openAction()"></ion-icon> -->
+     <!-- <ion-icon *ngIf = "isUser" name = "trash" item-end color = "danger"></ion-icon> -->
+  </ion-item>
+  <!-- End of top part of skate spot -->
+
+  <!-- Img slides -->
+  <ion-row>
+    <ion-col col-12>
+      <ion-slides *ngIf = "spot">
+        <ion-slide *ngFor="let pic of spot.images">
+          <img style = "height: 385px; width: auto;" [src] = "pic">
+        </ion-slide>
+      </ion-slides>
+    </ion-col>
+  </ion-row>
+
+  <!-- End Img slides -->
+
+  <!-- Skate spot types -->
+  <ion-row style="width: 100%;" no-wrap>
+  <ion-col align-self-center text-center>
+    <!-- <p *ngFor="let type of spot.types; let x = index;">
+      <ng-container *ngIf="x < 4">{{type}}</ng-container>
+    </p> -->
+      <ion-row wrap *ngIf = "spot">
+        <ion-col *ngFor= "let type of spot.types;" col-4>
+            <img [src] = "type" style="height: 40px;">
+        </ion-col>
+      </ion-row>
+  </ion-col>
+  </ion-row>
+
+  <!-- End skate spot types -->
+
+  <!-- Skate spot Description -->
+  <h3>Description</h3>
+  <ion-row *ngIf = "spot">
+  <ion-col *ngIf = "!spot.description || spot.description == '' " >
+    No Description Provided
+  </ion-col>
+  <ion-col *ngIf = "spot.description != '' " >
+    {{spot.description}}
+  </ion-col>
+  </ion-row>
+  <br>
+  <ion-list *ngIf="acceptedUsers.length > 0">
+    <ion-list-header>
+      Active Skaters
+    </ion-list-header>
+    <ion-item *ngFor="let users of acceptedUsers; let i = index;">
+      <!-- <ng-template *ngIf="i < 10"> -->
+        <ion-item no-lines>
+          <ion-avatar item-start>
+            <img [src]="users.avatar">
+          </ion-avatar>
+          <h2>{{users.username}}</h2>
+        </ion-item>
+
+      <!-- </ng-template> -->
+    </ion-item>
+  </ion-list>
+
+  <!-- End skate spot description -->
+
+  <ion-row justify-content-center>
+  <button *ngIf="hasJoined" color="primary" ion-button icon-left strong block (tap)="openNavigation()">
+    <ion-icon name="pin"></ion-icon>
+    Let's Skate
+  </button>
+  </ion-row>
+
 
 </ion-content>

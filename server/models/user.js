@@ -37,6 +37,11 @@ const UserSchema = mongoose.Schema(
               id: {type: String}
     }
     ],
+    notifications: [
+    {
+              id: {type: String}
+    }
+    ],
     avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'}
   } , { timestamps: { createdAt: 'created_at' } });
 
@@ -177,6 +182,15 @@ module.exports.update = function(edits, callback){
       { $push: {savedSpots: edits.savedSpots} },
 	  callback
     );
+  }
+  else if(edits.type == "session"){
+    User.findByIdAndUpdate(edits.id,
+      { $push: {invites: edits.inviteObj }}, callback);
+  }
+  else if(edits.type == "notification"){
+    let idObj = {id: edits.notification._id};
+    User.findByIdAndUpdate(edits.id,
+      { $push: {notifications: idObj  }}, callback);
   }
 }
 

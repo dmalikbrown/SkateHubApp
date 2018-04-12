@@ -184,6 +184,26 @@ export class AddSessionPage {
                 this.oneSignal.postNotification(notificationObj)
                               .then((someData) => {
                                 console.log(someData);
+                                let notification = {
+                                  type: "invite",
+                                  description: this.user.username+" has invited you to a skate sesh at: "+this.choosenSpot.name,
+                                  sender: this.user._id,
+                                  receiver: data.invite.users[i].id,
+                                  obj: data.invite._id
+                                };
+                                let edit = {
+                                  type: "notification",
+                                  notification: notification,
+                                  id: data.invite.users[i].id,
+                                };
+                                this.authProvider.update(edit).subscribe((ret)=> {
+                                    if(ret.success){
+                                      //do nothing
+                                    }
+                                    else {
+                                      console.log(ret.msg);
+                                    }
+                                });
                               })
                               .catch((someErr) => {
                                 console.log(someErr);

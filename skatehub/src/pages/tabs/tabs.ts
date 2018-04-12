@@ -5,6 +5,7 @@ import { SearchPage } from '../search/search';
 import { PostPage } from '../post/post';
 import { NavigatePage } from '../navigate/navigate';
 import { ProfilePage } from '../profile/profile';
+import { NotificationPage } from '../notification/notification';
 import { AuthProvider } from '../../providers/auth/auth';
 
 @Component({
@@ -17,6 +18,7 @@ export class TabsPage {
   tab3Root = PostPage;
   tab4Root = NavigatePage;
   tab5Root = ProfilePage;
+  tab6Root = NotificationPage;
   user: any;
 
 

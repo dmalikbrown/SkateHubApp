@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class InviteProvider {
 
-  devEp: any = "http://localhost:3000";
+  devEp: any = "http://192.168.1.5:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public http: Http) {
@@ -44,6 +44,14 @@ export class InviteProvider {
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
     return this.http.post(this.devEp+"/skatehub/delete/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+
+  getAllInvites(token){
+    let headers = new Headers();
+    headers.append('Authorization', token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/invites/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 

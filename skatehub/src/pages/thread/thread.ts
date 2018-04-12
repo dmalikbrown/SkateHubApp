@@ -154,7 +154,7 @@ export class ThreadPage {
                 rawPayload: ""
               },
               displayType: 1,
-              contents: {en: this.authProvider.user.username+": "+this.message},
+              contents: {en: this.authProvider.user.username+": "+messageObj.message},
               include_player_ids: [destinationId]
             };
           this.oneSignal.postNotification(notificationObj)

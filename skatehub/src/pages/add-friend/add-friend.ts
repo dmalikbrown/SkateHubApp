@@ -201,6 +201,30 @@ export class AddFriendPage {
             this.oneSignal.postNotification(notificationObj)
                           .then((someData) => {
                             console.log(someData);
+                            let someLen = this.selectedUsers.len;
+                            for(let i = 0; i<someLen; i++){
+                              let notification = {
+                                type: "friend",
+                                description: this.authProvider.user.username+" has sent you a friend request.",
+                                sender: this.authProvider.user._id,
+                                receiver: this.selectedUsers[i]._id,
+                                obj: this.selectedUsers[i]._id
+                              };
+                              let edit = {
+                                type: "notification",
+                                notification: notification,
+                                id: this.selectedUsers[i]._id,
+                              };
+                              this.authProvider.update(edit).subscribe((ret)=> {
+                                  if(ret.success){
+                                    //do nothing
+                                  }
+                                  else {
+                                    console.log(ret.msg);
+                                  }
+                              });
+                            }
+
                           })
                           .catch((someErr) => {
                             console.log(someErr);
