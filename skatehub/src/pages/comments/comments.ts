@@ -16,7 +16,6 @@ import { AuthProvider } from './../../providers/auth/auth';
   templateUrl: 'comments.html',
 })
 export class CommentsPage {
-  
   spot: any;
   id: any; 
   user: any;
@@ -30,20 +29,16 @@ export class CommentsPage {
     console.log('ionViewDidLoad CommentsPage');
   }
   ionViewDidEnter() {
-	this.spot = this.navParams.get('spot');	  
-	//this.spots = this.user.spots;
-    for(const id of this.spot.comment){
-	  this.commentProvider.getCommentById(id).subscribe((data) => {
-		if(data.success){
-          
-          this.commentsArr.push(data.comment);
-	      console.log("Success", data.comment);
+    this.spot = this.navParams.get('spot');	  
+    console.log(this.spot._id);
+      this.commentProvider.getAllComments(this.spot._id).subscribe((data) => {
+        if(data.success){ 		
+          this.commentsArr = data.comment;
 	    }
-		else {
-		  console.log("Error getting comment");
-		}
-	  });
-	}
-  }
+        else {
+          console.log("Error getting comment");
+        }
+      });
+    }
 
 }

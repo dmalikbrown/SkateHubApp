@@ -19,7 +19,7 @@ export class FriendsPage {
 
   friendType: any;
   requests: any = [];
-  friends: any = [];
+  friends: any;
   user: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,

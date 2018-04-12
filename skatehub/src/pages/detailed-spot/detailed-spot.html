@@ -85,15 +85,20 @@
       <ion-label range-left>0</ion-label>
       <ion-label range-right>10</ion-label>
     </ion-range>
-    </ion-item>   
-
+    </ion-item>    
+	<!--
+	  Created another button for less confusion and so that the toasts wouldn't stack
+	  on top of each other if we were saving the comment and the rating, when
+	  one button was clicked.
+	-->
+  <button ion-button full color="#1180a3" (click)="saveRating(); rating=0;">Save Rating</button> 
     <ion-item>
-      <ion-label floating>Review</ion-label>
+      <ion-label floating>Comment</ion-label>
       <ion-input [(ngModel)]="comment" type="text"></ion-input>
     </ion-item>
 
 	<!--  (click)="saveButton(saturation); saturation=0; description =''" -->
-  <button ion-button full color="#1180a3" (click)="saveButton()">Save</button> 
-  <button ion-button full color="#1180a3" (click)="showPrompt()">Report</button>
+  <button ion-button full color="#1180a3" (click)="saveComment(); comment='';">Save Comment</button> 
+  <button ion-button full color="danger" (click)="showPrompt()">Report Spot</button>
 </ion-row>
 </ion-content>

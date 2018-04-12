@@ -1,3 +1,9 @@
 page-comments {
 
 }
+ion-toast.warning .toast-wrapper {
+	background: map-get($colors, danger);
+}
+ion-toast.success .toast-wrapper {
+	background: map-get($colors, primary);
+}

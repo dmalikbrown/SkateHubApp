@@ -799,6 +799,23 @@ router.get('/invite/:inviteId', passport.authenticate('jwt', {session:false}), (
 router.get('/protected', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     return res.send({ content: 'Success'});
 });
+router.get('/comments/spots/all/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Comment.find({spotId: req.params.id}, (err, comment) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting all comments"});
+      }
+      if(!comment){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting all comments"});
+      }
+      else{
+        return res.json({success: true, comment: comment});
+      }
+    });
+});
+
+
 router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     Spot.find({}, (err, spots) =>{
       if(err){
