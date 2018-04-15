@@ -39,7 +39,7 @@ export class ProfilePage {
   imageNewPath: any;
   imageChosen: any = 0;
   stance: any;
-  devEp: any = "http://10.31.8.50:3000";
+  devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
