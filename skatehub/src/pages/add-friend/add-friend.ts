@@ -170,7 +170,7 @@ export class AddFriendPage {
 
                 if(results.players[j].tags.user_id == this.selectedUsers[i]._id){
                   // let destinationId = results.players[i].tags.player_id;
-                  // console.log("DID THIS CODE EVEN RUN???");
+                  console.log("DID THIS CODE EVEN RUN???");
                   destinationIds.push(results.players[i].id);
                   // console.log(destinationIds);
                   break;
@@ -201,6 +201,35 @@ export class AddFriendPage {
             this.oneSignal.postNotification(notificationObj)
                           .then((someData) => {
                             console.log(someData);
+
+                            let someLen = this.selectedUsers.length;
+                            console.log("PRINTING THE LENGTH");
+                            console.log(someLen);
+                            for(let k = 0; k<someLen; k++){
+                              let notification = {
+                                type: "friend",
+                                description: this.authProvider.user.username+" has sent you a friend request.",
+                                sender: this.authProvider.user._id,
+                                receiver: this.selectedUsers[k]._id,
+                                obj: this.selectedUsers[k]._id
+                              };
+                              let edit = {
+                                type: "notification",
+                                notification: notification,
+                                id: this.selectedUsers[k]._id,
+                              };
+                              console.log("EDIT OBJ");
+                              console.log(edit);
+                              this.authProvider.update(edit).subscribe((ret)=> {
+                                  if(ret.success){
+                                    //do nothing
+                                  }
+                                  else {
+                                    console.log(ret.msg);
+                                  }
+                              });
+                            }
+
                           })
                           .catch((someErr) => {
                             console.log(someErr);

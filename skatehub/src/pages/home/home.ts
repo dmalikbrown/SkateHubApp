@@ -279,6 +279,26 @@ export class HomePage {
           this.oneSignal.postNotification(notificationObj)
                         .then((someData) => {
                           console.log(someData);
+                          let notification = {
+                            type: "saved",
+                            description: this.authProvider.user.username+" has saved your spot "+spot.name,
+                            sender: this.authProvider.user._id,
+                            receiver: spot.userId,
+                            obj: spot._id
+                          };
+                          let edit = {
+                            type: "notification",
+                            notification: notification,
+                            id: spot.userId,
+                          };
+                          this.authProvider.update(edit).subscribe((ret)=> {
+                              if(ret.success){
+                                //do nothing
+                              }
+                              else {
+                                console.log(ret.msg);
+                              }
+                          });
                         })
                         .catch((someErr) => {
                           console.log(someErr);

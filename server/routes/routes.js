@@ -10,6 +10,7 @@ const Message = require('../models/message');
 const Invite = require('../models/invite');
 const Comment = require('../models/comment');
 const Report = require('../models/report');
+const Notification = require('../models/notification');
 
 
 cloudinary.config({
@@ -57,7 +58,8 @@ router.post('/authenticate', (req, res, next) => {
           invites: user.invites,
           friends: user.friends,
           avatar: user.avatar,
-          messages: user.messages
+          messages: user.messages,
+          notifications: user.notifications
         };
         return res.json({success: true, token: 'JWT '+token, user: userObj });
       }
@@ -111,7 +113,8 @@ router.post('/register', (req, res, next) => {
                 invites: retUser.invites,
                 friends: retUser.friends,
                 avatar: retUser.avatar,
-                messages: retUser.messages
+                messages: retUser.messages,
+                notifications: retUser.notifications
               };
               return res.json({success: true, token: 'JWT '+token, user: userObj });
             }
@@ -320,7 +323,7 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
 
   let commentObj = new Comment({
     userId: req.body.userId,
-	username: req.body.username,	  
+	username: req.body.username,
     spotId: req.body.spotId,
     comment: req.body.comment
   });
@@ -330,7 +333,7 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
       return res.json({success: false, msg:"Error when adding comment"});
     }
     else{
-      return res.json({success: true, comment});
+      return res.json({success: true, comment: comment});
     }
   });
 });
@@ -488,7 +491,7 @@ information. For now the route is set up to handle "fullName", "username",
 that dictates what the user is trying to edit.
 */
 router.post('/update', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-
+  console.log("Update");
   console.log(req.body);
   if(req.body.type == "fullName"){
     User.update(req.body, (err, x) => {
@@ -607,6 +610,41 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
       else {
         return res.json({success: true, msg: "routes: Set stance!"});
+      }
+    });
+  }
+  if(req.body.type == 'session'){
+    User.update(req.body, (err, x) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "routes: Error setting stance!"});
+      }
+      else {
+        return res.json({success: true, msg: "routes: Set stance!"});
+      }
+    });
+  }
+  if(req.body.type == 'notification'){
+    console.log(req.body.notification);
+    let notification = new Notification(req.body.notification);
+    Notification.addNotification(notification, (err, newNot) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg: "error saving notification"});
+      }
+      else {
+        req.body.notification = newNot;
+        console.log("NEW REQ BODY");
+        console.log(req.body);
+        User.update(req.body, (err, x) => {
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg: "error saving notification to user"});
+          }
+          else {
+            return res.json({success: true});
+          }
+        })
       }
     });
   }
@@ -795,6 +833,37 @@ router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, re
       }
     });
 });
+router.get('/invites/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Invite.find({}, (err, invites) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting invites"});
+      }
+      if(!invites){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting invites"});
+      }
+      else{
+        return res.json({success: true, invites: invites});
+      }
+    });
+});
+
+router.get('/notifications/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Notification.find({receiver: req.params.id}, (err, notifications) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting notifications"});
+      }
+      if(!notifications){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting notifications"});
+      }
+      else{
+        return res.json({success: true, notifications: notifications});
+      }
+    });
+});
 router.get('/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     User.find({}, (err, users) =>{
       if(err){
@@ -828,21 +897,7 @@ router.get('/spots/:id', passport.authenticate('jwt', {session:false}) ,(req, re
       }
       else {
 
-      let spotObj = {
-        _id: spot._id,
-        name: spot.name,
-        location: spot.location,
-        types: spot.type,
-        description: spot.description,
-        userId: spot.id,
-        avatar: spot.avatar,
-        username: spot.username,
-        images: spot.images,
-        rating: spot.rating,
-        riskLevel: spot.riskLevel,
-        lightingLevel: spot.lightingLevel
-	  };
-        return res.json({success: true, spot: spotObj});
+        return res.json({success: true, spot: spot});
       }
     });
 });
@@ -865,9 +920,10 @@ router.get('/comment/:id', passport.authenticate('jwt', {session:false}) ,(req, 
       else {
 
       let commentObj = {
-        _id: comment._id, 
-        userId: comment.userId, 
-        username: comment.username,	 
+
+        _id: comment._id,
+        userId: comment.userId,
+    		username: comment.username,
         spotId: comment.spotId,
         comment: comment.comment
        };
@@ -922,7 +978,8 @@ router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, nex
           invites: user.invites,
           friends: user.friends,
           avatar: user.avatar,
-          messages: user.messages
+          messages: user.messages,
+          notifications: user.notifications
         };
         return res.json({success: true, user: userObj});
       }

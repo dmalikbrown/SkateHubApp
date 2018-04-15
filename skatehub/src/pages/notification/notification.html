@@ -1,0 +1,28 @@
+<!--
+  Generated template for the NotificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Notifications</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="notifications.length > 0">
+      <ion-item id="thread-item" *ngFor="let not of notifications" no-lines>
+        <ion-avatar item-start *ngIf="not.user">
+          <img [src]="not.user.avatar">
+        </ion-avatar>
+        <h4 text-wrap>{{not.description}}</h4>
+        <!-- <p text-wrap> {{not.description}}</p> -->
+      </ion-item>
+
+
+  </ion-list>
+</ion-content>

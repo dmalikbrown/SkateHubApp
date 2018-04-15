@@ -47,6 +47,14 @@ export class InviteProvider {
       .map(res => res.json());
   }
 
+  getAllInvites(token){
+    let headers = new Headers();
+    headers.append('Authorization', token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/invites/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+
   async getInvite(inviteId, token){
       let headers = new Headers();
       headers.append('Authorization', token);

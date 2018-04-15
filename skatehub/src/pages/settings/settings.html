@@ -24,7 +24,7 @@
         <img [src]="user.avatar"
          [ngClass] = "user.avatar == 'assets/imgs/profileGeneric.jpg' ? 'avatar-border' : 'avatar-uniq'">
       </ion-avatar>
-      <ion-icon name="create" mode="android" ios="md-create" class="edit-icon" style="position: relative"></ion-icon>
+      <!-- <ion-icon name="create" mode="android" ios="md-create" class="edit-icon" style="position: relative"></ion-icon> -->
       <!-- <ion-icon name="remove-circle" color="danger" style="font-size: 30px;"></ion-icon> -->
   </ion-row>
   <!-- =====Input fields======== -->
@@ -86,7 +86,7 @@
      (tap) ="toggleReadOnly('username', true); editUsername = true;"
      name="create" mode="android" ios="md-create" color="primary"
      class="edit-icon"></ion-icon>
-     <ion-badge *ngIf="editUsername" (tap)="toggleReadOnly('username', false); saveChanges('username'); editUsername = false;" item-end>Save</ion-badge>
+     <ion-badge *ngIf="editUsername" (tap)="saveChanges('username');" item-end>Save</ion-badge>
    </ion-item>
    <ion-item>
      <ion-label floating color ="primary">Email Address</ion-label>
@@ -98,7 +98,7 @@
      (tap) ="toggleReadOnly('email', true); editEmail = true;"
      name="create" mode="android" ios="md-create" color="primary"
      class="edit-icon"></ion-icon>
-     <ion-badge *ngIf="editEmail" (tap)="toggleReadOnly('email', false); saveChanges('email'); editEmail = false;" item-end>Save</ion-badge>
+     <ion-badge *ngIf="editEmail" (tap)="saveChanges('email');" item-end>Save</ion-badge>
    </ion-item>
 
 

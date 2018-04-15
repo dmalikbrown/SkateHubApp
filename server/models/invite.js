@@ -20,6 +20,7 @@ const InviteSchema = mongoose.Schema(
         id: {type: String}
       }
     ],
+    //TODO public val that checks if the user is making this a public session
     active: { type: Boolean, default: true}
   } , { timestamps: { createdAt: 'created_at' } });
 
@@ -33,7 +34,9 @@ module.exports.addInvite = function(newInvite, callback){
   // console.log(newMessage);
   newInvite.save(callback);
 }
-
+// module.exports.joinSession = function(inviteId, userObj, callback){
+//   Invite.findByIdAndUpdate(inviteId, {$push: {users: userIdObj}}, callback);
+// }
 module.exports.addAccepted = function(inviteId, userIdObj, callback){
   Invite.findByIdAndUpdate(inviteId, {$push: {accepted: userIdObj}}, callback);
 }

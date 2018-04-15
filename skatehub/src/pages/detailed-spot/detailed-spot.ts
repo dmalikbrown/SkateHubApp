@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams, ActionSheetController, AlertContro
 import { Geolocation } from '@ionic-native/geolocation';
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { ProfilePage } from './../../pages/profile/profile';
+import { DetailedUserPage } from './../../pages/detailed-user/detailed-user';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { CommentProvider } from './../../providers/comment/comment';
@@ -48,10 +50,10 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
-    console.log("ionViewDidLoad", this.spot);
+    // console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
-		this.isUser = true;
+		    this.isUser = true;
     }
     else
     {
@@ -72,7 +74,7 @@ export class DetailedSpotPage {
        {
          text: 'Save Spot',
          handler: () => {
-           console.log('Saved spot clicked');
+           this.saveSpt("saved",this.spot);
          }
        },
        {
@@ -116,13 +118,69 @@ on the user's device.
     };
     console.log('editObj', editObj.savedSpots, spot._id);
 
-    this.authProvider.update(editObj).subscribe((data) => {
-      if(data.success){
-        console.log("Successfully saved spot");
-	  } else {
-        console.log("Error when saving spot");
+  this.authProvider.update(editObj).subscribe((data) => {
+  if(data.success){
+    this.authProvider.getOneSignalDevices().subscribe((results) => {
+      let len = results.total_count;
+      let destinationId = "";
+      for(let i = 0; i<len; i++){
+        if(results.players[i].tags.user_id == spot.userId){
+          destinationId = results.players[i].id;
+          break;
+        }
       }
+      console.log(destinationId);
+      let notificationObj: OSNotification = {
+          headings: {en: ""},
+          isAppInFocus: true,
+          shown: true,
+          data: {type: "saved"},
+          payload: {
+            //id of the template for a new message
+            notificationID: "4b19b742-5509-4a06-bfeb-73da3286540f",
+            title: "Spot Saved",
+            body: "Someone has saved your spot.",
+            sound: "",
+            actionButtons: [],
+            rawPayload: ""
+          },
+          displayType: 1,
+          contents: {en: this.authProvider.user.username+" has saved your spot "+spot.name},
+          include_player_ids: [destinationId]
+        };
+      this.oneSignal.postNotification(notificationObj)
+                    .then((someData) => {
+                      console.log(someData);
+                      let notification = {
+                        type: "saved",
+                        description: this.authProvider.user.username+" has saved your spot "+spot.name,
+                        sender: this.authProvider.user._id,
+                        receiver: spot.userId,
+                        obj: spot._id
+                      };
+                      let edit = {
+                        type: "notification",
+                        notification: notification,
+                        id: spot.userId,
+                      };
+                      this.authProvider.update(edit).subscribe((ret)=> {
+                          if(ret.success){
+                            //do nothing
+                          }
+                          else {
+                            console.log(ret.msg);
+                          }
+                      });
+                    })
+                    .catch((someErr) => {
+                      console.log(someErr);
+                    })
+
     });
+    } else {
+      console.log("Error when saving spot");
+    }
+  });
 
   }
   saveSpot(spot){
@@ -149,8 +207,8 @@ on the user's device.
     );
   }
   /*
-   * Once the save comment button is clicked, 
-   * the comment that the user put into 
+   * Once the save comment button is clicked,
+   * the comment that the user put into
    * the text area is saved.
    */
   saveComment(){
@@ -222,6 +280,26 @@ on the user's device.
             this.oneSignal.postNotification(notificationObj)
                           .then((someData) => {
                             console.log(someData);
+                            let notification = {
+                              type: "comment",
+                              description: this.authProvider.user.username+" commented on your spot.",
+                              sender: this.authProvider.user._id,
+                              receiver: recipient,
+                              obj: data.comment._id
+                            };
+                            let edit = {
+                              type: "notification",
+                              notification: notification,
+                              id: recipient,
+                            };
+                            this.authProvider.update(edit).subscribe((ret)=> {
+                                if(ret.success){
+                                  //do nothing
+                                }
+                                else {
+                                  console.log(ret.msg);
+                                }
+                            });
                           })
                           .catch((someErr) => {
                             console.log(someErr);
@@ -230,7 +308,7 @@ on the user's device.
           });
 			    console.log("Successfully saved comment id to Spot");
 				/*
-				 * Instead of putting this higher up, I choose to throw a toast at a user 
+				 * Instead of putting this higher up, I choose to throw a toast at a user
 				 * here because all we really care about is whether or not the id
 				 * of the comment is saved to the spot.
 				 */
@@ -239,7 +317,7 @@ on the user's device.
                 let cssClass = "success";
                 let showCloseButton = true;
                 let closeButtonText = "Ok";
-                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
 			  } else {
                 console.log("Error when saving comment id to Spot");
                 let msg = "Error when commenting on spot!";
@@ -247,17 +325,17 @@ on the user's device.
                 let cssClass = "warning";
                 let showCloseButton = true;
                 let closeButtonText = "Ok";
-                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);       
-			  }        
-		 });           
-	   } else {        
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+			  }
+		 });
+	   } else {
          console.log("Error when creating a comment!");
          let msg = "Please try commenting again!";
          let pos = "top";
          let cssClass = "warning";
          let showCloseButton = true;
          let closeButtonText = "Ok";
-         this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
+         this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
 	   }
 	 });
   }
@@ -268,17 +346,17 @@ on the user's device.
    * Once the saveRating button is clicked, the rating
    * the user supplied is saved.
    */
-		
+
   saveRating(){
     if (this.rating == null){
       this.rating = 0;
-	}	  
+	}
 	let ratingObj = {
        id: this.spot._id,
        type: "rate",
        rating: this.rating
 	};
-	  
+
     this.spotsProvider.update(ratingObj).subscribe((data) => {
       if(data.success){
         console.log("Successfully rated spot");
@@ -288,7 +366,7 @@ on the user's device.
         let cssClass = "success";
         let showCloseButton = true;
         let closeButtonText = "Ok";
-        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);  
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
 	  } else {
         console.log("Error when rating spot", data);
         let msg = "Error when rating spot!";
@@ -296,10 +374,23 @@ on the user's device.
         let cssClass = "warning";
         let showCloseButton = true;
         let closeButtonText = "Ok";
-        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 	
+        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
 	  }
 	 });
   }
+
+  avatarClick(){
+    if(this.authProvider.user._id == this.spot.userId){
+      this.navCtrl.push(ProfilePage);
+ 	  console.log('Leaving HomePage, going to ProfilePage');
+    } else if(this.spot.userId) {
+       console.log('Leaving HomePage, going to DetailedUserPage');
+       this.navCtrl.push(DetailedUserPage, {username: this.spot.username, id: this.spot.userId});
+    } else {
+   	   console.log('Error: HomePage, attempting push to DetailedUserPage');
+    }
+  }
+
   /*
    * This is opens up a prompt to let the user
    * report the spot.
@@ -334,15 +425,15 @@ on the user's device.
              * Adding the report to the spot.
              */
 		    this.reportProvider.addReport(reportObj).subscribe((data) =>{
-              console.log(data);	
-              if(data.success){	  
+              console.log(data);
+              if(data.success){
                 console.log("Successfully reported spot", data);
                 let msg = "Successfully reported spot!";
                 let pos = "top";
                 let cssClass = "success";
                 let showCloseButton = true;
                 let closeButtonText = "Ok";
-                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 		  
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
               } else {
                 console.log("Error when reporting spot!", data);
                 let msg = "Error when reporting spot!";
@@ -350,7 +441,7 @@ on the user's device.
                 let cssClass = "warning";
                 let showCloseButton = true;
                 let closeButtonText = "Ok";
-                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText); 
+                this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
               }
             });
           }

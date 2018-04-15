@@ -34,6 +34,8 @@ import { AddFriendPage } from '../pages/add-friend/add-friend';
 import { OtherUserSpotsPage } from '../pages/other-user-spots/other-user-spots';
 import { AddSessionPage } from '../pages/add-session/add-session';
 import { CommentsPage } from '../pages/comments/comments';
+import { NotificationPage } from '../pages/notification/notification';
+import { OtherFriendsPage } from '../pages/other-friends/other-friends';
 
 import { AuthProvider } from '../providers/auth/auth';
 import { SpotsProvider } from '../providers/spots/spots';
@@ -92,7 +94,9 @@ import { ReportProvider } from '../providers/report/report';
     OtherUserSpotsPage,
     AddSessionPage,
     ElasticDirective,
-    CommentsPage
+    CommentsPage,
+    NotificationPage,
+    OtherFriendsPage
   ],
   imports: [
     BrowserModule,
@@ -131,7 +135,9 @@ import { ReportProvider } from '../providers/report/report';
     ThreadPage,
     OtherUserSpotsPage,
     AddSessionPage,
-    CommentsPage
+    CommentsPage,
+    NotificationPage,
+    OtherFriendsPage
   ],
   providers: [
     StatusBar,
