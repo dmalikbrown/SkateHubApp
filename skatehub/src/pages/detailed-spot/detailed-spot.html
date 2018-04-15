@@ -11,7 +11,7 @@
   <!-- Top part of the skate spot (user profile pic and their username, either a trash can icon or "more" icon)  -->
   <ion-item no-lines>
     <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
-     <ion-avatar class ="border-green" item-start *ngIf = "spot">
+     <ion-avatar class ="border-green" (tap)="avatarClick()" item-start *ngIf = "spot">
       <img [src]="spot.avatar" alt = "">
      </ion-avatar>
      <h3 *ngIf = "spot"><strong>{{spot.username}}</strong></h3>
@@ -79,26 +79,26 @@
 
 <!--TODO RISK LEVEL  -->
 <ion-row justify-content-center>
-   
+
     <ion-item>
     <ion-range min="0" max="10" [(ngModel)]="rating" color="secondary">
       <ion-label range-left>0</ion-label>
       <ion-label range-right>10</ion-label>
     </ion-range>
-    </ion-item>    
+    </ion-item>
 	<!--
 	  Created another button for less confusion and so that the toasts wouldn't stack
 	  on top of each other if we were saving the comment and the rating, when
 	  one button was clicked.
 	-->
-  <button ion-button full color="#1180a3" (click)="saveRating(); rating=0;">Save Rating</button> 
+  <button ion-button full color="#1180a3" (click)="saveRating(); rating=0;">Save Rating</button>
     <ion-item>
       <ion-label floating>Comment</ion-label>
       <ion-input [(ngModel)]="comment" type="text"></ion-input>
     </ion-item>
 
 	<!--  (click)="saveButton(saturation); saturation=0; description =''" -->
-  <button ion-button full color="#1180a3" (click)="saveComment(); comment='';">Save Comment</button> 
+  <button ion-button full color="#1180a3" (click)="saveComment(); comment='';">Save Comment</button>
   <button ion-button full color="danger" (click)="showPrompt()">Report Spot</button>
 </ion-row>
 </ion-content>

@@ -16,7 +16,7 @@
 <ion-content padding>
   <ion-list *ngIf="notifications.length > 0">
       <ion-item id="thread-item" *ngFor="let not of notifications" no-lines>
-        <ion-avatar item-start>
+        <ion-avatar item-start *ngIf="not.user">
           <img [src]="not.user.avatar">
         </ion-avatar>
         <h4 text-wrap>{{not.description}}</h4>

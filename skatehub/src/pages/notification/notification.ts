@@ -41,6 +41,7 @@ export class NotificationPage {
     for(let i = 0; i<len; i++){
       this.authProvider.getUser(this.notifications[i].sender).subscribe((data)=>{
         if(data.success){
+          console.log(data.user);
           this.notifications[i].user = data.user;
         }
         else {

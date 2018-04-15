@@ -333,7 +333,7 @@ router.post('/comment', passport.authenticate('jwt', {session:false}) ,(req, res
       return res.json({success: false, msg:"Error when adding comment"});
     }
     else{
-      return res.json({success: true, comment});
+      return res.json({success: true, comment: comment});
     }
   });
 });
@@ -491,7 +491,7 @@ information. For now the route is set up to handle "fullName", "username",
 that dictates what the user is trying to edit.
 */
 router.post('/update', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-
+  console.log("Update");
   console.log(req.body);
   if(req.body.type == "fullName"){
     User.update(req.body, (err, x) => {
@@ -625,6 +625,7 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
     });
   }
   if(req.body.type == 'notification'){
+    console.log(req.body.notification);
     let notification = new Notification(req.body.notification);
     Notification.addNotification(notification, (err, newNot) => {
       if(err){
@@ -633,6 +634,7 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
       else {
         req.body.notification = newNot;
+        console.log("NEW REQ BODY");
         console.log(req.body);
         User.update(req.body, (err, x) => {
           if(err){

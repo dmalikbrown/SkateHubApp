@@ -14,7 +14,7 @@ import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder, NativeGeocoderReverseResult} from '@ionic-native/native-geocoder';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult} from '@ionic-native/native-geocoder';
 // import { TabsPage } from './../../pages/tabs/tabs';
 
 declare var cordova: any;
@@ -384,7 +384,25 @@ export class PostPage {
       return;
     }
     else{
+      if(!this.lat || !this.lng){
+        this.nativeGeocoder.forwardGeocode(this.address)
+                      .then((coords: NativeGeocoderForwardResult) => {
+                        console.log(coords);
+                        this.lat = Number(coords.latitude);
+                        this.lng = Number(coords.longitude);
+                        this.sendSpot();
+                      })
+                      .catch((err)=> {
+                        //TODO Do something to grab addy
+                        //Ask user to use current location???
+                        console.log(err);
+                      })
+      }
       console.log("ready to post!");
+
+    }
+  }
+  sendSpot(){
       let obj = {
         id: this.user._id,
         name: this.spotName,
@@ -422,7 +440,6 @@ export class PostPage {
         alert.present();
       }
     });
-    }
   }
 
 }

@@ -230,27 +230,55 @@ loadInfo(){
         if(data.success){
 
           this.spotsArr = data.spots;
-          let len = this.spotsArr.length;
+
+          let len = this.allSessions.length;
           for(let i = 0; i < len; i++){
-            for(let j = 0; j < this.allSessions.length; j++){
-              let hasJoined = false;
-              let index = this.spotsArr.findIndex(spot => spot._id == this.allSessions[j].spot);
-              let userIndex = this.allSessions[j].accepted.findIndex(accept => accept.id == this.user._id);
-              if(userIndex > -1){
-                hasJoined = true;
-              }
-              //TODO would check if the session is public or not
-              if(index > -1 && this.allSessions[j].active){
-                this.allSessions[j].name = this.spotsArr[i].name;
-                this.addSpotMarker(this.spotsArr[i].coordinates,"session",this.allSessions[j], hasJoined);
-                break;
-              }
-              else {
-                this.addSpotMarker(this.spotsArr[i].coordinates, "spot", this.spotsArr[i], hasJoined);
-                break;
-              }
+            let hasJoined = false;
+            let index = this.spotsArr.findIndex(spot => spot._id == this.allSessions[i].spot);
+            // console.log(this.spotsArr[index]);
+            if(index > -1 && this.allSessions[i].active){
+              console.log("We have a session");
+              let userIndex = this.allSessions[i].accepted.findIndex(acceptVal => acceptVal.id == this.user._id);
+              if(userIndex > -1) hasJoined = true;
+              this.allSessions[i].name = this.spotsArr[index].name;
+              this.addSpotMarker(this.spotsArr[index].coordinates,"session",this.allSessions[i], hasJoined);
+              this.spotsArr.splice(index,1);
             }
           }
+          let spotLen = this.spotsArr.length;
+          for(let j = 0; j< spotLen; j++){
+            console.log(this.spotsArr[j]);
+            if(this.spotsArr[j].coordinates){
+              this.addSpotMarker(this.spotsArr[j].coordinates, "spot", this.spotsArr[j], false);
+            }
+          }
+
+
+
+
+          // let len = this.spotsArr.length;
+          // for(let i = 0; i < len; i++){
+          //   for(let j = 0; j < this.allSessions.length; j++){
+          //     let hasJoined = false;
+          //     let index = this.spotsArr.findIndex(spot => spot._id == this.allSessions[j].spot);
+          //     let userIndex = this.allSessions[j].accepted.findIndex(accept => accept.id == this.user._id);
+          //     if(userIndex > -1){
+          //       hasJoined = true;
+          //     }
+          //     console.log(this.allSessions[j].active);
+          //     //TODO would check if the session is public or not
+          //     if(index > -1 && this.allSessions[j].active){
+          //       console.log("Session");
+          //       this.allSessions[j].name = this.spotsArr[i].name;
+          //       this.addSpotMarker(this.spotsArr[i].coordinates,"session",this.allSessions[j], hasJoined);
+          //       // break;
+          //     }
+          //     else {
+          //       this.addSpotMarker(this.spotsArr[i].coordinates, "spot", this.spotsArr[i], hasJoined);
+          //       // break;
+          //     }
+          //   }
+          // }
         }
         else{
           console.log("NAW FAM TRY THAT SHIT AGAIN AINT NO SPOTS BISH")
@@ -269,7 +297,7 @@ addSpotMarker(spotPos, type, obj, hasJoined){
       // icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
       position: spotPos,
       map: this.map,
-      draggable: true,
+      draggable: false,
       animation: google.maps.Animation.DROP,
       label: {
         text: obj.name,
@@ -278,6 +306,7 @@ addSpotMarker(spotPos, type, obj, hasJoined){
       },
       sessionId: obj._id
     });
+    console.log(spotPos);
     marker.addListener('click', ()=> {
       //TODO push detailed session page
       this.navCtrl.push(SeshesPage, {user: this.user, session: obj, hasJoined: hasJoined});
@@ -292,7 +321,7 @@ addSpotMarker(spotPos, type, obj, hasJoined){
       icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
       position: spotPos,
       map: this.map,
-      draggable: true,
+      draggable: false,
       animation: google.maps.Animation.DROP,
       label: {
         text: obj.name,

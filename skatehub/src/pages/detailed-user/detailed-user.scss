@@ -42,26 +42,26 @@ page-detailed-user {
       margin-top: 10%;
       margin-left: 15%;
     }
-    .badgeIcons{
+    .badgeIcons {
       font-size: 30px;
     }
-    .ion-row{
+    .ion-row {
       height:100%;
     }
-    .icons{
+    .icons {
       font-size: 60px;
     }
-    .ion-top-row{
+    .ion-top-row {
       height:100%;
       font-size: 20px;
       border-bottom: outset 3px map-get($colors, primary);
     }
-    .ion-left-col{
+    .ion-left-col {
       text-align: center;
       font-size: 20px;
       border-right: outset 3px map-get($colors, primary);
     }
-    .ion-grid{
+    .ion-grid {
       position: static;
       margin-top: 20%;
       height: 55%;
@@ -69,7 +69,7 @@ page-detailed-user {
       grid-column-gap: 5px;
       grid-row-gap: 5px;
     }
-    .grid-border{
+    .grid-border {
       text-align: center;
       font-size: 20px;
       width: 100%;

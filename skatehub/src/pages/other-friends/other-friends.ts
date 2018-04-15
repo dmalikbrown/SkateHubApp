@@ -4,7 +4,7 @@ import { AddFriendPage } from '../../pages/add-friend/add-friend';
 import { AuthProvider } from '../../providers/auth/auth';
 
 /**
- * Generated class for the FriendsPage page.
+ * Generated class for the OtherFriendsPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -12,13 +12,12 @@ import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
-  selector: 'page-friends',
-  templateUrl: 'friends.html',
+  selector: 'page-other-friends',
+  templateUrl: 'other-friends.html',
 })
-export class FriendsPage {
-
+export class OtherFriendsPage {
   friendType: any;
-  requests: any = [];
+  // requests: any = [];
   friends: any = [];
   user: any;
 
@@ -35,17 +34,17 @@ export class FriendsPage {
   filters(){
     if(this.user.friends){
       // let len = this.user.friends;
-      let dummyReq = [];
+      // let dummyReq = [];
       let dummyFriends = [];
-      dummyReq = this.user.friends.filter((friend) => friend.request == false && friend.sender != this.user._id);
+      // dummyReq = this.user.friends.filter((friend) => friend.request == false && friend.sender != this.user._id);
       dummyFriends = this.user.friends.filter((friend) => friend.request == true);
       // console.log(dummyReq);
-      let reqL = dummyReq.length;
+      // let reqL = dummyReq.length;
       let fL = dummyFriends.length;
 
-      for(let i = 0; i<reqL; i++){
-        this.getUsersFromArr(dummyReq[i].sender, 'request');
-      }
+      // for(let i = 0; i<reqL; i++){
+      //   this.getUsersFromArr(dummyReq[i].sender, 'request');
+      // }
       for(let i = 0; i<fL; i++){
         let idVal = "";
         if(dummyFriends[i].id == this.user._id){
@@ -81,12 +80,12 @@ export class FriendsPage {
     this.authProvider.getUser(id).subscribe((data)=>{
       //TODO with some user stuff
       if(data.success){
-        if(type == "request"){
-          this.requests.push(data.user);
-        }
-        else {
+        // if(type == "request"){
+        //   this.requests.push(data.user);
+        // }
+        // else {
           this.friends.push(data.user);
-        }
+        // }
       }
       else {
         console.log("error bitchhhh");
@@ -111,7 +110,7 @@ export class FriendsPage {
     this.authProvider.update(obj).subscribe((data) => {
       if(data.success){
         console.log(data.msg);
-        this.requests = [];
+        // this.requests = [];
         this.friends = [];
         this.getUser();
       }
@@ -121,8 +120,8 @@ export class FriendsPage {
     });
   }
 
-  openAddFriendsPage(){
-    this.navCtrl.push(AddFriendPage);
-  }
+  // openAddFriendsPage(){
+  //   this.navCtrl.push(AddFriendPage);
+  // }
 
 }

@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams, ActionSheetController, AlertContro
 import { Geolocation } from '@ionic-native/geolocation';
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { ProfilePage } from './../../pages/profile/profile';
+import { DetailedUserPage } from './../../pages/detailed-user/detailed-user';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
 import { CommentProvider } from './../../providers/comment/comment';
@@ -48,10 +50,10 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
-    console.log("ionViewDidLoad", this.spot);
+    // console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
-		this.isUser = true;
+		    this.isUser = true;
     }
     else
     {
@@ -72,7 +74,7 @@ export class DetailedSpotPage {
        {
          text: 'Save Spot',
          handler: () => {
-           console.log('Saved spot clicked');
+           this.saveSpt("saved",this.spot);
          }
        },
        {
@@ -376,6 +378,19 @@ on the user's device.
 	  }
 	 });
   }
+
+  avatarClick(){
+    if(this.authProvider.user._id == this.spot.userId){
+      this.navCtrl.push(ProfilePage);
+ 	  console.log('Leaving HomePage, going to ProfilePage');
+    } else if(this.spot.userId) {
+       console.log('Leaving HomePage, going to DetailedUserPage');
+       this.navCtrl.push(DetailedUserPage, {username: this.spot.username, id: this.spot.userId});
+    } else {
+   	   console.log('Error: HomePage, attempting push to DetailedUserPage');
+    }
+  }
+
   /*
    * This is opens up a prompt to let the user
    * report the spot.

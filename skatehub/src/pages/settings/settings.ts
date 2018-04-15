@@ -28,6 +28,8 @@ export class SettingsPage {
   fullName: string = "";
   username: string = "";
   email: string = "";
+  editUsername: boolean = false;
+  editEmail: boolean = false;
   emailReadOnly: boolean = true;
   fNReadOnly: boolean = true;
   uNReadOnly: boolean = true;
@@ -145,14 +147,18 @@ export class SettingsPage {
     }
     if(type == 'username'){
       if(!this.confirmUsername()) return;
-      editObj['username'] = this.username;
+      editObj['username'] = this.username.toLowerCase();
     }
     if(type == 'email'){
       if(!this.confirmEmail()) return;
-      editObj['email'] = this.email;
+      editObj['email'] = this.email.toLowerCase();
     }
     this.authProvider.update(editObj).subscribe((data) => {
       if(data.success){
+        this.toggleReadOnly('username', false);
+        this.editUsername = false;
+        this.toggleReadOnly('email', false);
+        this.editEmail = false;
         let msg = data.msg;
         let pos = "top";
         let cssClass = "success";
@@ -161,6 +167,7 @@ export class SettingsPage {
         this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
       }
       else {
+
         let msg = data.msg;
         let pos = "top";
         let cssClass = "warning";
@@ -189,7 +196,7 @@ export class SettingsPage {
       }, 2000);
     });
   }
-  
+
 
   logout(){
     this.authProvider.logout();
