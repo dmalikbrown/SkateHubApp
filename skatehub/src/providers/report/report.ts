@@ -20,7 +20,7 @@ export class ReportProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.devEp+"/skatehub/report",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.prodEp+"/skatehub/report",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -28,7 +28,7 @@ export class ReportProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.devEp+"/skatehub/report/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.prodEp+"/skatehub/report/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 

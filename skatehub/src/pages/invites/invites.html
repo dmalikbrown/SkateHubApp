@@ -23,7 +23,7 @@
         Requests
       </ion-list-header>
       <ion-item-sliding *ngFor="let invite of requested">
-        <ion-item no-lines>
+        <ion-item no-lines (tap)="pushSeshesPage(invite, false)">
           <ion-thumbnail item-start>
             <img [src]="invite.spot.images[0]">
           </ion-thumbnail>
@@ -50,7 +50,7 @@
         Your Invites
       </ion-list-header>
 
-      <ion-item no-lines *ngFor="let invite of accepted">
+      <ion-item no-lines *ngFor="let invite of accepted" (tap)="pushSeshesPage(invite, true)">
         <ion-thumbnail item-start>
           <img [src]="invite.spot.images[0]">
         </ion-thumbnail>

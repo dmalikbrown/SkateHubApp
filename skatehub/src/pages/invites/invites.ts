@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController} from 'ionic-angular';
 import { AddSessionPage } from '../../pages/add-session/add-session';
+import { SeshesPage } from '../../pages/seshes/seshes';
 import { InviteProvider } from '../../providers/invite/invite';
 import { AuthProvider } from '../../providers/auth/auth';
 import { SpotsProvider } from '../../providers/spots/spots';
@@ -28,7 +29,8 @@ export class InvitesPage {
               public inviteProvider: InviteProvider,
               public authProvider: AuthProvider,
               public spotsProvider: SpotsProvider,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -82,8 +84,13 @@ export class InvitesPage {
     && this.navParams.get('savedSpots').length == 0)
     {
       //TODO alert or something
-      console.log("NO SPOTS");
-      return;
+      let alert = this.alertCtrl.create({
+        title: 'No spots',
+        subTitle: "Create or save a spot to create a session",
+        buttons: ['Dismiss']
+      });
+      alert.present();
+      return false;
     }
 
     let modal = this.modalCtrl.create(AddSessionPage, {
@@ -109,6 +116,11 @@ export class InvitesPage {
       }
     });
     modal.present();
+  }
+
+  pushSeshesPage(sesh, hasJoined){
+    this.navCtrl.push(SeshesPage, {user: this.navParams.get('user'), session: sesh, hasJoined: hasJoined});
+
   }
 
   checkDecline(invite){

@@ -87,15 +87,14 @@ export class SettingsPage {
   toggleReadOnly(type: string, edit: boolean){
     console.log(type);
     console.log(edit);
+    if(!edit){
+      if(!this.fNReadOnly) return;
+      if(!this.uNReadOnly) return;
+      if(!this.emailReadOnly) return;
+    }
     if(type =="fullName") this.fNReadOnly = !this.fNReadOnly;
     if(type =="username") this.uNReadOnly = !this.uNReadOnly;
     if(type == "email") this.emailReadOnly = !this.emailReadOnly;
-    if(!edit){
-      // this.Keyboard.hide();
-    }
-    if(edit) {
-      // this.Keyboard.show();
-    }
   }
 
   /*
@@ -159,6 +158,7 @@ export class SettingsPage {
         this.editUsername = false;
         this.toggleReadOnly('email', false);
         this.editEmail = false;
+        this.toggleReadOnly('fullName', false);
         let msg = data.msg;
         let pos = "top";
         let cssClass = "success";

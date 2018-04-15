@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddFriendPage } from '../../pages/add-friend/add-friend';
+import { DetailedUserPage} from '../../pages/detailed-user/detailed-user';
 import { AuthProvider } from '../../providers/auth/auth';
 
 /**
@@ -100,6 +101,11 @@ export class FriendsPage {
         // return false;
       }
     });
+  }
+  avatarClick(friend){
+
+   this.navCtrl.push(DetailedUserPage, {username: friend.username, id: friend._id});
+
   }
 
   acceptFriendRequest(request){

@@ -42,7 +42,12 @@ export class SeshesPage {
     this.session = this.navParams.get('session');
     this.checkUser();
     this.hasJoined = this.navParams.get('hasJoined');
-    this.loadSpot();
+    if(!this.session.spot._id){
+      this.loadSpot();
+    }
+    else {
+      this.spot = this.session.spot;
+    }
     this.loadUsers();
   }
   loadSpot(){

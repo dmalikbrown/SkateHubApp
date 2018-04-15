@@ -29,7 +29,7 @@
     <ion-list *ngSwitchCase="'friends'">
       <ion-item-sliding *ngFor="let friend of friends">
         <ion-item id="thread-item" no-lines>
-          <ion-avatar item-start>
+          <ion-avatar item-start (tap)="avatarClick(friend)">
             <img [src]="friend.avatar">
           </ion-avatar>
           <h2>{{friend.username}}</h2>
@@ -47,7 +47,7 @@
     <ion-list *ngSwitchCase="'requests'">
       <ion-item-sliding *ngFor="let request of requests">
         <ion-item id="thread-item" no-lines>
-          <ion-avatar item-start>
+          <ion-avatar item-start (tap)="avatarClick(friend)">
             <img [src]="request.avatar">
           </ion-avatar>
           <h2>{{request.username}}</h2>

@@ -163,7 +163,7 @@ export class NavigatePage {
             icon: icon,
             position: this.pos,
             map: this.map,
-            draggable: true,
+            draggable: false,
             animation: google.maps.Animation.DROP,
             label: {
               text: username,
