@@ -44,6 +44,18 @@ ionic serve
 ```
 * If you run in Google Chrome you can inspect the page and toggle the device simulator to view on mobile phones
 
+## Device Build
+
+* To build to device run the following commands:
+```
+ionic cordova build ios 
+```
+```
+ionic cordova build android
+```
+* Open in respective softwares (XCode, Android Studio)
+* Note devices either read ip addresses or domains 
+
 ## Unit Tests
 
 * To run the unit tests, first:
@@ -68,3 +80,10 @@ cd Skatehub/skatehub
 npm run e2e
 ```
 * The tests should begin and display the output.
+
+## Things To Note When Performing QA Testing
+
+* Native functions will throw an error if used in ionic serve.
+* When app loads in ionic serve, user will see a runtime error due to notifications initializing and not being ran on a phone. Please disregard this issue and proceed by pressing "close" in the top right corner of the simulator. 
+* Various native features do not work in an emulator such as grabing current location, notifications(work in android but not ios) but will work on an android simulator. It is best for the app to be ran on the device itself, not an emulator. 
+* We are using a free-live server that goes idle(may appear to be frozen) after 30mins of inactivity. This is due to us using a free server for our mobile application. 
