@@ -81,6 +81,16 @@ export class MySpotsPage {
     });
   }
 
+  swipeEvent(e){
+    if(e.direction == 2){
+      loadSavedSpots();
+    }
+    else if(e.direction == 1){
+      loadPostedSpots();
+    }
+    else{console.log("Error");}
+  }
+
   loadPostedSpots(){
     console.log("Posted Spots");
   }
