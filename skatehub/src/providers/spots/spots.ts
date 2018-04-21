@@ -35,7 +35,7 @@ export class SpotsProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/image/remove",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/image/remove",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -43,14 +43,21 @@ export class SpotsProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/spot/create",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/spot/create",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
   getAllSpots(){
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.prodEp+"/skatehub/spots/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.devEp+"/skatehub/spots/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
+  getSpotsByUserId(id){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/spots/user/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
   switchStance(obj){
@@ -61,14 +68,14 @@ export class SpotsProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-	return this.http.post(this.prodEp+"/skatehub/spot/update",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+	return this.http.post(this.devEp+"/skatehub/spot/update",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
   getSpotById(id){
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.prodEp+"/skatehub/spots/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.devEp+"/skatehub/spots/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
 }

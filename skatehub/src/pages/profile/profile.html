@@ -1,18 +1,78 @@
 <ion-content>
-  <!-- <ion-row justify-content-center class="top-spacing">
-      <ion-avatar *ngIf="user" class= "profile-shift">
-        <img [src]="imagePath" (tap)="show(imagePath)" style="border-radius: 50%; width: 100px; height: 100px; border: 10px solid #FF8F00;">
-      </ion-avatar>
-      <ion-icon ios="md-create" color="primary" *ngIf="imageChosen == 0" (tap)="chooseImage()" style="font-size: 25px;"></ion-icon>
-      <ion-icon name="remove-circle" color="danger" *ngIf="imageChosen == 1" (tap)="clear()" style="font-size: 30px;"></ion-icon>
-  </ion-row> -->
-<!-- ^^^^ above comments are going to be necessary in the future maybe - DON'T DELETE :) -->
 
-  <!-- Green background - START -->
   <div class ="square-background">
   </div>
-  <!-- Green background - END -->
-  <!-- User avatar and info - START -->
+  <ion-row class="top-spacing">
+    <ion-buttons id="edit" (tap) = "openEditModal()">
+      <button style="font-size: .82em" ion-button clear color="secondary">
+        <strong>EDIT</strong>
+      </button>
+    </ion-buttons>
+      <ion-avatar *ngIf="user" class= "profile-shift">
+        <img [src]="imagePath" class = "avatar-border">
+      </ion-avatar>
+
+      <ion-item id="username" no-padding style="margin-left: 1.7em;" no-lines>
+          <h2 text-wrap no-padding style="font-size: 1.25em;">Full Name</h2>
+          <!-- <ion-buttons item-end (tap) = "openDetailedSpot(spot)">
+            <button style="font-size: .75em" ion-button clear color="secondary">
+              <strong>EDIT</strong>
+            </button>
+          </ion-buttons> -->
+      </ion-item>
+      <div class="profile-left">
+        <p ion-text no-margin text-wrap style="font-size: .9em">
+          <strong>UserName</strong>
+        </p>
+        <!-- TODO Add values like 'karma', 'days been on app', 'etc'-->
+        <p text-wrap style="margin-top: .25em; font-size: .9em;">User bio </p>
+      </div>
+
+  </ion-row>
+  <ion-row>
+    <ion-segment mode="md" [(ngModel)]="categories" color="primary">
+      <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="posts">
+        Posts
+      </ion-segment-button>
+      <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="sessions">
+        Sessions
+      </ion-segment-button>
+      <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="friends">
+        Friends
+      </ion-segment-button>
+    </ion-segment>
+  </ion-row>
+  <div [ngSwitch]="categories" style="height: 100%;">
+    <ion-grid style="background-color: #f0f0f0; height: 100%;" *ngSwitchCase="'posts'">
+      <ion-row *ngIf="spots">
+        <ion-item id="username" style="background: transparent;" no-lines>
+            <span ion-text style="font-size: .75em; color: #9E9E9E;" (tap)="openSortAS()">
+              <strong>SORT POSTS</strong>
+            </span>
+            <ion-icon style="vertical-align: middle; color: #9E9E9E;" name="md-arrow-dropdown" mode="md"></ion-icon>
+        </ion-item>
+          <ion-col *ngFor="let spot of spots" col-4 col-md-3 col-lg-6 col-xl-12>
+            <ion-thumbnail>
+              <img [src]="spot.images[0]">
+            </ion-thumbnail>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <div class ="square-background">
+  </div>
+
   <ion-row justify-content-center class="top-spacing">
       <ion-avatar *ngIf="user" class= "profile-shift">
         <img [src]="imagePath" class = "avatar-border">
@@ -36,40 +96,6 @@
     <p *ngIf="user && (user.stance == '' || !user.stance)" text-center ion-text color = "white" (tap)= "changeStance()" no-margin style = "position: relative;"> Set stance! </p>
 
 
-<!-- User avatar and info - END -->
-
-<!-- Bunch of buttons - START -->
-  <!-- <button class = "top-spacing-buttons" ion-button icon-left block strong (tap) = "mySpotsPage()" color = "grey"> -->
-    <!-- <ion-icon name = "archive"></ion-icon> -->
-    <!-- My Spots -->
-    <!-- <span style="margin-left: 50%;"></span> -->
-  <!-- </button> -->
-  <!-- <button ion-button icon-left block strong (tap) = "friendsPage()" color = "grey"> -->
-    <!-- <ion-icon name = "ios-people"></ion-icon> -->
-    <!-- Friends -->
-    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
-  <!-- </button> -->
-  <!-- <button ion-button icon-left block strong (tap) = "invitesPage()" color = "grey"> -->
-    <!-- <ion-icon name = "paper-plane"></ion-icon> -->
-    <!-- Invites -->
-    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
-  <!-- </button> -->
-  <!-- <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "grey"> -->
-    <!-- <ion-icon name = "checkmark-circle-outline"></ion-icon> -->
-    <!-- Saved Spots -->
-  <!-- </button> -->
-  <!-- <button ion-button icon-left block strong (tap) = "settingsPage()" color = "grey"> -->
-    <!-- <ion-icon name = "settings"></ion-icon> -->
-    <!-- Settings -->
-  <!-- </button> -->
-  <!-- Bunch of buttons - END -->
-  <!-- Logout button - START -->
-  <!-- <button ion-button icon-left block strong style="background-color: transparent; color: #f53d3d;" (tap) = "logout()" color = "danger"> -->
-    <!-- <ion-icon name = "exit"></ion-icon> -->
-    <!-- Logout -->
-  <!-- </button> -->
-  <!-- Logout button - END -->
-
 <ion-grid style="background-color: #FFF" class="ion-grid">
   <ion-row style="backround-color: #628" class="ion-top-row">
     <ion-col col-6 style="background-color: #ffffff" (tap)= "mySpotsPage()" class="grid-border" class="ion-left-col"> My Spots
@@ -92,7 +118,7 @@
     </ion-col>
   </ion-row>
 </ion-grid>
-
+ -->
 
 
 </ion-content>
