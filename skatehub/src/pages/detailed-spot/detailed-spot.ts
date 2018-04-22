@@ -32,6 +32,7 @@ export class DetailedSpotPage {
   description: any;
   rating: number;
   comment: any;
+  commentArr: any = [];
   report: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
@@ -50,6 +51,7 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
+    this.loadInfo();
     // console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
@@ -59,6 +61,20 @@ export class DetailedSpotPage {
     {
         this.isUser = false;
     }
+  }
+  loadInfo(){
+    this.loadComments();
+  }
+  loadComments(){
+    this.commentProvider.getAllComments(this.spot._id).subscribe((data)=> {
+      if(data.success){
+        this.commentArr = data.comment;
+        // console.log(data.comment);
+      }
+      else {
+        console.log(data.msg);
+      }
+    })
   }
 
   /*
@@ -185,6 +201,49 @@ on the user's device.
   }
   saveSpot(spot){
     this.saveSpt('savedSpots', spot);
+  }
+  openDetailedAction(spot){
+    let actionSheet = this.actionSheet.create({
+     buttons: [
+       {
+         text: 'Save Spot',
+		   handler: () => {
+             this.saveSpt('savedSpots', spot);
+             console.log('Saved Spot clicked');
+         }
+       },
+       {
+         text: 'Rate Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('rate Spot');
+         }
+       },
+       {
+         text: 'Comment on Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('Comment on Spot');
+         }
+       },
+       {
+         text: 'Report Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('report Spot');
+         }
+       },
+       {
+         text: 'Cancel',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancel clicked');
+         }
+       }
+     ]
+   });
+
+   actionSheet.present(); //display the action sheet
   }
   openNavigation(){
     //grab the user's current location

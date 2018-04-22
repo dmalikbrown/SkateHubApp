@@ -21,7 +21,7 @@ export class MessageProvider {
       let headers = new Headers();
       headers.append('Authorization', token);
       headers.append('Content-Type','application/json');
-      return this.http.post(this.prodEp+"/skatehub/message",messageObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      return this.http.post(this.devEp+"/skatehub/message",messageObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
 
@@ -29,7 +29,7 @@ export class MessageProvider {
     let headers = new Headers();
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/delete/message",messageObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/delete/message",messageObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -37,7 +37,7 @@ export class MessageProvider {
       let headers = new Headers();
       headers.append('Authorization', token);
       headers.append('Content-Type','application/json');
-      return await this.http.get(this.prodEp+"/skatehub/message/"+threadId,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      return await this.http.get(this.devEp+"/skatehub/message/"+threadId,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
 

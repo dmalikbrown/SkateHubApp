@@ -1,104 +1,100 @@
 <!-- Header displaying the name of the skate spot -->
 <ion-header no-border>
-  <ion-navbar color="primary">
-    <ion-title *ngIf = "spot" >{{spot.name}}</ion-title>
+  <ion-navbar color="white">
+    <!-- <ion-title *ngIf = "spot" >{{spot.name}}</ion-title> -->
   </ion-navbar >
 </ion-header>
 
 <!-- End of header -->
 
-<ion-content padding>
-  <!-- Top part of the skate spot (user profile pic and their username, either a trash can icon or "more" icon)  -->
-  <ion-item no-lines>
-    <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
-     <ion-avatar class ="border-green" (tap)="avatarClick()" item-start *ngIf = "spot">
-      <img [src]="spot.avatar" alt = "">
-     </ion-avatar>
-     <h3 *ngIf = "spot"><strong>{{spot.username}}</strong></h3>
-     <ion-icon *ngIf = "!isUser" name = "more" item-end (tap) = "openAction()"></ion-icon>
-     <ion-icon *ngIf = "isUser" name = "trash" item-end color = "danger"></ion-icon>
-  </ion-item>
-<!-- End of top part of skate spot -->
+<ion-content>
+  <ion-card no-margin *ngIf="spot" style="width: 100%; padding-bottom: 2em;">
+    <ion-item>
+      <ion-avatar item-start (tap)="avatarClick(spot)">
+        <img [src]="spot.avatar">
+      </ion-avatar>
+      <p>{{spot.username}}</p>
+      <h2>{{spot.name}}</h2>
+      <ion-icon *ngIf="!isUser" name="more" color="secondary" item-end (tap)="openDetailedAction(spot)"></ion-icon>
+      <ion-icon *ngIf="isUser" name="trash" color="danger" item-end (tap)="openDetailedAction(spot)"></ion-icon>
+    </ion-item>
 
-<!-- Img slides -->
-  <ion-row>
-    <ion-col col-12>
-      <ion-slides *ngIf = "spot">
-        <ion-slide *ngFor="let pic of spot.images">
-          <img style = "height: 385px; width: auto;" [src] = "pic">
-        </ion-slide>
-      </ion-slides>
-    </ion-col>
-</ion-row>
+    <ion-slides pager>
+      <ion-slide *ngFor="let img of spot.images">
+        <img [src]="img" style="max-height: 450px; width: 100%;">
+      </ion-slide>
+    </ion-slides>
 
-<!-- End Img slides -->
 
-<!-- Skate spot types -->
-<ion-row style="width: 100%;" no-wrap>
-  <ion-col align-self-center text-center>
-    <!-- <p *ngFor="let type of spot.types; let x = index;">
-      <ng-container *ngIf="x < 4">{{type}}</ng-container>
-    </p> -->
-      <ion-row wrap *ngIf = "spot">
-        <ion-col *ngFor= "let type of spot.types;" col-4>
-            <img [src] = "type" style="height: 40px;">
+
+    <!-- <ion-card-content>
+      <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+    </ion-card-content> -->
+
+    <ion-row justify-content-center padding>
+      <!-- <ion-item> -->
+        <!-- <button item-start ion-button color="darkLHue" icon-left clear small (tap)="openComments(spot)">
+          <ion-icon name="chatboxes"></ion-icon>
+          <div>{{spot.comment.length}}</div>
+        </button> -->
+        <!-- <ion-row justify-content-center> -->
+          <ng-container *ngFor="let type of spot.types;">
+            <img [src]="type" style="width: 3em; height: 3em; padding: 0 3px 0 3px;">
+          </ng-container>
+        <!-- </ion-row> -->
+        <!-- <button color="secondary" item-end ion-button clear icon-left strong (tap)="openNavigation(spot)">
+          <ion-icon name="pin"></ion-icon>
+          Skate
+        </button> -->
+      <!-- </ion-item> -->
+
+    </ion-row>
+    <ion-item-divider>
+      <p ion-text text-wrap color="dark" style="font-size: 1em;"> {{spot.description}} </p>
+    </ion-item-divider>
+    <ion-grid padding-left>
+      <!-- <ion-row>
+        <ion-col col-12>
+          <button ion-button color="darkLHue" icon-left clear small (tap)="openComments(spot)">
+            <ion-icon name="chatboxes"></ion-icon>
+            <div>{{spot.comment.length}}</div>
+          </button>
+        </ion-col>
+      </ion-row> -->
+      <ion-row *ngFor="let comment of commentArr; let i = index;">
+        <ion-col no-padding col-12 *ngIf="i<2">
+          <span><strong>{{comment.username}}</strong></span> <span>{{comment.comment[0]}}</span>
         </ion-col>
       </ion-row>
-  </ion-col>
-</ion-row>
+      <p style="padding-top: .5em" *ngIf="commentArr.length >=2" (tap)="openComments(spot)">View all {{commentArr.length-2}} comments</p>
+      <p padding-top style="font-size: .75em; padding-top: .5em">Date Posted</p>
+    </ion-grid>
 
-<!-- End skate spot types -->
-
-<!-- Skate spot Description -->
-<h3>Description</h3>
-<ion-row *ngIf = "spot">
-  <ion-col *ngIf = "!spot.description || spot.description == '' " >
-    No Description Provided
-  </ion-col>
-  <ion-col *ngIf = "spot.description != '' " >
-    {{spot.description}}
-  </ion-col>
-</ion-row>
-
-<!-- End skate spot description -->
-
-<ion-row *ngIf = "spot">
-  <ion-icon style = "font-size: 5em;" *ngIf = "spot.lightingLevel == 'yes'" name = "ios-sunny-outline">
-  </ion-icon>
-  <ion-icon style = "font-size: 5em;" *ngIf = "spot.lightingLevel == 'no'" name = "sunny">
-  </ion-icon>
-</ion-row>
-
-
-<ion-row justify-content-center>
-  <button color="primary" ion-button icon-left strong block (tap)="openNavigation()">
-    <ion-icon name="pin"></ion-icon>
-    Let's Skate
-  </button>
-</ion-row>
+  </ion-card>
 
 <!--TODO RISK LEVEL  -->
 <ion-row justify-content-center>
 
-    <ion-item>
+    <!-- <ion-item>
     <ion-range min="0" max="10" [(ngModel)]="rating" color="secondary">
       <ion-label range-left>0</ion-label>
       <ion-label range-right>10</ion-label>
     </ion-range>
-    </ion-item>
+    </ion-item> -->
 	<!--
 	  Created another button for less confusion and so that the toasts wouldn't stack
 	  on top of each other if we were saving the comment and the rating, when
 	  one button was clicked.
 	-->
-  <button ion-button full color="#1180a3" (click)="saveRating(); rating=0;">Save Rating</button>
-    <ion-item>
+
+  <!-- <button ion-button full color="#1180a3" (click)="saveRating(); rating=0;">Save Rating</button> -->
+    <!-- <ion-item>
       <ion-label floating>Comment</ion-label>
       <ion-input [(ngModel)]="comment" type="text"></ion-input>
-    </ion-item>
+    </ion-item> -->
 
 	<!--  (click)="saveButton(saturation); saturation=0; description =''" -->
-  <button ion-button full color="#1180a3" (click)="saveComment(); comment='';">Save Comment</button>
-  <button ion-button full color="danger" (click)="showPrompt()">Report Spot</button>
-</ion-row>
+    <button ion-button full color="secondary" (click)="openNavigation(spot)">Let's Skate</button>
+  <!-- <button ion-button full color="danger" (click)="showPrompt()">Report Spot</button> -->
+  </ion-row>
 </ion-content>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, AlertController,
-  ToastController, ActionSheetController, Platform} from 'ionic-angular';
+  ToastController, ActionSheetController, Platform, ModalController} from 'ionic-angular';
 import {Headers} from '@angular/http';
 import { FileTransfer, FileUploadOptions,
   FileTransferObject } from '@ionic-native/file-transfer';
@@ -14,6 +14,7 @@ import { FriendsPage } from './../../pages/friends/friends';
 import { MySpotsPage } from './../../pages/my-spots/my-spots';
 import { SavedSpotsPage } from './../../pages/saved-spots/saved-spots';
 import { SettingsPage } from './../../pages/settings/settings';
+import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
 import { LoginPage } from './../../pages/login/login';
 import * as moment from 'moment';
 
@@ -34,11 +35,16 @@ export class ProfilePage {
 
   userId: any;
   user: any;
+  spots: any = [];
+  savedSpots: any = [];
+  sortText: any = "YOUR SPOTS";
+  sort: boolean = true;
   defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
   imagePath: any;
   imageNewPath: any;
   imageChosen: any = 0;
   stance: any;
+  categories: any = "posts";
   devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
@@ -47,7 +53,8 @@ export class ProfilePage {
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public actionSheetCtrl: ActionSheetController, public file: File,
               public transfer: FileTransfer, public platform: Platform,
-              public camera: Camera, public filePath: FilePath) {
+              public camera: Camera, public filePath: FilePath,
+              public spotsProvider: SpotsProvider, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -77,6 +84,39 @@ export class ProfilePage {
   ionViewWillLeave(){
 
   }
+  openDetailedSpot(spot){
+      this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
+      console.log('Go to Post clicked');
+  }
+  openSortAS(){
+    let actionSheet = this.actionSheetCtrl.create({
+       title: 'SORT POSTS BY',
+       buttons: [
+         {
+           text: 'My Spots',
+           handler: () => {
+             this.sortText = "YOUR SPOTS";
+             this.sort = true;
+             // this.actionHandler(1);
+           }
+         },
+         {
+           text: 'Saved Spots',
+           handler: () => {
+             this.sortText = "YOUR SAVED SPOTS";
+             this.sort = false;
+             // this.actionHandler(2);
+           }
+         },
+         {
+           text: 'Cancel',
+           role: 'cancel'
+         }
+       ]
+     });
+
+     actionSheet.present();
+  }
 
   getUser(id){
     console.log(id);
@@ -85,6 +125,7 @@ export class ProfilePage {
       if(data.success){
         this.user = data.user;
         this.authProvider.updateUser(this.user);
+        this.loadInfo();
         // console.log(this.user);
         this.imagePath = this.user.avatar;
         if(this.checkAvatar() && this.checkStance()){
@@ -121,6 +162,26 @@ export class ProfilePage {
         });
         alert.present();
         return false;
+      }
+    });
+  }
+  loadInfo(){
+    this.spotsProvider.getSpotsByUserId(this.user._id).subscribe((data) => {
+      if(data.success){
+        this.spots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+    this.spotsProvider.getSavedSpotsByArr(this.user._id).subscribe((data) => {
+      if(data.success) {
+        this.savedSpots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
       }
     });
   }
@@ -177,7 +238,9 @@ export class ProfilePage {
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage, {id: this.userId});
+    // this.navCtrl.push(SettingsPage, {id: this.userId});
+    let modal = this.modalCtrl.create(SettingsPage, {id: this.userId});
+    modal.present();
   }
   logout(){
     this.authProvider.logout();

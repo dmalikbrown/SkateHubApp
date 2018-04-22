@@ -46,93 +46,48 @@
 
   <!-- If spots have been posted - START -->
   <ion-list *ngIf="spots.length > 0">
-    <ion-row *ngFor="let spot of spots" justify-content-center padding-bottom>
-      <!-- Top header of post -->
-      <ion-row style="width: 100%;">
-        <ion-col>
-          <ion-item no-lines>
-            <!-- We'll need a function that pushes a profile page if the avatar is tapped (tap) = "viewProfile" -->
-              <ion-avatar button class ="border-green" item-start detail-push (click)="avatarClick(spot)">
-              <img [src]="spot.avatar" alt = "">
-              <!-- style="border-radius: 50%; width: 50px; height: 50px;" -->
-             </ion-avatar>
-            <h3><strong>{{spot.username}}</strong></h3>
-            <ion-buttons item-end (tap) = "openDetailedAction(spot)">
-              <button ion-button clear icon-only>
-                <ion-icon name="ios-more" color="black"></ion-icon>
-              </button>
-            </ion-buttons>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <!-- Top header of post END -->
+    <ion-card no-margin *ngFor="let spot of spots" style="width: 100%; padding-bottom: 2em;">
+      <ion-item>
+        <ion-avatar item-start (tap)="avatarClick(spot)">
+          <img [src]="spot.avatar">
+        </ion-avatar>
+        <p>{{spot.username}}</p>
+        <h2>{{spot.name}}</h2>
+        <ion-icon name="more" color="secondary" item-end (tap)="openDetailedAction(spot)"></ion-icon>
+      </ion-item>
 
-      <!-- 1st img in post images array - START -->
-      <img [src] = "spot.images[0]" style="height: 385px; width: 100%; display: block;">
-      <!-- 1st img in post images array - END -->
+      <ion-slides pager>
+        <ion-slide *ngFor="let img of spot.images">
+          <img [src]="img" style="max-height: 450px; width: 100%;">
+        </ion-slide>
+      </ion-slides>
 
-      <!-- Types and skate button - START -->
-      <ion-row style="width: 100%;" no-wrap>
-          <!-- Type grid - START -->
-        <ion-col align-self-center text-center>
-          <ion-grid>
-            <ion-row no-padding no-margin>
-              <ion-col>
-                <strong>
-                  <p no-padding no-margin> Type(s)</p>
-                </strong>
-              </ion-col>
-            </ion-row>
-            <ion-row wrap>
-              <ion-col *ngFor= "let type of spot.types; let x = index;" col-6>
-                  <ng-container *ngIf="x < 4">
-                    <img [src] = "type" style="height: 40px;">
-                  </ng-container>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-col>
-        <!-- Type grid - END -->
-        <ion-col col-4>
-        </ion-col>
-        <!-- Skate button - START -->
-        <ion-col>
-          <button color="primary" ion-button clear icon-left strong (tap)="openNavigation(spot)">
+
+
+      <!-- <ion-card-content>
+        <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+      </ion-card-content> -->
+
+      <ion-row>
+        <ion-item>
+          <button item-start ion-button color="darkLHue" icon-left clear small (tap)="openComments(spot)">
+            <ion-icon name="chatboxes"></ion-icon>
+            <div>{{spot.comment.length}}</div>
+          </button>
+          <ion-row justify-content-center>
+            <ng-container *ngFor="let type of spot.types; let i = index;">
+              <img [src]="type" *ngIf="i<5" style="width: 2em; height: 2em; padding: 0 3px 0 3px;">
+            </ng-container>
+          </ion-row>
+          <button color="secondary" item-end ion-button clear icon-left strong (tap)="openNavigation(spot)">
             <ion-icon name="pin"></ion-icon>
             Skate
           </button>
-        </ion-col>
-        <!-- Skate button - END -->
+        </ion-item>
+
       </ion-row>
-	  
-      <!-- Types and skate button - END -->
-      <!-- View Comments - START -->
-      <ion-row style="width: 100%;">
-		<ion-col no-padding>
-            <!--
-             Spot Description as well as the username of the user.
-			 When the username or comment is clicked, it goes 
-			 to the profile.
-           -->
-		   <button ion-item no-lines (click)="avatarClick(spot)">
-		     <h3>{{spot.name}}</h3>
-			 <p text-wrap>{{spot.description}}</p> 
-		   </button>   
-		</ion-col>
-	  </ion-row>
-	  <ion-row>
-	    <ion-col pull-6>
-            <!--
-             If there are comments use an array and then the length of that array.
-             Would need to add tap functionality to display the comments.
-           -->
-		   <button color="black" ion-button clear strong (tap)="openComments(spot)">
-		     <p>View comments({{spot.comment.length}})</p>
-		   </button>
-        </ion-col>   
-      </ion-row>
-      <!-- View Comments - END -->
-    </ion-row>
+
+    </ion-card>
   </ion-list>
   <!-- If spots have been posted - END -->
 
