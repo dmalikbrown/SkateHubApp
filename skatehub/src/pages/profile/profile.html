@@ -103,6 +103,40 @@
     <p *ngIf="user && (user.stance == '' || !user.stance)" text-center ion-text color = "white" (tap)= "changeStance()" no-margin style = "position: relative;"> Set stance! </p>
 
 
+<!-- User avatar and info - END -->
+<!-- I made thi stuff a long time ago, it can probably be removed ==TJ -->
+<!-- Bunch of buttons - START -->
+  <!-- <button class = "top-spacing-buttons" ion-button icon-left block strong (tap) = "mySpotsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "archive"></ion-icon> -->
+    <!-- My Spots -->
+    <!-- <span style="margin-left: 50%;"></span> -->
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "friendsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "ios-people"></ion-icon> -->
+    <!-- Friends -->
+    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "invitesPage()" color = "grey"> -->
+    <!-- <ion-icon name = "paper-plane"></ion-icon> -->
+    <!-- Invites -->
+    <!-- <ion-badge color="white" style="margin-left: 50%;">25</ion-badge> -->
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "savedSpotsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "checkmark-circle-outline"></ion-icon> -->
+    <!-- Saved Spots -->
+  <!-- </button> -->
+  <!-- <button ion-button icon-left block strong (tap) = "settingsPage()" color = "grey"> -->
+    <!-- <ion-icon name = "settings"></ion-icon> -->
+    <!-- Settings -->
+  <!-- </button> -->
+  <!-- Bunch of buttons - END -->
+  <!-- Logout button - START -->
+  <!-- <button ion-button icon-left block strong style="background-color: transparent; color: #f53d3d;" (tap) = "logout()" color = "danger"> -->
+    <!-- <ion-icon name = "exit"></ion-icon> -->
+    <!-- Logout -->
+  <!-- </button> -->
+  <!-- Logout button - END -->
+
 <ion-grid style="background-color: #FFF" class="ion-grid">
   <ion-row style="backround-color: #628" class="ion-top-row">
     <ion-col col-6 style="background-color: #ffffff" (tap)= "mySpotsPage()" class="grid-border" class="ion-left-col"> My Spots
