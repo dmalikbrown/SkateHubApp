@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, AlertController,
-  ToastController, ActionSheetController, Platform} from 'ionic-angular';
+  ToastController, ActionSheetController, Platform, ModalController} from 'ionic-angular';
 import {Headers} from '@angular/http';
 import { FileTransfer, FileUploadOptions,
   FileTransferObject } from '@ionic-native/file-transfer';
@@ -54,7 +54,7 @@ export class ProfilePage {
               public actionSheetCtrl: ActionSheetController, public file: File,
               public transfer: FileTransfer, public platform: Platform,
               public camera: Camera, public filePath: FilePath,
-              public spotsProvider: SpotsProvider) {
+              public spotsProvider: SpotsProvider, public modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -238,7 +238,9 @@ export class ProfilePage {
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage, {id: this.userId});
+    // this.navCtrl.push(SettingsPage, {id: this.userId});
+    let modal = this.modalCtrl.create(SettingsPage, {id: this.userId});
+    modal.present();
   }
   logout(){
     this.authProvider.logout();

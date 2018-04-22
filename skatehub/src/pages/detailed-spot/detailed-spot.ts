@@ -202,6 +202,49 @@ on the user's device.
   saveSpot(spot){
     this.saveSpt('savedSpots', spot);
   }
+  openDetailedAction(spot){
+    let actionSheet = this.actionSheet.create({
+     buttons: [
+       {
+         text: 'Save Spot',
+		   handler: () => {
+             this.saveSpt('savedSpots', spot);
+             console.log('Saved Spot clicked');
+         }
+       },
+       {
+         text: 'Rate Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('rate Spot');
+         }
+       },
+       {
+         text: 'Comment on Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('Comment on Spot');
+         }
+       },
+       {
+         text: 'Report Spot',
+         handler: () => {//push the DetailedSpotPage with params - spot and user id
+           //TODO
+           console.log('report Spot');
+         }
+       },
+       {
+         text: 'Cancel',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancel clicked');
+         }
+       }
+     ]
+   });
+
+   actionSheet.present(); //display the action sheet
+  }
   openNavigation(){
     //grab the user's current location
     this.geolocation.getCurrentPosition().then((resp) => {
