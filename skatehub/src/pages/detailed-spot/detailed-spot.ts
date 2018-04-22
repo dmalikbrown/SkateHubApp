@@ -32,6 +32,7 @@ export class DetailedSpotPage {
   description: any;
   rating: number;
   comment: any;
+  commentArr: any = [];
   report: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation,
   public launchNavigator: LaunchNavigator, public actionSheet: ActionSheetController, public alertCtrl: AlertController,
@@ -50,6 +51,7 @@ export class DetailedSpotPage {
   */
   ionViewDidLoad() {
     this.spot = this.navParams.get('spot');
+    this.loadInfo();
     // console.log("ionViewDidLoad", this.spot);
     if (this.spot.userId == this.navParams.get('id'))
     {
@@ -59,6 +61,20 @@ export class DetailedSpotPage {
     {
         this.isUser = false;
     }
+  }
+  loadInfo(){
+    this.loadComments();
+  }
+  loadComments(){
+    this.commentProvider.getAllComments(this.spot._id).subscribe((data)=> {
+      if(data.success){
+        this.commentArr = data.comment;
+        // console.log(data.comment);
+      }
+      else {
+        console.log(data.msg);
+      }
+    })
   }
 
   /*

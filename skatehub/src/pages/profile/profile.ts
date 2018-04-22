@@ -34,11 +34,13 @@ export class ProfilePage {
 
   userId: any;
   user: any;
+  spots: any = [];
   defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
   imagePath: any;
   imageNewPath: any;
   imageChosen: any = 0;
   stance: any;
+  categories: any = "posts";
   devEp: any = "http://localhost:3000";
   prodEp: any = "https://skatehub.herokuapp.com";
 
@@ -47,7 +49,8 @@ export class ProfilePage {
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public actionSheetCtrl: ActionSheetController, public file: File,
               public transfer: FileTransfer, public platform: Platform,
-              public camera: Camera, public filePath: FilePath) {
+              public camera: Camera, public filePath: FilePath,
+              public spotsProvider: SpotsProvider) {
   }
 
   ionViewDidLoad() {
@@ -77,6 +80,31 @@ export class ProfilePage {
   ionViewWillLeave(){
 
   }
+  openSortAS(){
+    let actionSheet = this.actionSheetCtrl.create({
+       title: 'SORT POSTS BY',
+       buttons: [
+         {
+           text: 'My Spots',
+           handler: () => {
+             // this.actionHandler(1);
+           }
+         },
+         {
+           text: 'Saved Spots',
+           handler: () => {
+             // this.actionHandler(2);
+           }
+         },
+         {
+           text: 'Cancel',
+           role: 'cancel'
+         }
+       ]
+     });
+
+     actionSheet.present();
+  }
 
   getUser(id){
     console.log(id);
@@ -85,6 +113,7 @@ export class ProfilePage {
       if(data.success){
         this.user = data.user;
         this.authProvider.updateUser(this.user);
+        this.loadInfo();
         // console.log(this.user);
         this.imagePath = this.user.avatar;
         if(this.checkAvatar() && this.checkStance()){
@@ -121,6 +150,17 @@ export class ProfilePage {
         });
         alert.present();
         return false;
+      }
+    });
+  }
+  loadInfo(){
+    this.spotsProvider.getSpotsByUserId(this.user._id).subscribe((data) => {
+      if(data.success){
+        this.spots = data.spots;
+        console.log(data.msg);
+      }
+      else {
+        console.log(data.msg);
       }
     });
   }

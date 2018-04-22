@@ -21,14 +21,14 @@ export class InviteProvider {
       let headers = new Headers();
       headers.append('Authorization', token);
       headers.append('Content-Type','application/json');
-      return this.http.post(this.prodEp+"/skatehub/create/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      return this.http.post(this.devEp+"/skatehub/create/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
   acceptInvite(inviteObj, token){
     let headers = new Headers();
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/accept/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/accept/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -36,14 +36,14 @@ export class InviteProvider {
     let headers = new Headers();
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/decline/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/decline/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
   deleteInvite(inviteObj, token){
     let headers = new Headers();
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.prodEp+"/skatehub/delete/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.devEp+"/skatehub/delete/invite",inviteObj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -51,7 +51,7 @@ export class InviteProvider {
     let headers = new Headers();
     headers.append('Authorization', token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.prodEp+"/skatehub/invites/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.devEp+"/skatehub/invites/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -59,7 +59,7 @@ export class InviteProvider {
       let headers = new Headers();
       headers.append('Authorization', token);
       headers.append('Content-Type','application/json');
-      return await this.http.get(this.prodEp+"/skatehub/invite/"+inviteId,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      return await this.http.get(this.devEp+"/skatehub/invite/"+inviteId,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
 

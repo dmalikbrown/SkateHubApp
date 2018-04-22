@@ -817,6 +817,21 @@ router.get('/comments/spots/all/:id', passport.authenticate('jwt', {session:fals
     });
 });
 
+router.get('/spots/user/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Spot.find({userId: req.params.id}, (err, spots) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      if(!spots){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else{
+        return res.json({success: true, spots: spots.reverse()});
+      }
+    });
+});
 
 router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     Spot.find({}, (err, spots) =>{
