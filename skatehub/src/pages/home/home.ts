@@ -188,6 +188,12 @@ export class HomePage {
   filterByState(){
     if(this.state == 'all'){
       this.spots = this.spotsVarHolder;
+      if(this.spots.length == 0){
+        this.noSpots = true;
+      }
+      else {
+        this.noSpots = false;
+      }
       return;
     }
     // use array filter function calling parseStateFromSpot function.

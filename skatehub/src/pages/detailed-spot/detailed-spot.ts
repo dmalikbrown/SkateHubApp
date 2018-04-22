@@ -76,6 +76,43 @@ export class DetailedSpotPage {
       }
     })
   }
+  deleteSpot(){
+    let alert = this.alertCtrl.create({
+      title: 'Remove Spot',
+      subTitle: "Are you sure you want to remove this spot?",
+      buttons: ['Dismiss',
+          {
+            text: 'Remove',
+            handler: ()=>{
+
+              this.spotsProvider.deleteSpot(this.spot).subscribe((data)=> {
+                console.log(data);
+                if(data.success){
+                  let msg = "Successfully deleted spot!";
+                  let pos = "top";
+                  let cssClass = "success";
+                  let showCloseButton = true;
+                  let closeButtonText = "Ok";
+                  this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+                  this.navCtrl.pop();
+                }
+                else{
+                  let msg = "Sorry boss... it didn't delete";
+                  let pos = "top";
+                  let cssClass = "warning";
+                  let showCloseButton = true;
+                  let closeButtonText = "Ok";
+                  this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+
+                }
+              });
+            }
+          }
+      ]
+    });
+    alert.present();
+
+  }
 
   /*
   Open an action handler that contains 3 buttons: 'Save Spot', and
@@ -164,33 +201,35 @@ on the user's device.
           contents: {en: this.authProvider.user.username+" has saved your spot "+spot.name},
           include_player_ids: [destinationId]
         };
-      this.oneSignal.postNotification(notificationObj)
-                    .then((someData) => {
-                      console.log(someData);
-                      let notification = {
-                        type: "saved",
-                        description: this.authProvider.user.username+" has saved your spot "+spot.name,
-                        sender: this.authProvider.user._id,
-                        receiver: spot.userId,
-                        obj: spot._id
-                      };
-                      let edit = {
-                        type: "notification",
-                        notification: notification,
-                        id: spot.userId,
-                      };
-                      this.authProvider.update(edit).subscribe((ret)=> {
-                          if(ret.success){
-                            //do nothing
-                          }
-                          else {
-                            console.log(ret.msg);
-                          }
-                      });
-                    })
-                    .catch((someErr) => {
-                      console.log(someErr);
-                    })
+        let notification = {
+          type: "saved",
+          description: this.authProvider.user.username+" has saved your spot "+spot.name,
+          sender: this.authProvider.user._id,
+          receiver: spot.userId,
+          obj: spot._id
+        };
+        let edit = {
+          type: "notification",
+          notification: notification,
+          id: spot.userId,
+        };
+        this.authProvider.update(edit).subscribe((ret)=> {
+            if(ret.success){
+              //send the notification
+              this.oneSignal.postNotification(notificationObj)
+                            .then((someData) => {
+                              console.log(someData);
+
+                            })
+                            .catch((someErr) => {
+                              console.log(someErr);
+                            })
+            }
+            else {
+              console.log(ret.msg);
+            }
+        });
+
 
     });
     } else {
@@ -202,13 +241,13 @@ on the user's device.
   saveSpot(spot){
     this.saveSpt('savedSpots', spot);
   }
-  openDetailedAction(spot){
+  openDetailedAction(){
     let actionSheet = this.actionSheet.create({
      buttons: [
        {
          text: 'Save Spot',
 		   handler: () => {
-             this.saveSpt('savedSpots', spot);
+             this.saveSpt('savedSpots', this.spot);
              console.log('Saved Spot clicked');
          }
        },
@@ -336,33 +375,35 @@ on the user's device.
                 contents: {en: this.authProvider.user.username+" commented on your spot."},
                 include_player_ids: [destinationId]
               };
-            this.oneSignal.postNotification(notificationObj)
-                          .then((someData) => {
-                            console.log(someData);
-                            let notification = {
-                              type: "comment",
-                              description: this.authProvider.user.username+" commented on your spot.",
-                              sender: this.authProvider.user._id,
-                              receiver: recipient,
-                              obj: data.comment._id
-                            };
-                            let edit = {
-                              type: "notification",
-                              notification: notification,
-                              id: recipient,
-                            };
-                            this.authProvider.update(edit).subscribe((ret)=> {
-                                if(ret.success){
-                                  //do nothing
-                                }
-                                else {
-                                  console.log(ret.msg);
-                                }
-                            });
-                          })
-                          .catch((someErr) => {
-                            console.log(someErr);
-                          })
+              let notification = {
+                type: "comment",
+                description: this.authProvider.user.username+" commented on your spot.",
+                sender: this.authProvider.user._id,
+                receiver: recipient,
+                obj: data.comment._id
+              };
+              let edit = {
+                type: "notification",
+                notification: notification,
+                id: recipient,
+              };
+              this.authProvider.update(edit).subscribe((ret)=> {
+                  if(ret.success){
+                    //send notification
+                    this.oneSignal.postNotification(notificationObj)
+                                  .then((someData) => {
+                                    console.log(someData);
+
+                                  })
+                                  .catch((someErr) => {
+                                    console.log(someErr);
+                                  })
+                  }
+                  else {
+                    console.log(ret.msg);
+                  }
+              });
+
 
           });
 			    console.log("Successfully saved comment id to Spot");

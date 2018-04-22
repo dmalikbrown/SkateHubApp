@@ -408,6 +408,17 @@ export class PostPage {
 
     }
   }
+  clear(){
+    this.spotName = "";
+    this.address = "";
+    this.skateTypes = [];
+    this.spotDescription = "";
+    this.resultArr = [];
+    this.lighting = "";
+    this.riskLvl = 0;
+    this.lat = 0;
+    this.lng = 0;
+  }
   sendSpot(){
       let obj = {
         id: this.user._id,
@@ -435,6 +446,7 @@ export class PostPage {
           duration: 3000
         });
         toast.present();
+        this.clear();
         this.navCtrl.parent.select(0);
       }
       else{

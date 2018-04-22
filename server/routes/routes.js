@@ -311,6 +311,50 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
   })
 
 });
+
+router.post('/spot/delete', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  Spot.deleteSpot(req.body, (err, val) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when deleting"});
+    }
+    else {
+      User.updateMany({}, {
+        $pull: {'savedSpots': {id: req.body._id},
+         'spots': {id: req.body._id}}
+      }, { multi: true }, (err, x) =>{
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg:"Error when deleting"});
+
+        }
+        else {
+          Comment.deleteMany({spotId: req.body._id}, (y)=> {
+            if(err){
+              console.log(err);
+              return res.json({success: false, msg:"Error when deleting"});
+            }
+            else {
+              return res.json({success: true, msg:"Deleted"});
+              // Notification.deleteMany({obj: spot._id}, (err, z) => {
+              //   if(err){
+              //     console.log(err);
+              //     return res.json({success: false, msg:"Error when deleting"});
+              //   }
+              //   else {
+              //     return res.json({success: false, msg:"Error when deleting"});
+              //   }
+              // });
+            }
+          });
+        }
+
+
+      });
+    }
+  });
+});
+
 /*
  * This route allows comments to be stored.
  * I thought that maybe it should be stored

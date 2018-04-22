@@ -198,42 +198,42 @@ export class AddFriendPage {
                 contents: {en: this.authProvider.user.username+" has sent you a friend request."},
                 include_player_ids: destinationIds
               };
-            this.oneSignal.postNotification(notificationObj)
-                          .then((someData) => {
-                            console.log(someData);
+              let someLen = this.selectedUsers.length;
+              console.log("PRINTING THE LENGTH");
+              console.log(someLen);
+              for(let k = 0; k<someLen; k++){
+                let notification = {
+                  type: "friend",
+                  description: this.authProvider.user.username+" has sent you a friend request.",
+                  sender: this.authProvider.user._id,
+                  receiver: this.selectedUsers[k]._id,
+                  obj: this.selectedUsers[k]._id
+                };
+                let edit = {
+                  type: "notification",
+                  notification: notification,
+                  id: this.selectedUsers[k]._id,
+                };
+                console.log("EDIT OBJ");
+                console.log(edit);
+                this.authProvider.update(edit).subscribe((ret)=> {
+                    if(ret.success){
+                      //do nothing
+                    }
+                    else {
+                      console.log(ret.msg);
+                    }
+                });
+              }
+              this.oneSignal.postNotification(notificationObj)
+                            .then((someData) => {
+                              console.log(someData);
 
-                            let someLen = this.selectedUsers.length;
-                            console.log("PRINTING THE LENGTH");
-                            console.log(someLen);
-                            for(let k = 0; k<someLen; k++){
-                              let notification = {
-                                type: "friend",
-                                description: this.authProvider.user.username+" has sent you a friend request.",
-                                sender: this.authProvider.user._id,
-                                receiver: this.selectedUsers[k]._id,
-                                obj: this.selectedUsers[k]._id
-                              };
-                              let edit = {
-                                type: "notification",
-                                notification: notification,
-                                id: this.selectedUsers[k]._id,
-                              };
-                              console.log("EDIT OBJ");
-                              console.log(edit);
-                              this.authProvider.update(edit).subscribe((ret)=> {
-                                  if(ret.success){
-                                    //do nothing
-                                  }
-                                  else {
-                                    console.log(ret.msg);
-                                  }
-                              });
-                            }
+                            })
+                            .catch((someErr) => {
+                              console.log(someErr);
+                            })
 
-                          })
-                          .catch((someErr) => {
-                            console.log(someErr);
-                          })
 
           });
         }

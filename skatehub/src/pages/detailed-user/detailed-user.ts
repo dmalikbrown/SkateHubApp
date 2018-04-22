@@ -203,36 +203,38 @@ export class DetailedUserPage {
                 contents: {en: this.authProvider.user.username+" has sent you a friend request."},
                 include_player_ids: destinationIds
               };
-            this.oneSignal.postNotification(notificationObj)
-                          .then((someData) => {
-                            console.log(someData);
-                            let notification = {
-                              type: "friend",
-                              description: this.authProvider.user.username+" has sent you a friend request.",
-                              sender: this.authProvider.user._id,
-                              receiver: recipients[0]._id,
-                              obj: recipients[0]._id
-                            };
-                            let edit = {
-                              type: "notification",
-                              notification: notification,
-                              id: recipients[0]._id,
-                            };
-                            console.log("EDIT OBJ");
-                            console.log(edit);
-                            this.authProvider.update(edit).subscribe((ret)=> {
-                                if(ret.success){
-                                  //do nothing
-                                }
-                                else {
-                                  console.log(ret.msg);
-                                }
-                            });
+              let notification = {
+                type: "friend",
+                description: this.authProvider.user.username+" has sent you a friend request.",
+                sender: this.authProvider.user._id,
+                receiver: recipients[0]._id,
+                obj: recipients[0]._id
+              };
+              let edit = {
+                type: "notification",
+                notification: notification,
+                id: recipients[0]._id,
+              };
+              console.log("EDIT OBJ");
+              console.log(edit);
+              this.authProvider.update(edit).subscribe((ret)=> {
+                  if(ret.success){
+                    //send notification
+                    this.oneSignal.postNotification(notificationObj)
+                                  .then((someData) => {
+                                    console.log(someData);
 
-                          })
-                          .catch((someErr) => {
-                            console.log(someErr);
-                          })
+
+                                  })
+                                  .catch((someErr) => {
+                                    console.log(someErr);
+                                  })
+                  }
+                  else {
+                    console.log(ret.msg);
+                  }
+              });
+
 
           });
         }

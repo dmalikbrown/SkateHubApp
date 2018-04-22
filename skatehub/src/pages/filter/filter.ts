@@ -76,6 +76,7 @@ export class FilterPage {
     if(this.filterArr.includes('ledge')) this.ledge = true;
     if(this.filterArr.includes('banks')) this.banks = true;
     if(this.filterArr.includes('diy')) this.diy = true;
+    if(this.filterArr.includes('misc')) this.misc = true;
   }
 
 }

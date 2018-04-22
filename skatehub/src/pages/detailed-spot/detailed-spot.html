@@ -15,8 +15,8 @@
       </ion-avatar>
       <p>{{spot.username}}</p>
       <h2>{{spot.name}}</h2>
-      <ion-icon *ngIf="!isUser" name="more" color="secondary" item-end (tap)="openDetailedAction(spot)"></ion-icon>
-      <ion-icon *ngIf="isUser" name="trash" color="danger" item-end (tap)="openDetailedAction(spot)"></ion-icon>
+      <ion-icon *ngIf="!isUser" name="more" color="secondary" item-end (tap)="openDetailedAction()"></ion-icon>
+      <ion-icon *ngIf="isUser" name="trash" color="danger" item-end (tap)="deleteSpot()"></ion-icon>
     </ion-item>
 
     <ion-slides pager>
