@@ -53,6 +53,13 @@ export class SpotsProvider {
     return this.http.get(this.devEp+"/skatehub/spots/all",{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
+  getSavedSpotsByArr(id){
+    let headers = new Headers();
+    headers.append('Authorization', this.authProvider.token);
+    headers.append('Content-Type','application/json');
+    return this.http.get(this.devEp+"/skatehub/spots/saved/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+      .map(res => res.json());
+  }
   getSpotsByUserId(id){
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);

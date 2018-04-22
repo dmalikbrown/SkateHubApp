@@ -14,6 +14,7 @@ import { FriendsPage } from './../../pages/friends/friends';
 import { MySpotsPage } from './../../pages/my-spots/my-spots';
 import { SavedSpotsPage } from './../../pages/saved-spots/saved-spots';
 import { SettingsPage } from './../../pages/settings/settings';
+import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
 import { LoginPage } from './../../pages/login/login';
 import * as moment from 'moment';
 
@@ -35,6 +36,9 @@ export class ProfilePage {
   userId: any;
   user: any;
   spots: any = [];
+  savedSpots: any = [];
+  sortText: any = "YOUR SPOTS";
+  sort: boolean = true;
   defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
   imagePath: any;
   imageNewPath: any;
@@ -80,6 +84,10 @@ export class ProfilePage {
   ionViewWillLeave(){
 
   }
+  openDetailedSpot(spot){
+      this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
+      console.log('Go to Post clicked');
+  }
   openSortAS(){
     let actionSheet = this.actionSheetCtrl.create({
        title: 'SORT POSTS BY',
@@ -87,12 +95,16 @@ export class ProfilePage {
          {
            text: 'My Spots',
            handler: () => {
+             this.sortText = "YOUR SPOTS";
+             this.sort = true;
              // this.actionHandler(1);
            }
          },
          {
            text: 'Saved Spots',
            handler: () => {
+             this.sortText = "YOUR SAVED SPOTS";
+             this.sort = false;
              // this.actionHandler(2);
            }
          },
@@ -157,7 +169,16 @@ export class ProfilePage {
     this.spotsProvider.getSpotsByUserId(this.user._id).subscribe((data) => {
       if(data.success){
         this.spots = data.spots;
+        console.log(this.spots);
+      }
+      else {
         console.log(data.msg);
+      }
+    });
+    this.spotsProvider.getSavedSpotsByArr(this.user._id).subscribe((data) => {
+      if(data.success) {
+        this.savedSpots = data.spots;
+        console.log(this.spots);
       }
       else {
         console.log(data.msg);
