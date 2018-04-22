@@ -6,7 +6,7 @@
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
-[Link to another page](./about.html).
+[About Page](./about.html).
 
 There should be whitespace between paragraphs.
 
