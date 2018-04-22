@@ -41,7 +41,10 @@
     </ion-item>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="userResultArr.length > 0">
+    <ion-list-header>
+      Search Results
+    </ion-list-header>
     <ion-item *ngFor="let searchUser of userResultArr" (tap)="toggleUser(searchUser)">
       <ion-avatar item-start>
         <img [src]="searchUser.avatar">
