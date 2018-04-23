@@ -14,6 +14,11 @@
 
 
 <ion-content padding>
+  <ion-row *ngIf="notifications.length == 0 || !notifications" style="height: 50vh;" justify-content-center>
+    <ion-col align-self-center offset-3>
+      <h1 style="color: #c0c0c0;">No notifications</h1>
+    </ion-col>
+  </ion-row>
   <ion-list *ngIf="notifications.length > 0">
       <ion-item id="thread-item" *ngFor="let not of notifications" no-lines>
         <ion-avatar item-start *ngIf="not.user">

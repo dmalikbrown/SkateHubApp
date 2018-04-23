@@ -52,6 +52,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { OneSignal } from '@ionic-native/onesignal';
+import { Crop } from '@ionic-native/crop';
+
 
 import { ElasticDirective } from '../directives/elastic/elastic';
 import { MessageProvider } from '../providers/message/message';
@@ -151,6 +153,7 @@ import { ReportProvider } from '../providers/report/report';
     Geolocation,
     NativeGeocoder,
     LaunchNavigator,
+    Crop,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     SpotsProvider,

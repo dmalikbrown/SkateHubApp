@@ -10,7 +10,7 @@ page-profile {
     position: relative;
   }
   .profile-left {
-    margin-left: 2em;
+    margin-left: 2.1em;
     // position: relative;
   }
   .avatar-border {
@@ -19,13 +19,13 @@ page-profile {
     height: 80px;
     border: 2px solid #ffffff;
   }
-  .square-background {
-    background-color: map-get($colors, lightBHue);
-    position: absolute;
-    width: 100%;
-    height: 8em;
-    // opacity: 0.5;
-  }
+  // .square-background {
+  //   background-color: map-get($colors, lightBHue);
+  //   position: absolute;
+  //   width: 100%;
+  //   height: 8em;
+  //   // opacity: 0.5;
+  // }
   .ion-grid{
     margin-top: 20%;
     height: 55%;

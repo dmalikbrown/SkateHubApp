@@ -1,33 +1,28 @@
 <ion-content>
 
-  <div class ="square-background">
+  <div *ngIf="user" class ="square-background" [ngStyle]="setBackground()">
   </div>
-  <ion-row class="top-spacing">
+  <ion-row class="top-spacing" *ngIf="user">
     <ion-buttons id="edit" (tap) = "settingsPage()">
       <button style="font-size: .82em" ion-button clear color="secondary">
         <strong>EDIT</strong>
       </button>
     </ion-buttons>
-      <ion-avatar *ngIf="user" class= "profile-shift">
-        <img [src]="imagePath" class = "avatar-border">
+      <ion-avatar class= "profile-shift">
+        <img [src]="user.avatar" class = "avatar-border">
       </ion-avatar>
 
       <ion-item id="username" no-padding style="margin-left: 1.7em;" no-lines>
-          <h2 text-wrap no-padding style="font-size: 1.25em;">Full Name</h2>
-          <!-- <ion-buttons item-end (tap) = "openDetailedSpot(spot)">
-            <button style="font-size: .75em" ion-button clear color="secondary">
-              <strong>EDIT</strong>
-            </button>
-          </ion-buttons> -->
+          <h2 text-wrap no-padding style="font-size: 1.25em;">{{user.fullName}}</h2>
       </ion-item>
       <div class="profile-left">
         <p ion-text no-margin text-wrap style="font-size: .9em">
-          <strong>UserName</strong>
+          <strong>{{user.username}}</strong>
         </p>
         <!-- TODO Add values like 'karma', 'days been on app', 'etc'-->
-        <p text-wrap style="margin-top: .25em; font-size: .9em;">User bio </p>
+        <p text-wrap ion-text color="darkLHue" style="margin-top: .25em; font-size: .9em;">{{user.stance}} Stance </p>
+        <!-- <p text-wrap style="margin-top: .25em; font-size: .9em;">User bio </p> -->
       </div>
-
   </ion-row>
   <ion-row>
     <ion-segment mode="md" [(ngModel)]="categories" color="primary">
@@ -66,8 +61,115 @@
           </ion-col>
       </ion-row>
     </ion-grid>
-  </div>
+    <ion-grid style="height: 100%;" *ngSwitchCase="'sessions'">
+      <ion-row>
+        <ion-buttons start left (tap)="openSessionModal()">
+          <button color="primary" icon-left small ion-button clear>
+            <ion-icon name="add"></ion-icon>
+            <strong>Create Session</strong>
+          </button>
+        </ion-buttons>
+      </ion-row>
 
+      <ion-list *ngIf="!emptyRequests">
+        <ion-list-header>
+          Requests
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let invite of requested">
+          <ion-item no-lines (tap)="pushSeshesPage(invite, false)">
+            <ion-thumbnail item-start>
+              <img [src]="invite.spot.images[0]">
+            </ion-thumbnail>
+            <h2 text-wrap>{{invite.spot.name}}</h2>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="success" (tap)="acceptInvite(invite)">
+              <ion-icon name="checkmark"></ion-icon>
+              Going
+            </button>
+          </ion-item-options>
+          <ion-item-options side="left" (tap)="declineInvite(invite)">
+            <button ion-button color="danger">
+              <ion-icon name="close"></ion-icon>
+              Decline
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <ion-item-divider *ngIf="!emptyInvites && !emptyRequests">
+      </ion-item-divider>
+      <ion-list *ngIf="!emptyInvites">
+        <ion-list-header>
+          Your Invites
+        </ion-list-header>
+
+        <ion-item no-lines *ngFor="let invite of accepted" (tap)="pushSeshesPage(invite, true)">
+          <ion-thumbnail item-start>
+            <img [src]="invite.spot.images[0]">
+          </ion-thumbnail>
+          <h2 text-wrap>{{invite.spot.name}}</h2>
+        </ion-item>
+      </ion-list>
+    </ion-grid>
+    <ion-grid style="height: 100%;" *ngSwitchCase="'friends'">
+      <ion-row>
+        <ion-buttons (tap)="openAddFriendsPage()">
+          <button color="primary" icon-left small ion-button clear>
+            <ion-icon name="add"></ion-icon>
+            <strong>Find Friends</strong>
+          </button>
+        </ion-buttons>
+      </ion-row>
+
+      <ion-list *ngIf="requests.length > 0">
+        <ion-list-header>
+          Your Friend Requests
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let request of requests">
+          <ion-item id="thread-item" no-lines>
+            <ion-avatar item-start (tap)="avatarClick(friend)">
+              <img [src]="request.avatar">
+            </ion-avatar>
+            <h2>{{request.username}}</h2>
+          </ion-item>
+          <ion-item-options side="left">
+            <button ion-button color="primary" (tap)="acceptFriendRequest(request)">
+              <ion-icon name="checkmark"></ion-icon>
+              Accept
+            </button>
+          </ion-item-options>
+          <ion-item-options side="right">
+            <button ion-button color="danger">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+
+      <ion-list *ngIf="friends.length > 0">
+        <ion-list-header>
+          Your Friends
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let friend of friends">
+          <ion-item id="thread-item" no-lines>
+            <ion-avatar item-start (tap)="avatarClick(friend)">
+              <img [src]="friend.avatar">
+            </ion-avatar>
+            <h2>{{friend.username}}</h2>
+          </ion-item>
+          <ion-item-options side="left">
+            <button ion-button color="danger">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+
+      </ion-list>
+    </ion-grid>
+  </div>
+</ion-content>
 
 
 

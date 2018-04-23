@@ -5,7 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <!-- <ion-buttons start left (tap) = "dismiss()">
       <button color="danger" ion-button icon-only>
         <ion-icon class = "fs-16" name="arrow-down"></ion-icon>
@@ -19,8 +19,8 @@
     </ion-buttons> -->
     <ion-buttons end right (tap) = "openMessage()">
       <button clear id = "add" ion-button icon-only>
-        <ion-icon color="primary" name="paper-plane"></ion-icon>
-        <ion-icon color="primary" name="add"></ion-icon>
+        <ion-icon name="paper-plane"></ion-icon>
+        <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
 
@@ -30,6 +30,12 @@
 
 
 <ion-content>
+
+  <ion-row *ngIf="threads.length == 0 || !threads" style="height: 50vh;" justify-content-center>
+    <ion-col align-self-center offset-3>
+      <h1 style="color: #c0c0c0;">No Messages</h1>
+    </ion-col>
+  </ion-row>
 
   <ion-list *ngIf="threads">
     <ion-item-sliding *ngFor="let thread of threads">
