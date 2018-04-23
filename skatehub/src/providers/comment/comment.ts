@@ -23,7 +23,7 @@ export class CommentProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.post(this.devEp+"/skatehub/comment",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.post(this.prodEp+"/skatehub/comment",obj,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
@@ -31,14 +31,14 @@ export class CommentProvider {
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-    return this.http.get(this.devEp+"/skatehub/comment/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+    return this.http.get(this.prodEp+"/skatehub/comment/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
   getAllComments(spotId){
     let headers = new Headers();
     headers.append('Authorization', this.authProvider.token);
     headers.append('Content-Type','application/json');
-		  return this.http.get(this.devEp+"/skatehub/comments/spots/all/"+spotId, {headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+		  return this.http.get(this.prodEp+"/skatehub/comments/spots/all/"+spotId, {headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
       .map(res => res.json());
   }
 
