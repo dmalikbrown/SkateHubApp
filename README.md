@@ -1,6 +1,8 @@
 # SkateHub
 * Our app "SkateHub," is an app that will connect skaters all over the world in the future. For this capstone project we will be focusing more on a smaller audience for the time being.
 
+CLICK THE IMAGE BELOW FOR A DEMONSTRATION OF OUR APP SKATEHUB!
+
 [![SkateHub APP Demonstration](https://image.ibb.co/i5hcwx/Screenshot_20180424_221934_Skate_Hub.jpg)](https://www.youtube.com/watch?v=yc0-_V140U8)
 
 
