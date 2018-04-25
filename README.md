@@ -5,7 +5,9 @@
 
 
 
-[About Page](./about.html).
+[About Page](./about.html)
+
+[How to build and try it out!](./howto/README.md)
 
 
 
