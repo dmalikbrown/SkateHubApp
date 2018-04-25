@@ -24,13 +24,13 @@
 <br><br><br><br>
 <img src="./siteImages/IMG_8819.JPG" width="500" height="500" />
 
-<br><br><br><br>
+<br><br>
 * Skateboarders don't have a set spot they skate, part of the skateboarding world is to venture out and find hidden spots.
 
-<br><br><br><br>
+<br><br>
 <img src="./siteImages/IMG_8826.JPG" width="500" height="500" />
 
-<br><br><br><br>
+<br><br>
 
 ```
 Created by: Derwin Graham, William (Alex) Wood, TJ Bach, Chris Welborn, and Darius Brown
