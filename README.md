@@ -1,14 +1,16 @@
 # SkateHub
 * Our app "SkateHub," is an app that will connect skaters all over the world in the future. For this capstone project we will be focusing more on a smaller audience for the time being.
 
-CLICK THE IMAGE BELOW FOR A DEMONSTRATION OF OUR APP SKATEHUB!
+[About Page](./about.html)
+
+**CLICK THE IMAGE BELOW FOR A DEMONSTRATION OF OUR APP SKATEHUB!**
 
 [![SkateHub APP Demonstration](https://image.ibb.co/i5hcwx/Screenshot_20180424_221934_Skate_Hub.jpg)](https://www.youtube.com/watch?v=yc0-_V140U8)
 
 
 <img src="./siteImages/Attach23632_20180420_204453.jpg" width="500" height="500" />
 
-* The app itself will let skaters create a profile in which they can enter basic information about themselves, add friends, find skate spots in their area, and socialize, as well as interact with other local skaters in their area. Skateboarders don't have a set spot they skate, part of the skateboarding world is to venture out and find hidden spots.
+* The app itself will let skaters create a profile in which they can enter basic information about themselves, add friends, find skate spots in their area, and socialize, as well as interact with other local skaters in their area. 
 
 <img src="./siteImages/DSC03544.JPG" width="500" height="500" />
 
@@ -16,10 +18,7 @@ CLICK THE IMAGE BELOW FOR A DEMONSTRATION OF OUR APP SKATEHUB!
 
 <img src="./siteImages/IMG_8819.JPG" width="500" height="500" />
 
-
-[About Page](./about.html)
-
-[How to build and try it out!](./howto/README.md)
+* Skateboarders don't have a set spot they skate, part of the skateboarding world is to venture out and find hidden spots.
 
 <img src="./siteImages/IMG_8826.JPG" width="500" height="500" />
 
