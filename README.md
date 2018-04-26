@@ -7,7 +7,7 @@
 
 **CLICK THE IMAGE BELOW FOR A DEMONSTRATION OF OUR APP SKATEHUB!**
 
-[![SkateHub APP Demonstration](https://image.ibb.co/i5hcwx/Screenshot_20180424_221934_Skate_Hub.jpg)](https://www.youtube.com/watch?v=yc0-_V140U8)
+[![SkateHub APP Demonstration](https://image.ibb.co/i5hcwx/Screenshot_20180424_221934_Skate_Hub.jpg = 500x500)](https://www.youtube.com/watch?v=zXOEVMubwEE)
 
 <br><br><br><br>
 <img src="./siteImages/Attach23632_20180420_204453.jpg" width="500" height="500" />
