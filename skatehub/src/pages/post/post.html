@@ -188,6 +188,12 @@
         <ion-label range-right>10</ion-label>
       </ion-range>
     </ion-item>
+
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Are there lights?
+      </ion-list-header>
+    </ion-item-divider>
     <ion-item>
       <ion-label>Is there good lighting at night?</ion-label>
       <ion-select [(ngModel)]="lighting">
@@ -195,9 +201,13 @@
         <ion-option value ="no">No</ion-option>
       </ion-select>
     </ion-item>
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Describe your spot?
+      </ion-list-header>
+    </ion-item-divider>
     <ion-item>
-      <ion-label floating>Describe your spot</ion-label>
-      <ion-textarea [(ngModel)]="spotDescription"></ion-textarea>
+    <ion-input [(ngModel)]="spotdescrtiption" placeholder="Trash"> </ion-input>
     </ion-item>
   </ion-list>
   <!-- Other Attributes - END -->
