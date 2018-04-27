@@ -149,21 +149,6 @@
   <!-- Camera and photolibrary row - START -->
   <!-- Other Attributes - START -->
   <ion-list>
-    <!-- <ion-item>
-      <ion-label floating>Name your spot</ion-label>
-      <ion-input [(ngModel)]="spotName"></ion-input>
-    </ion-item> -->
-    <!-- <ion-item>
-      <ion-label>Select types for the spot</ion-label>
-      <ion-select [(ngModel)]="skateTypes" multiple="true">
-        <ion-option value ="assets/imgs/stairs.png">Stairs</ion-option>
-        <ion-option value ="assets/imgs/rail.png">Rails</ion-option>
-        <ion-option value ="assets/imgs/ledge.png">Ledge</ion-option>
-        <ion-option value ="assets/imgs/ramp.png">Ramp</ion-option>
-        <ion-option value ="assets/imgs/diy.png">DIY</ion-option>
-        <ion-option value ="assets/imgs/misc.png">Misc</ion-option>
-      </ion-select>
-    </ion-item> -->
     <ion-item-divider color="light">
       <ion-list-header no-lines>
         Where's your spot at?
@@ -181,6 +166,29 @@
       <p> Your address is: {{address}} </p>
     </ion-item>
 
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        What all's there
+      </ion-list-header>
+    </ion-item-divider>
+
+    <ion-item>
+      <ion-label>Select types for the spot</ion-label>
+      <ion-select [(ngModel)]="skateTypes" multiple="true">
+        <ion-option value ="assets/imgs/stairs.png">Stairs</ion-option>
+        <ion-option value ="assets/imgs/rail.png">Rails</ion-option>
+        <ion-option value ="assets/imgs/ledge.png">Ledge</ion-option>
+        <ion-option value ="assets/imgs/ramp.png">Ramp</ion-option>
+        <ion-option value ="assets/imgs/diy.png">DIY</ion-option>
+        <ion-option value ="assets/imgs/misc.png">Misc</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Will you get arrested?
+        </ion-list-header>
+      </ion-item-divider>
     <ion-item>
       <ion-label>What's the risk level? (0 = none)</ion-label>
       <ion-range min="0" max="10" pin="true" [(ngModel)]="riskLvl">
