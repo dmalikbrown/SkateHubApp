@@ -4,12 +4,7 @@ import { MessagePage } from '../../pages/message/message';
 import { ThreadPage } from '../../pages/thread/thread';
 import { MessageProvider } from '../../providers/message/message'
 import { AuthProvider } from '../../providers/auth/auth';
-/**
- * Generated class for the InboxPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -28,6 +23,13 @@ export class InboxPage {
 
   }
 
+  /**
+* It's a lifecyle call by ionic that gets & sets the userId.
+* @method ionViewDidEnter
+* @param {String} some string
+* @param {Object} some object
+*/
+
   ionViewDidEnter() {
     this.id = this.navParams.get('id');
     this.getUser();
@@ -36,7 +38,12 @@ export class InboxPage {
       this.navCtrl.push(MessagePage);
   }
 
-
+  /**
+  * This is a lifecyle call by ionic that gets the user
+  * @method getUser
+  * @param {String} some string
+  * @param {Object} some object
+  */
   getUser(){
     this.authProvider.getUser(this.id).subscribe((data) => {
       if(data.success){
@@ -51,6 +58,12 @@ export class InboxPage {
     });
   }
 
+  /**
+  * This is a lifecyle call by ionic that gets threads
+  * @method getThreads
+  * @param {String} some string
+  * @param {Object} some object
+  */
   getThreads(){
     let len = 0;
     if(this.user.messages){
