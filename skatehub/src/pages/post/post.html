@@ -8,7 +8,36 @@
 <!-- Header end -->
 
 <ion-content>
+  <!-- <ion-list>
+<ion-list-header>
+  Name the Spot
+<ion-item-divider>
+  <ion-item>
+    <ion-label floating>Name your spot</ion-label>
+    <ion-input [(ngModel)]="spotName"></ion-input>
+  </ion-item>
+</ion-item-divider>
+</ion-list-header>
+</ion-list> -->
+<ion-list>
+  <ion-item-divider color="light">
+    <ion-list-header no-lines>
+      Name your spot
+    </ion-list-header>
+  </ion-item-divider>
+  <ion-item>
+    <ion-input [(ngModel)]="spotName" placeholder="Something Random"></ion-input>
+  </ion-item>
+</ion-list>
+
+
+
 <!-- Camera and photolibrary row - START -->
+<ion-item-divider color="light">
+  <ion-list-header no-lines>
+    Choose your pics
+  </ion-list-header>
+</ion-item-divider>
   <ion-row>
     <ion-row>
       <!--
@@ -120,14 +149,29 @@
   <!-- Camera and photolibrary row - START -->
   <!-- Other Attributes - START -->
   <ion-list>
-    <ion-item>
-      <ion-label floating>Name your spot</ion-label>
-      <ion-input [(ngModel)]="spotName"></ion-input>
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Where's your spot at?
+      </ion-list-header>
+    </ion-item-divider>
+        <ion-item *ngIf="!currentLocationBoolean">
+          <ion-label stacked>What's the address?</ion-label>
+          <ion-input placeholder= "address, city, state" [(ngModel)] = "address"></ion-input>
+        </ion-item>
+    <ion-item no-lines>
+      <ion-label>Use your current location?</ion-label>
+      <ion-checkbox [(ngModel)]="currentLocationBoolean" (ionChange)="grabAddress()"></ion-checkbox>
     </ion-item>
-    <ion-item>
-      <ion-label floating>Describe your spot</ion-label>
-      <ion-textarea [(ngModel)]="spotDescription"></ion-textarea>
+    <ion-item *ngIf="currentLocationBoolean">
+      <p> Your address is: {{address}} </p>
     </ion-item>
+
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        What all's there
+      </ion-list-header>
+    </ion-item-divider>
+
     <ion-item>
       <ion-label>Select types for the spot</ion-label>
       <ion-select [(ngModel)]="skateTypes" multiple="true">
@@ -139,18 +183,12 @@
         <ion-option value ="assets/imgs/misc.png">Misc</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item *ngIf="!currentLocationBoolean">
-      <ion-label stacked>What's the address?</ion-label>
-      <ion-input placeholder= "address, city, state" [(ngModel)] = "address"></ion-input>
-    </ion-item>
-    <ion-item no-lines>
-      <ion-label>Use your current location?</ion-label>
-      <ion-checkbox [(ngModel)]="currentLocationBoolean" (ionChange)="grabAddress()"></ion-checkbox>
-    </ion-item>
-    <ion-item *ngIf="currentLocationBoolean">
-      <p> Your address is: {{address}} </p>
-    </ion-item>
-    <ion-item-divider></ion-item-divider>
+
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Will you get arrested?
+        </ion-list-header>
+      </ion-item-divider>
     <ion-item>
       <ion-label>What's the risk level? (0 = none)</ion-label>
       <ion-range min="0" max="10" pin="true" [(ngModel)]="riskLvl">
@@ -158,12 +196,26 @@
         <ion-label range-right>10</ion-label>
       </ion-range>
     </ion-item>
+
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Are there lights?
+      </ion-list-header>
+    </ion-item-divider>
     <ion-item>
       <ion-label>Is there good lighting at night?</ion-label>
       <ion-select [(ngModel)]="lighting">
         <ion-option value ="yes">Yes</ion-option>
         <ion-option value ="no">No</ion-option>
       </ion-select>
+    </ion-item>
+    <ion-item-divider color="light">
+      <ion-list-header no-lines>
+        Describe your spot?
+      </ion-list-header>
+    </ion-item-divider>
+    <ion-item>
+    <ion-input [(ngModel)]="spotdescrtiption" placeholder="Trash"> </ion-input>
     </ion-item>
   </ion-list>
   <!-- Other Attributes - END -->
