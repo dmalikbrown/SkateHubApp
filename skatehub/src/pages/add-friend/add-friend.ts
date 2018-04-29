@@ -22,6 +22,7 @@ export class AddFriendPage {
   userResultArr: any = [];
   selectedUsers: any = [];
   selectedUsersString: any = "";
+  ableToStartThread: boolean = false;
 
   //Send Request
   recipients: any = [];

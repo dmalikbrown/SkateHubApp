@@ -56,8 +56,9 @@ import { Crop } from '@ionic-native/crop';
 
 
 import { ElasticDirective } from '../directives/elastic/elastic';
-import { MessageProvider } from '../providers/message/message';
+import { Ionic2RatingModule } from 'ionic2-rating';
 
+import { MessageProvider } from '../providers/message/message';
 import { InviteProvider } from '../providers/invite/invite';
 import { CommentProvider } from '../providers/comment/comment';
 import { ReportProvider } from '../providers/report/report';
@@ -104,6 +105,7 @@ import { ReportProvider } from '../providers/report/report';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
+    Ionic2RatingModule,
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],

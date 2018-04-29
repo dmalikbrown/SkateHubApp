@@ -14,6 +14,13 @@
 
 
 <ion-content padding>
+  <!-- If no spots have been posted - START -->
+  <ion-row *ngIf="commentsArr.length == 0 || !commentsArr" style="height: 50vh;" justify-content-center>
+    <ion-col align-self-center offset-3>
+      <h1 ion-text color="primary">Be the first to comment!</h1>
+    </ion-col>
+  </ion-row>
+
   <ion-list *ngIf="commentsArr">
 		  <ion-item *ngFor="let comment of commentsArr">
 				  <h3>{{comment.username}}</h3>
@@ -21,3 +28,17 @@
 		  </ion-item>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-toolbar color ="white">
+    <form (ngSubmit) = "saveComment()">
+      <ion-textarea id="commentTextarea" elastic [(ngModel)]="comment" name="comment"
+      class="comment-input" placeholder="Add a comment">
+      </ion-textarea>
+    </form>
+    <ion-buttons end (tap)="saveComment()" style="padding-right: 5px;">
+      <button color="primary" ion-button clear>
+        Post
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

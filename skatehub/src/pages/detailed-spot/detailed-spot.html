@@ -8,7 +8,7 @@
 <!-- End of header -->
 
 <ion-content>
-  <ion-card no-margin *ngIf="spot" style="width: 100%; padding-bottom: 2em;">
+  <ion-card no-margin *ngIf="spot" style="width: 100%;">
     <ion-item>
       <ion-avatar item-start (tap)="avatarClick(spot)">
         <img [src]="spot.avatar">
@@ -66,9 +66,26 @@
           <span><strong>{{comment.username}}</strong></span> <span>{{comment.comment[0]}}</span>
         </ion-col>
       </ion-row>
-      <p style="padding-top: .5em" *ngIf="commentArr.length >=2" (tap)="openComments(spot)">View all {{commentArr.length-2}} comments</p>
+      <p style="padding-top: .5em" *ngIf="commentArr.length > 2" (tap)="openComments(spot)">View all {{commentArr.length-2}} comments</p>
       <p padding-top style="font-size: .75em; padding-top: .5em">Date Posted</p>
     </ion-grid>
+    <!-- TODO hide this row if user already rated spot -->
+    <ion-row *ngIf="!isUser" justify-content-center>
+      <rating [(ngModel)]="rating"
+            readOnly="false"
+            max="5"
+            emptyStarIconName="star-outline"
+            halfStarIconName="star-half"
+            starIconName="star"
+            nullable="false"
+            (ngModelChange)="ratingChange($event)"> <!--use it when you need to do something when user clicks on a star. in case you only need to change ngModel property, this property can be ommited.-->
+      </rating>
+      <ion-buttons end (tap)="saveRating()" style="padding-right: 5px;">
+        <button color="primary" [disabled]="!ratingChanged" ion-button clear>
+          Save Rating
+        </button>
+      </ion-buttons>
+    </ion-row>
 
   </ion-card>
 
@@ -94,6 +111,7 @@
     </ion-item> -->
 
 	<!--  (click)="saveButton(saturation); saturation=0; description =''" -->
+
     <button ion-button full color="secondary" (click)="openNavigation(spot)">Let's Skate</button>
   <!-- <button ion-button full color="danger" (click)="showPrompt()">Report Spot</button> -->
   </ion-row>
