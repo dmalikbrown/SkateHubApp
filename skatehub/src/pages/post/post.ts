@@ -4,7 +4,7 @@ constructor.
 */
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController,
-  ActionSheetController, Platform, ToastController} from 'ionic-angular';
+  ActionSheetController, Platform, ToastController, ViewController} from 'ionic-angular';
 import {Headers} from '@angular/http';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
@@ -49,7 +49,7 @@ export class PostPage {
               public actionSheet: ActionSheetController, public platform: Platform,
               public toastCtrl: ToastController, public camera: Camera,
               public filePath: FilePath, public geolocation: Geolocation,
-              public nativeGeocoder: NativeGeocoder) {
+              public nativeGeocoder: NativeGeocoder, public viewCtrl: ViewController) {
   }
 
   ionViewDidLoad() {
@@ -420,6 +420,9 @@ export class PostPage {
     this.lat = 0;
     this.lng = 0;
   }
+  dismiss(data: any = {success: false}){
+    this.viewCtrl.dismiss({data: data});
+  }
   sendSpot(){
       let obj = {
         id: this.user._id,
@@ -448,7 +451,7 @@ export class PostPage {
         });
         toast.present();
         this.clear();
-        this.navCtrl.parent.select(0);
+        this.dismiss({success: true});
       }
       else{
         let alert = this.alertCtrl.create({

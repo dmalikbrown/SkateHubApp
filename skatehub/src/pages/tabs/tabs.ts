@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, ModalController, Events } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { SearchPage } from '../search/search';
 import { PostPage } from '../post/post';
@@ -22,7 +22,8 @@ export class TabsPage {
   user: any;
 
 
-  constructor(public authProvider: AuthProvider, public navParams: NavParams) {
+  constructor(public authProvider: AuthProvider, public navParams: NavParams,
+            public modalCtrl: ModalController, public events: Events) {
     if(this.navParams.get('user')){
       this.user = this.navParams.get('user');
     }
@@ -36,5 +37,20 @@ export class TabsPage {
          console.log("Not already authorized");
          return false;
      });
+  }
+
+  openPostPage(){
+    let modal = this.modalCtrl.create(PostPage);
+    modal.onDidDismiss((data) => {
+      if(data.success){
+        //event
+        this.events.publish("newPost:event", {data: data});
+      }
+      else {
+        //do nothing
+        this.events.publish("newPost:event", {data: data});
+      }
+    });
+    modal.present();
   }
 }

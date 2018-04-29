@@ -45,6 +45,14 @@ export class HomePage {
                 this.filterArray = data;
                 this.spots = this.filterSpots(data);
               });
+              this.event.subscribe('newPost:event', (data) => {
+                if(data){
+                  this.grabPosts();
+                }
+                else {
+                  //Hmm
+                }
+              });
 
   }
   /*
