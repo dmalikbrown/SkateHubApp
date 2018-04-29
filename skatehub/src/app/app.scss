@@ -21,6 +21,15 @@ body {
 user-select: text;
 }
 
+ion-header ion-icon.back-button-icon.icon {
+	color: map-get($colors, white);
+
+}
+ion-header span.back-button-text {
+	// color: map-get($colors, primary);
+	// font-size: 15px;
+}
+
 .fs-14 {
   font-size: 14px;
 }

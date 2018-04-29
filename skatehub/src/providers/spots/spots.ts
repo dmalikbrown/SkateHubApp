@@ -92,4 +92,12 @@ export class SpotsProvider {
     return this.http.get(this.prodEp+"/skatehub/spots/"+id,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
         .map(res => res.json());
   }
+  // queryAddress(address){
+  //   let headers = new Headers();
+  //   headers.append('Authorization', this.authProvider.token);
+  //   headers.append('Content-Type','application/json');
+  //   return this.http.get("maps.googleapis.com/maps/api/place/textsearch/json?query="+address.number+"+"+address.name+"+"+address.type+"&radius="+50+"&key="+,{headers: headers}) //use this when dev return this.http.post(ep, patient,{headers: headers})
+  //     .map(res => res.json());
+  // }
+// https://maps.googleapis.com/maps/api/place/textsearch/json?query=123+main+street&location=42.3675294,-71.186966&radius=10000&key=YOUR_API_KEY
 }

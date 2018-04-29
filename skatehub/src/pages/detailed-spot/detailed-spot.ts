@@ -53,7 +53,7 @@ export class DetailedSpotPage {
     this.spot = this.navParams.get('spot');
     this.loadInfo();
     // console.log("ionViewDidLoad", this.spot);
-    if (this.spot.userId == this.navParams.get('id'))
+    if (this.authProvider.user._id == this.spot.userId)
     {
 		    this.isUser = true;
     }

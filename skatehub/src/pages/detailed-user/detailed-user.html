@@ -1,7 +1,4 @@
 <!--
-This is sad and barren.
-Should be changed to be colorful and nice.
--->
 <ion-header>
 
   <ion-navbar>
@@ -9,20 +6,9 @@ Should be changed to be colorful and nice.
   </ion-navbar>
 </ion-header>
   <ion-content>
-    <!-- <ion-row justify-content-center class="top-spacing">
-        <ion-avatar *ngIf="user" class= "profile-shift">
-          <img [src]="imagePath" (tap)="show(imagePath)" style="border-radius: 50%; width: 100px; height: 100px; border: 10px solid #FF8F00;">
-        </ion-avatar>
-        <ion-icon ios="md-create" color="primary" *ngIf="imageChosen == 0" (tap)="chooseImage()" style="font-size: 25px;"></ion-icon>
-        <ion-icon name="remove-circle" color="danger" *ngIf="imageChosen == 1" (tap)="clear()" style="font-size: 30px;"></ion-icon>
-    </ion-row> -->
-  <!-- ^^^^ above comments are going to be necessary in the future maybe - DON'T DELETE :) -->
 
-    <!-- Green background - START -->
     <div class ="square-background">
     </div>
-    <!-- Green background - END -->
-    <!-- User avatar and info - START -->
     <ion-row justify-content-center class="top-spacing">
         <ion-avatar *ngIf="user" class= "profile-shift">
           <img [src]="user.avatar" class = "avatar-border">
@@ -30,20 +16,12 @@ Should be changed to be colorful and nice.
     </ion-row>
       <h4 *ngIf="user" no-margin text-center ion-text color = "white" style = "position: relative;">{{user.username}}</h4>
       <p *ngIf="user && (user.stance)" text-center ion-text color = "white" no-margin style = "position: relative;"> Stance: {{user.stance}} </p>
-      <!-- <p text-center ion-text color = "white" no-margin style = "position: relative;"> Add Friend :)</p> -->
 
-      <!-- Add friend and Invite user button -->
-      <!-- <ion-badge item-end (tap)="addFriend()"  class="addFriend">Add Friend :o</ion-badge> -->
-      <!-- <ion-badge item-end (tap)="sendInvite()" class="sendInvite">Send invite </ion-badge> -->
       <ion-badge *ngIf="!hasRequested && !isFriends && !theyRequested" item-end (tap)= "addFriend()" class="addFriendClass"> <ion-icon name = "person-add" class ="badgeIcons"> </ion-icon> </ion-badge>
       <ion-badge *ngIf="hasRequested && !isFriends && !theyRequested" item-end class="addFriendClass"> <ion-icon name = "clock" class ="badgeIcons"> </ion-icon> </ion-badge>
       <ion-badge *ngIf="isFriends" item-end class="addFriendClass"> Unfriend (Doesn't work) </ion-badge>
       <ion-badge *ngIf="theyRequested" item-end class="addFriendClass"> Accept Request (Doesn't work) </ion-badge>
 
-
-      <!-- <ion-badge item-end (tap)= "sendInvite()" class="sendInviteClass"> <ion-icon name = "paper-plane" class="badgeIcons"> </ion-icon> </ion-badge> -->
-      <!-- <ion-badge item-end (tap)= "sendMessage()" class="sendMessageClass"> <ion-icon id = "bubbles" name="ios-chatbubbles" class="badgeIcons"> </ion-icon> </ion-badge> -->
-      <!-- End friend/user button -->
 
       <ion-grid style="background-color: #FFF" class="ion-grid">
         <ion-row style="backround-color: #628" class="ion-top-row">
@@ -57,14 +35,111 @@ Should be changed to be colorful and nice.
           </ion-col>
         </ion-row>
         <ion-row style="background-color#628" class="ion-row">
-          <!-- <ion-col col-6 style="background-color: #ffffff" class="grid-border" class="ion-left-col"> Bio
-            <p> </p>
-            <ion-icon name = "person" class="icons"></ion-icon>
-          </ion-col>
-          <ion-col col-6 style="background-color: #ffffff" class="grid-border"> Pictures
-            <p> </p>
-            <ion-icon name = "image" class="icons"></ion-icon>
-          </ion-col> -->
+
         </ion-row>
       </ion-grid>
+    </ion-content> -->
+
+    <ion-content>
+
+      <div *ngIf="user" class ="square-background" [ngStyle]="setBackground()">
+      </div>
+      <ion-row class="top-spacing" *ngIf="user">
+          <ion-buttons *ngIf="!hasRequested && !isFriends && !theyRequested" id="edit" (tap) = "addFriend()">
+            <button style="font-size: .82em" ion-button color="secondary">
+              <strong>ADD FRIEND</strong>
+            </button>
+          </ion-buttons>
+          <ion-buttons *ngIf="hasRequested && !isFriends && !theyRequested" id="edit" (tap) = "addFriend()">
+            <button style="font-size: .82em" ion-button color="secondary">
+              <strong>PENDING</strong>
+            </button>
+          </ion-buttons>
+          <ion-buttons *ngIf="isFriends" id="edit" (tap) = "unfriend();">
+            <button style="font-size: .82em" ion-button color="secondary">
+              <strong>FRIENDS</strong>
+            </button>
+          </ion-buttons>
+          <ion-buttons *ngIf="theyRequested" id="edit" (tap) = "acceptReq();">
+            <button style="font-size: .82em" ion-button color="secondary">
+              <strong>ACCEPT REQUEST</strong>
+            </button>
+          </ion-buttons>
+          <ion-avatar class= "profile-shift">
+            <img [src]="user.avatar" class = "avatar-border">
+          </ion-avatar>
+
+          <ion-item id="username" no-padding style="margin-left: 1.7em;" no-lines>
+              <h2 text-wrap no-padding style="font-size: 1.25em;">{{user.fullName}}</h2>
+          </ion-item>
+          <div class="profile-left">
+            <p ion-text no-margin text-wrap style="font-size: .9em">
+              <strong>{{user.username}}</strong>
+            </p>
+            <!-- TODO Add values like 'karma', 'days been on app', 'etc'-->
+            <p text-wrap ion-text color="darkLHue" style="margin-top: .25em; font-size: .9em;">{{user.stance}} Stance </p>
+            <!-- <p text-wrap style="margin-top: .25em; font-size: .9em;">User bio </p> -->
+          </div>
+      </ion-row>
+      <ion-row>
+        <ion-segment mode="md" [(ngModel)]="categories" color="primary">
+          <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="posts">
+            Posts
+          </ion-segment-button>
+          <!-- <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="sessions">
+            Sessions
+          </ion-segment-button> -->
+          <ion-segment-button text-capitalize style="font-size: 1.5rem;" value="friends">
+            Friends
+          </ion-segment-button>
+        </ion-segment>
+      </ion-row>
+      <div [ngSwitch]="categories" style="height: 100%;">
+        <ion-grid style="background-color: #f0f0f0; height: 100%;" *ngSwitchCase="'posts'">
+          <ion-item id="username" style="background: transparent;" no-lines>
+              <span ion-text style="font-size: .75em; color: #9E9E9E;" (tap)="openSortAS()">
+                <strong>{{sortText}}</strong>
+              </span>
+              <ion-icon style="vertical-align: middle; color: #9E9E9E;"
+              name="md-arrow-dropdown" mode="md" (tap)="openSortAS()"></ion-icon>
+          </ion-item>
+          <ion-row *ngIf="spots && sort">
+              <ion-col *ngFor="let spot of spots" col-4 col-md-3 col-lg-6 col-xl-12>
+                <ion-thumbnail (tap)="openDetailedSpot(spot);">
+                  <img [src]="spot.images[0]">
+                </ion-thumbnail>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="savedSpots && !sort">
+              <ion-col *ngFor="let spot of savedSpots" col-4 col-md-3 col-lg-6 col-xl-12>
+                <ion-thumbnail (tap)="openDetailedSpot(spot);">
+                  <img [src]="spot.images[0]">
+                </ion-thumbnail>
+              </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid style="height: 100%;" *ngSwitchCase="'friends'">
+
+          <ion-list *ngIf="friends.length > 0">
+            <ion-list-header>
+              Their Friends
+            </ion-list-header>
+            <!-- <ion-item-sliding > -->
+              <ion-item id="thread-item" *ngFor="let friend of friends" no-lines>
+                <ion-avatar item-start (tap)="avatarClick(friend)">
+                  <img [src]="friend.avatar">
+                </ion-avatar>
+                <h2>{{friend.username}}</h2>
+              </ion-item>
+              <!-- <ion-item-options side="left">
+                <button ion-button color="danger">
+                  <ion-icon name="trash"></ion-icon>
+                  Delete
+                </button>
+              </ion-item-options> -->
+            <!-- </ion-item-sliding> -->
+
+          </ion-list>
+        </ion-grid>
+      </div>
     </ion-content>

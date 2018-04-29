@@ -639,9 +639,11 @@ export class SettingsPage {
 
 
   logout(){
+    // console.log("LOGOUT?");
     this.authProvider.logout();
     //this.events.publish('logout');
     this.app.getRootNavs()[0].push(LoginPage);
+    this.dismiss();
   }
 
 }
