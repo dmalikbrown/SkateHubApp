@@ -24,10 +24,13 @@ export class AccountSettingsPage {
     this.id = this.navParams.get('id');
   }
 
-  ionViewDidLoad() {
-    // console.log('ionViewDidLoad AccountSettingsPage');
-  }
-
+  /**
+* This function removes an user's account completely. Prompts the user before
+* removing.
+* @method removeAccount
+* @param none
+* @return none
+*/
   removeAccount(){
     let alert = this.alertCtrl.create({
       title: 'Are you sure?',
@@ -43,10 +46,10 @@ export class AccountSettingsPage {
             let obj = {
               id: this.id
             };
+            //call the provider function to make server call.
             this.authProvider.removeAccount(obj).subscribe((data)=> {
               if(data.success){
                 this.authProvider.logout();
-                //this.events.publish('logout');
                 this.app.getRootNavs()[0].push(LoginPage);
               }
               else {

@@ -33,6 +33,12 @@ export class AddSessionPage {
               public authProvider: AuthProvider, public inviteProvider: InviteProvider,
               public oneSignal: OneSignal) {
   }
+  /**
+* LifeCycle called by ionic, loads necessary information
+* @method ionViewDidLoad
+* @param none
+* @return none
+*/
 
   ionViewDidLoad() {
     this.user = this.navParams.get('user');
@@ -48,6 +54,12 @@ export class AddSessionPage {
     this.loadSpots();
     this.loadFriends();
   }
+  /**
+* Loads the spot information
+* @method loadSpots
+* @param none
+* @return none
+*/
   loadSpots(){
     let len = this.spotIds.length;
     for(let i = 0; i < len; i++){
@@ -58,10 +70,17 @@ export class AddSessionPage {
         }
         else {
           //ERROR
+          console.log(data.msg);
         }
       });
     }
   }
+  /**
+* Loads the friend information
+* @method loadFriends
+* @param none
+* @return none
+*/
   loadFriends(){
     if(this.user.friends){
       let acceptedFriends = this.user.friends.filter(friend => friend.request == true);
@@ -79,28 +98,30 @@ export class AddSessionPage {
     }
 
   }
+  /**
+* Retrieves users by id from the server
+* @method getUsersFromArr
+* @param id: string, MongoDB id assigned to user
+* @return none
+*/
   getUsersFromArr(id){
     if(!id) return;
     this.authProvider.getUser(id).subscribe((data)=>{
-      //TODO with some user stuff
       if(data.success){
         this.hasFriends = true;
         this.friends.push(data.user);
       }
       else {
-        console.log("error bitchhhh");
-        //TODO Error alert
-        // let alert = this.alertCtrl.create({
-        //   title: 'Error',
-        //   subTitle: data.msg,
-        //   buttons: ["Dismiss"]
-        // });
-        // alert.present();
-        // return false;
+        console.log("error");
       }
     });
   }
-
+  /**
+* Pushes choosen users to an array
+* @method pushUser
+* @param {object} user, the user object that is chosen
+* @return none
+*/
   pushUser(user){
     let idObj = {
       id: user._id
@@ -111,6 +132,12 @@ export class AddSessionPage {
       this.reqMeet = true;
     }
   }
+  /**
+* Toggle reqMeet variable
+* @method toggleReq
+* @param none
+* @return none
+*/
   toggleReq(){
     if(this.choosenSpot && this.choosenUsers.length > 0) {
       this.reqMeet = true;
@@ -119,6 +146,13 @@ export class AddSessionPage {
       this.reqMeet = false;
     }
   }
+  /**
+* Removes user from choosenUsers array
+* @method removeUser
+* @param {object} user - represents the user that's being removed
+* @param {int} index - represents the index in the choosenArray for user
+* @return none
+*/
   removeUser(user, index){
     user.checked = false;
     this.choosenUsers.splice(index,1);
@@ -126,7 +160,12 @@ export class AddSessionPage {
       this.reqMeet = false;
     }
   }
-
+  /**
+* Creates a session and sends invites to the choosenUsers array.
+* @method startSession
+* @param none
+* @return none
+*/
   startSession(){
     let someBool = false;
     let inviteObj = {

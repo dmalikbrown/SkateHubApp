@@ -3,12 +3,6 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { AuthProvider } from '../../providers/auth/auth';
 
-/**
- * Generated class for the AddFriendPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -33,10 +27,13 @@ export class AddFriendPage {
       public oneSignal: OneSignal) {
   }
 
-  ionViewDidLoad() {
-  }
-
+  /**
+* LifeCycle called by ionic, checks user token
+* @method ionViewCanEnter
+* @return {bool} true if user is authorized, false otherwise
+*/
   ionViewCanEnter(){
+    //call provider function to validate token
     this.authProvider.isValidToken().then((res) => {
          console.log("Already authorized");
         return true;
@@ -45,17 +42,21 @@ export class AddFriendPage {
          return false;
      });
   }
-
+  /**
+* LifeCycle called by ionic, loads necessary information
+* @method ionViewDidEnter
+* @return none
+*/
   ionViewDidEnter(){
     this.authProvider.loadUser();
     this.id = this.authProvider.user._id;
     this.getUsers();
   }
-
-  // openThreadPage(){
-  //   this.navCtrl.push(ThreadPage, {id: this.authProvider.user.id, recipients: this.selectedUsers});
-  // }
-
+  /**
+* Grabs users from server
+* @method getUsers
+* @return none
+*/
   getUsers(){
     this.authProvider.getAllUsers().subscribe((data)=>{
       if(data.success){
@@ -78,6 +79,12 @@ export class AddFriendPage {
       }
     });
   }
+  /**
+* Toggles the checkmark next to a user if that user is selected.
+* @method toggleUser
+* @param {object} userObj, which is representation of the toggled user
+* @return none
+*/
   toggleUser(userObj){
     if(!userObj.checked){
       this.ableToStartThread = false;
@@ -88,7 +95,12 @@ export class AddFriendPage {
       this.selectedUsers.push(userObj);
     }
   }
-
+  /**
+* Calls the filter users function
+* @method filter
+* @param bool: boolean, defaults to false.
+* @return none
+*/
   filter(bool: boolean = false){
     this.filterUsers(bool);
   }
@@ -133,10 +145,8 @@ export class AddFriendPage {
               toast.dismiss();
             }, 2000);
           });
+          //Notification stuff
           this.authProvider.getOneSignalDevices().subscribe((results) => {
-            // console.log(results);
-            // console.log("RECEIPIENT");
-            // console.log(recipient);
             let len = results.total_count;
             let recLen = this.selectedUsers.length;
             let destinationIds = [];
@@ -153,7 +163,6 @@ export class AddFriendPage {
               }
             }
 
-            //TODO send notification
             console.log(destinationIds);
             let notificationObj: OSNotification = {
                 headings: {en: "New Friend Request"},
@@ -208,8 +217,6 @@ export class AddFriendPage {
                             .catch((someErr) => {
                               console.log(someErr);
                             })
-
-
           });
         }
         else {
