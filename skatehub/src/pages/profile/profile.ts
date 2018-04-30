@@ -86,6 +86,8 @@ export class ProfilePage {
   ionViewWillLeave(){
     this.friends = [];
     this.requests = [];
+    this.accepted = [];
+    this.requested = [];
   }
   openDetailedSpot(spot){
       this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
@@ -130,6 +132,7 @@ export class ProfilePage {
         this.authProvider.updateUser(this.user);
         this.loadInfo();
         this.inviteIds = this.user.invites;
+        this.loadInviteInfo();
         this.filterFriends();
         // console.log(this.user);
         // this.imagePath = this.user.avatar;
@@ -235,7 +238,7 @@ export class ProfilePage {
                         invite.spot = spotData.spot;
                         // console.log(userData);
                         if(this.checkAccepted(invite) && invite.active
-                          || this.navParams.get('user')._id == userData.user._id){
+                          || this.authProvider.user._id == userData.user._id){
                           this.emptyInvites = false;
                           this.accepted.push(invite);
                         }

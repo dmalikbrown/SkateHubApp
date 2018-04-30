@@ -67,11 +67,3 @@ page-profile {
     height: 2.5em !important;
   }
 }
-
-
-ion-toast.warning .toast-wrapper {
-	background: map-get($colors, danger);
-}
-ion-toast.success .toast-wrapper {
-	background: map-get($colors, primary);
-}

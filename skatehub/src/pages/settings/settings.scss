@@ -48,11 +48,3 @@ page-settings {
   }
 
 }
-
-//cssClass for the toasts. Success is green toast, warning is red toast.
-ion-toast.success .toast-wrapper {
-	background: map-get($colors, primary);
-}
-ion-toast.warning .toast-wrapper {
-	background: map-get($colors, danger);
-}

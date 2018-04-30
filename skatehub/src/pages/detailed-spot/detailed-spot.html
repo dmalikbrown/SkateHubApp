@@ -67,7 +67,7 @@
         </ion-col>
       </ion-row>
       <p style="padding-top: .5em" *ngIf="commentArr.length > 2" (tap)="openComments(spot)">View all {{commentArr.length-2}} comments</p>
-      <p padding-top style="font-size: .75em; padding-top: .5em">Date Posted</p>
+      <!-- <p padding-top style="font-size: .75em; padding-top: .5em">Date Posted</p> -->
     </ion-grid>
     <!-- TODO hide this row if user already rated spot -->
     <ion-row *ngIf="!isUser" justify-content-center>

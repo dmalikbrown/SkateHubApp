@@ -8,7 +8,7 @@
 
   <ion-navbar color="primary">
     <ion-title>Session</ion-title>
-    <ion-buttons *ngIf="!hasJoined" end right (tap) = "joinSession()">
+    <ion-buttons *ngIf="!hasJoined && !isUser" end right (tap) = "joinSession()">
       <button ion-button>
         Join Session
       </button>

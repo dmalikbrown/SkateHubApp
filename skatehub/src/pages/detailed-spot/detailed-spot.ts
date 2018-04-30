@@ -52,7 +52,7 @@ export class DetailedSpotPage {
   the detailed spot page. Using the userId on the spot, compare it with the
   navparams id value. If they equal, then the user is viewing their own post.
   */
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.spot = this.navParams.get('spot');
     this.loadInfo();
     // console.log("ionViewDidLoad", this.spot);
