@@ -187,6 +187,12 @@ export class HomePage {
     });
 
   }
+  refresh(refresher){
+    setTimeout(() => {
+      this.grabPosts();
+      refresher.complete();
+    }, 1000);
+  }
   /*
   Filters the spots by their state. spotsVarHolder will always contain all posts
   so that variable can be used to filter.
