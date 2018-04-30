@@ -1,7 +1,7 @@
 <ion-tabs>
   <ion-tab [root]="tab1Root" [rootParams]="user" tabTitle="Home" tabIcon="home"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="Search" tabIcon="search"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Post" tabIcon="add-circle"></ion-tab>
+  <ion-tab (ionSelect)="openPostPage()" tabTitle="Post" tabIcon="add-circle"></ion-tab>
   <ion-tab [root]="tab6Root" tabTitle="Notifications" tabIcon="notifications"></ion-tab>
   <ion-tab [root]="tab4Root" tabTitle="Navigate" tabIcon="navigate"></ion-tab>
   <ion-tab [root]="tab5Root" tabTitle="Profile" tabIcon="person"></ion-tab>

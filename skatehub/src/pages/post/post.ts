@@ -4,7 +4,7 @@ constructor.
 */
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController,
-  ActionSheetController, Platform, ToastController} from 'ionic-angular';
+  ActionSheetController, Platform, ToastController, ViewController} from 'ionic-angular';
 import {Headers} from '@angular/http';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
@@ -49,7 +49,7 @@ export class PostPage {
               public actionSheet: ActionSheetController, public platform: Platform,
               public toastCtrl: ToastController, public camera: Camera,
               public filePath: FilePath, public geolocation: Geolocation,
-              public nativeGeocoder: NativeGeocoder) {
+              public nativeGeocoder: NativeGeocoder, public viewCtrl: ViewController) {
   }
 
   ionViewDidLoad() {
@@ -90,7 +90,8 @@ export class PostPage {
       encodingType: this.camera.EncodingType.JPEG,
       targetWidth: 1080,
       targetHeight: 1080,
-      saveToPhotoAlbum: false
+      saveToPhotoAlbum: false,
+      correctOrientation: true
     };
     //Open the camera on the device then capture the imgUrl (image url)
     this.camera.getPicture(options).then((imgUrl) => {
@@ -408,6 +409,20 @@ export class PostPage {
 
     }
   }
+  clear(){
+    this.spotName = "";
+    this.address = "";
+    this.skateTypes = [];
+    this.spotDescription = "";
+    this.resultArr = [];
+    this.lighting = "";
+    this.riskLvl = 0;
+    this.lat = 0;
+    this.lng = 0;
+  }
+  dismiss(data: any = {success: false}){
+    this.viewCtrl.dismiss({data: data});
+  }
   sendSpot(){
       let obj = {
         id: this.user._id,
@@ -435,7 +450,8 @@ export class PostPage {
           duration: 3000
         });
         toast.present();
-        this.navCtrl.parent.select(0);
+        this.clear();
+        this.dismiss({success: true});
       }
       else{
         let alert = this.alertCtrl.create({

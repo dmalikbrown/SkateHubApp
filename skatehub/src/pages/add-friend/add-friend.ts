@@ -3,12 +3,6 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { AuthProvider } from '../../providers/auth/auth';
 
-/**
- * Generated class for the AddFriendPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -22,6 +16,7 @@ export class AddFriendPage {
   userResultArr: any = [];
   selectedUsers: any = [];
   selectedUsersString: any = "";
+  ableToStartThread: boolean = false;
 
   //Send Request
   recipients: any = [];
@@ -32,10 +27,13 @@ export class AddFriendPage {
       public oneSignal: OneSignal) {
   }
 
-  ionViewDidLoad() {
-  }
-
+  /**
+* LifeCycle called by ionic, checks user token
+* @method ionViewCanEnter
+* @return {bool} true if user is authorized, false otherwise
+*/
   ionViewCanEnter(){
+    //call provider function to validate token
     this.authProvider.isValidToken().then((res) => {
          console.log("Already authorized");
         return true;
@@ -44,17 +42,21 @@ export class AddFriendPage {
          return false;
      });
   }
-
+  /**
+* LifeCycle called by ionic, loads necessary information
+* @method ionViewDidEnter
+* @return none
+*/
   ionViewDidEnter(){
     this.authProvider.loadUser();
     this.id = this.authProvider.user._id;
     this.getUsers();
   }
-
-  // openThreadPage(){
-  //   this.navCtrl.push(ThreadPage, {id: this.authProvider.user.id, recipients: this.selectedUsers});
-  // }
-
+  /**
+* Grabs users from server
+* @method getUsers
+* @return none
+*/
   getUsers(){
     this.authProvider.getAllUsers().subscribe((data)=>{
       if(data.success){
@@ -77,43 +79,28 @@ export class AddFriendPage {
       }
     });
   }
+  /**
+* Toggles the checkmark next to a user if that user is selected.
+* @method toggleUser
+* @param {object} userObj, which is representation of the toggled user
+* @return none
+*/
   toggleUser(userObj){
-    if(userObj.checked){
-      //TODO remove user after being checked
-      // console.log("toggle false");
-      // let index = this.userResultArr.filter((user) => userObj._id == userObj._id);
-      // if(index < 0) {
-      //   return;
-      // }
-      // else {
-      //   userObj.checked = false;
-      //   let arr = this.temp.split(',');
-      //   console.log(arr);
-      //   let i = arr.filter((username) => username == userObj.username);
-      //   console.log(i);
-      //   if(i < 0) {
-      //     return;
-      //   }
-      //   else {
-      //     arr.splice(i,1);
-      //     console.log(arr);
-      //     this.searchTerm = arr.join();
-      //   }
-      }
-      // let len = this.userResultArr.length;
-      // for(let i = 0; i< len; i++){
-      //   this.userResultArr[i].checked = false;
-      // }
-    else if(!userObj.checked){
-
+    if(!userObj.checked){
+      this.ableToStartThread = false;
       userObj.checked = true;
       this.searchTerm = "";
-      this.searchTerm += this.temp+userObj.username+", ";;
-      this.temp = this.searchTerm;
+      // this.searchTerm += this.temp+userObj.username+", ";
+      // this.temp = this.searchTerm;
       this.selectedUsers.push(userObj);
     }
   }
-
+  /**
+* Calls the filter users function
+* @method filter
+* @param bool: boolean, defaults to false.
+* @return none
+*/
   filter(bool: boolean = false){
     this.filterUsers(bool);
   }
@@ -125,16 +112,16 @@ export class AddFriendPage {
   */
   filterUsers(bool: boolean) {
     let search = this.searchTerm;
-    if(bool){
-      search = search.substring(search.lastIndexOf(',')+1).replace(/ /g,'');
-    }
     if(search && search.trim() != ''){
-      this.userResultArr = this.users.filter(user => user.username.includes(search.toLowerCase()) || user.fullName.toLowerCase().includes(search.toLowerCase()));
+      this.userResultArr = this.users.filter(user => this.startsWith(search.toLowerCase(), user.username.toLowerCase()) || this.startsWith(search.toLowerCase(), user.fullName.toLowerCase()));
     }
     else{
       this.userResultArr = [];
     }
     // console.log(this.userResultArr);
+ }
+ startsWith(str, item){
+   return str.substring( 0, str.length ) === item.substring(0, str.length);
  }
 
   sendRequest(){
@@ -158,10 +145,8 @@ export class AddFriendPage {
               toast.dismiss();
             }, 2000);
           });
+          //Notification stuff
           this.authProvider.getOneSignalDevices().subscribe((results) => {
-            // console.log(results);
-            // console.log("RECEIPIENT");
-            // console.log(recipient);
             let len = results.total_count;
             let recLen = this.selectedUsers.length;
             let destinationIds = [];
@@ -178,7 +163,6 @@ export class AddFriendPage {
               }
             }
 
-            //TODO send notification
             console.log(destinationIds);
             let notificationObj: OSNotification = {
                 headings: {en: "New Friend Request"},
@@ -198,43 +182,41 @@ export class AddFriendPage {
                 contents: {en: this.authProvider.user.username+" has sent you a friend request."},
                 include_player_ids: destinationIds
               };
-            this.oneSignal.postNotification(notificationObj)
-                          .then((someData) => {
-                            console.log(someData);
+              let someLen = this.selectedUsers.length;
+              console.log("PRINTING THE LENGTH");
+              console.log(someLen);
+              for(let k = 0; k<someLen; k++){
+                let notification = {
+                  type: "friend",
+                  description: this.authProvider.user.username+" has sent you a friend request.",
+                  sender: this.authProvider.user._id,
+                  receiver: this.selectedUsers[k]._id,
+                  obj: this.selectedUsers[k]._id
+                };
+                let edit = {
+                  type: "notification",
+                  notification: notification,
+                  id: this.selectedUsers[k]._id,
+                };
+                console.log("EDIT OBJ");
+                console.log(edit);
+                this.authProvider.update(edit).subscribe((ret)=> {
+                    if(ret.success){
+                      //do nothing
+                    }
+                    else {
+                      console.log(ret.msg);
+                    }
+                });
+              }
+              this.oneSignal.postNotification(notificationObj)
+                            .then((someData) => {
+                              console.log(someData);
 
-                            let someLen = this.selectedUsers.length;
-                            console.log("PRINTING THE LENGTH");
-                            console.log(someLen);
-                            for(let k = 0; k<someLen; k++){
-                              let notification = {
-                                type: "friend",
-                                description: this.authProvider.user.username+" has sent you a friend request.",
-                                sender: this.authProvider.user._id,
-                                receiver: this.selectedUsers[k]._id,
-                                obj: this.selectedUsers[k]._id
-                              };
-                              let edit = {
-                                type: "notification",
-                                notification: notification,
-                                id: this.selectedUsers[k]._id,
-                              };
-                              console.log("EDIT OBJ");
-                              console.log(edit);
-                              this.authProvider.update(edit).subscribe((ret)=> {
-                                  if(ret.success){
-                                    //do nothing
-                                  }
-                                  else {
-                                    console.log(ret.msg);
-                                  }
-                              });
-                            }
-
-                          })
-                          .catch((someErr) => {
-                            console.log(someErr);
-                          })
-
+                            })
+                            .catch((someErr) => {
+                              console.log(someErr);
+                            })
           });
         }
         else {

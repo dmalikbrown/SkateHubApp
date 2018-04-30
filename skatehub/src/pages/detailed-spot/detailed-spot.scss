@@ -5,4 +5,20 @@ page-detailed-spot {
     border-width: medium;
     border-radius: 50%;
   }
+  ion-card {
+    box-shadow: none !important;
+  }
+  ul {
+    padding: 0px;
+
+    &.rating li {
+      padding: 5px 10px !important;
+      background: none;
+      color: #ffb400;
+
+      ion-icon {
+        font-size: 20px;
+      }
+    }
+  }
 }

@@ -35,6 +35,10 @@ module.exports.addSpot = function(newSpot, callback){
   console.log(newSpot);
   newSpot.save(callback);
 }
+module.exports.deleteSpot = function(spot, callback){
+  console.log(spot);
+  Spot.findOneAndRemove({'_id': spot._id}, callback);
+}
 module.exports.editSpotAvatar = function(userId, avatarUrl, callback){
  Spot.updateMany({'userId': userId}, { $set: {'avatar': avatarUrl}}, callback);
 }

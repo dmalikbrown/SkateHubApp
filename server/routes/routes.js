@@ -59,7 +59,8 @@ router.post('/authenticate', (req, res, next) => {
           friends: user.friends,
           avatar: user.avatar,
           messages: user.messages,
-          notifications: user.notifications
+          notifications: user.notifications,
+          headerImage: user.headerImage
         };
         return res.json({success: true, token: 'JWT '+token, user: userObj });
       }
@@ -114,7 +115,8 @@ router.post('/register', (req, res, next) => {
                 friends: retUser.friends,
                 avatar: retUser.avatar,
                 messages: retUser.messages,
-                notifications: retUser.notifications
+                notifications: retUser.notifications,
+                headerImage: retUser.headerImage
               };
               return res.json({success: true, token: 'JWT '+token, user: userObj });
             }
@@ -311,6 +313,50 @@ router.post('/spot/create', passport.authenticate('jwt', {session:false}) ,(req,
   })
 
 });
+
+router.post('/spot/delete', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  Spot.deleteSpot(req.body, (err, val) => {
+    if(err){
+      console.log(err);
+      return res.json({success: false, msg:"Error when deleting"});
+    }
+    else {
+      User.updateMany({}, {
+        $pull: {'savedSpots': {id: req.body._id},
+         'spots': {id: req.body._id}}
+      }, { multi: true }, (err, x) =>{
+        if(err){
+          console.log(err);
+          return res.json({success: false, msg:"Error when deleting"});
+
+        }
+        else {
+          Comment.deleteMany({spotId: req.body._id}, (y)=> {
+            if(err){
+              console.log(err);
+              return res.json({success: false, msg:"Error when deleting"});
+            }
+            else {
+              return res.json({success: true, msg:"Deleted"});
+              // Notification.deleteMany({obj: spot._id}, (err, z) => {
+              //   if(err){
+              //     console.log(err);
+              //     return res.json({success: false, msg:"Error when deleting"});
+              //   }
+              //   else {
+              //     return res.json({success: false, msg:"Error when deleting"});
+              //   }
+              // });
+            }
+          });
+        }
+
+
+      });
+    }
+  });
+});
+
 /*
  * This route allows comments to be stored.
  * I thought that maybe it should be stored
@@ -493,14 +539,14 @@ that dictates what the user is trying to edit.
 router.post('/update', passport.authenticate('jwt', {session:false}), (req, res, next) => {
   console.log("Update");
   console.log(req.body);
-  if(req.body.type == "fullName"){
+  if(req.body.type == "profile-info"){
     User.update(req.body, (err, x) => {
       if(err){
         console.log(err);
-        return res.json({success: false, msg: "Error editing full name"});
+        return res.json({success: false, msg: "Error editing info!"});
       }
       else {
-        return res.json({success: true, msg: "Edited full name!"});
+        return res.json({success: true, msg: "Saved profile info!"});
       }
     });
   }
@@ -515,71 +561,71 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
-  if(req.body.type == "avatar"){
-    User.update(req.body, (err, x) => {
-      if(err){
-        console.log(err);
-        return res.json({success: false, msg: "Error editing avatar"});
-      }
-      else {
-        Spot.editSpotAvatar(req.body.id, req.body.avatar, (err, y) => {
-          if(err){
-            console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
-            return res.json({success: false, msg: "Error editing avatar."});
-          }
-          else {
-            return res.json({success: true, msg: "Edited avatar!"});
-          }
-        });
-      }
-    });
-  }
-  if(req.body.type == "username"){
-    //Gotta check if the username exists already
-    User.getUserByUsername(req.body.username, (err, user) => {
-      if(err){
-        console.log(err);
-        return res.json({success: false, msg: "Error editing username"});
-      }
-      if(user){
-        return res.json({success: false, msg: "That username already exists!"});
-      }
-      else {
-        User.update(req.body, (err, x) => {
-          if(err){
-            console.log(err);
-            return res.json({success: false, msg: "Error editing username"});
-          }
-          else {
-            return res.json({success: true, msg: "Edited username!"});
-          }
-        });
-      }
-    });
-  }
-  if(req.body.type == "email"){
-    //Gotta check if the email already exists
-    User.getUserByEmail(req.body.email, (err, user) => {
-      if(err){
-        console.log(err);
-        return res.json({success: false, msg: "Error editing email"});
-      }
-      if(user){
-        return res.json({success: false, msg: "That email already exists!"});
-      }
-      else {
-        User.update(req.body, (err, x) => {
-          if(err){
-            console.log(err);
-            return res.json({success: false, msg: "Error editing email"});
-          }
-          else {
-            return res.json({success: true, msg: "Edited email!"});
-          }
-        });
-      }
-    });
-  }
+  // if(req.body.type == "avatar"){
+  //   User.update(req.body, (err, x) => {
+  //     if(err){
+  //       console.log(err);
+  //       return res.json({success: false, msg: "Error editing avatar"});
+  //     }
+  //     else {
+  //       Spot.editSpotAvatar(req.body.id, req.body.avatar, (err, y) => {
+  //         if(err){
+  //           console.log("ALEX: ERROR EDIT Spot Avatar: "+ err.toString());
+  //           return res.json({success: false, msg: "Error editing avatar."});
+  //         }
+  //         else {
+  //           return res.json({success: true, msg: "Edited avatar!"});
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  // if(req.body.type == "username"){
+  //   //Gotta check if the username exists already
+  //   User.getUserByUsername(req.body.username, (err, user) => {
+  //     if(err){
+  //       console.log(err);
+  //       return res.json({success: false, msg: "Error editing username"});
+  //     }
+  //     if(user){
+  //       return res.json({success: false, msg: "That username already exists!"});
+  //     }
+  //     else {
+  //       User.update(req.body, (err, x) => {
+  //         if(err){
+  //           console.log(err);
+  //           return res.json({success: false, msg: "Error editing username"});
+  //         }
+  //         else {
+  //           return res.json({success: true, msg: "Edited username!"});
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  // if(req.body.type == "email"){
+  //   //Gotta check if the email already exists
+  //   User.getUserByEmail(req.body.email, (err, user) => {
+  //     if(err){
+  //       console.log(err);
+  //       return res.json({success: false, msg: "Error editing email"});
+  //     }
+  //     if(user){
+  //       return res.json({success: false, msg: "That email already exists!"});
+  //     }
+  //     else {
+  //       User.update(req.body, (err, x) => {
+  //         if(err){
+  //           console.log(err);
+  //           return res.json({success: false, msg: "Error editing email"});
+  //         }
+  //         else {
+  //           return res.json({success: true, msg: "Edited email!"});
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
   if(req.body.type == 'password'){
     User.update(req.body, (err, x) => {
       if(err){
@@ -602,17 +648,17 @@ router.post('/update', passport.authenticate('jwt', {session:false}), (req, res,
       }
     });
   }
-  if(req.body.type == 'stance'){
-    User.update(req.body, (err, x) => {
-      if(err){
-        console.log(err);
-        return res.json({success: false, msg: "routes: Error setting stance!"});
-      }
-      else {
-        return res.json({success: true, msg: "routes: Set stance!"});
-      }
-    });
-  }
+  // if(req.body.type == 'stance'){
+  //   User.update(req.body, (err, x) => {
+  //     if(err){
+  //       console.log(err);
+  //       return res.json({success: false, msg: "routes: Error setting stance!"});
+  //     }
+  //     else {
+  //       return res.json({success: true, msg: "routes: Set stance!"});
+  //     }
+  //   });
+  // }
   if(req.body.type == 'session'){
     User.update(req.body, (err, x) => {
       if(err){
@@ -817,6 +863,52 @@ router.get('/comments/spots/all/:id', passport.authenticate('jwt', {session:fals
     });
 });
 
+router.get('/spots/user/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    Spot.find({userId: req.params.id}, (err, spots) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      if(!spots){
+          console.log(err);
+          return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else{
+        return res.json({success: true, spots: spots.reverse()});
+      }
+    });
+});
+
+router.get('/spots/saved/:id', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+    User.getUserById(req.params.id, (err, user) => {
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+      else if(user) {
+        let savedArr = user.savedSpots.map(spot => spot.id);
+        Spot.find({_id: {$in: savedArr}}, (err, spots) =>{
+          if(err){
+            console.log(err);
+            return res.json({success: false, msg:"Error when getting spots"});
+          }
+          if(!spots){
+              console.log(err);
+              return res.json({success: false, msg:"Error when getting spots"});
+          }
+          else{
+            return res.json({success: true, spots: spots.reverse()});
+          }
+        });
+      }
+      else {
+        console.log("user didn't exist");
+        return res.json({success: false, msg:"Error when getting spots"});
+      }
+    });
+});
+
+// {_id: {$in: [req.body.data]}
 
 router.get('/spots/all', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
     Spot.find({}, (err, spots) =>{
@@ -965,6 +1057,41 @@ router.get('/:id', passport.authenticate('jwt', {session:false}) ,(req, res, nex
       if(!user){
         console.log("HOW DID THIS HAPPEN? --- getting user");
         return res.json({success: false, msg:"Error loading"});
+      }
+      else {
+        let userObj = {
+          _id: user._id,
+          fullName: user.fullName,
+          username: user.username,
+          email: user.email,
+          stance: user.stance,
+          spots: user.spots,
+          savedSpots: user.savedSpots,
+          invites: user.invites,
+          friends: user.friends,
+          avatar: user.avatar,
+          messages: user.messages,
+          notifications: user.notifications,
+          headerImage: user.headerImage
+        };
+        return res.json({success: true, user: userObj});
+      }
+
+    });
+});
+router.get('/query/:key/:value', passport.authenticate('jwt', {session:false}) ,(req, res, next) =>{
+  // console.log(req.params.id);
+    let query = {};
+    query[req.params.key] = req.params.value;
+    console.log("QUERY");
+    console.log(query);
+    User.getUserByQuery(query, (err, user) =>{
+      if(err){
+        console.log(err);
+        return res.json({success: false, msg:"Error loading"});      }
+      if(!user){
+        console.log("HOW DID THIS HAPPEN? --- getting user");
+        return res.json({success: true, msg:"User doesn't exist"});
       }
       else {
         let userObj = {

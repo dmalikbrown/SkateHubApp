@@ -42,7 +42,8 @@ const UserSchema = mongoose.Schema(
               id: {type: String}
     }
     ],
-    avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'}
+    avatar: {type: String, default: 'assets/imgs/profileGeneric.jpg'},
+    headerImage: {type: String, default: ""}
   } , { timestamps: { createdAt: 'created_at' } });
 
 const User = module.exports = mongoose.model('User', UserSchema);
@@ -57,6 +58,9 @@ module.exports.getUserByEmail = function(email, callback){
 }
 module.exports.getUserByUsername = function(username, callback){
   const query = {username: username};
+  User.findOne(query, callback);
+}
+module.exports.getUserByQuery = function(query, callback){
   User.findOne(query, callback);
 }
 module.exports.addUser = function(newUser, callback){
@@ -109,15 +113,18 @@ The different edit types for now are "fullName", "username", "email",
 "password", and "savedSpots" . This way we only need 1 function.
 */
 module.exports.update = function(edits, callback){
-  if(edits.type == "fullName"){
+  if(edits.type == "profile-info"){
+    if(edits.avatar)
     User.findByIdAndUpdate(edits.id,
-      { $set: {fullName: edits.fullName} },
-      callback
-    );
-  }
-  else if(edits.type == "username"){
-    User.findByIdAndUpdate(edits.id,
-      { $set: {username: edits.username} },
+      { $set: {
+          fullName: edits.fullName,
+          username: edits.username,
+          email: edits.email,
+          stance: edits.stance,
+          avatar: edits.avatar,
+          headerImage: edits.headerImage
+        }
+      },
       callback
     );
   }
@@ -146,24 +153,6 @@ module.exports.update = function(edits, callback){
          });
        }
     });
-  }
-  else if(edits.type == "email"){
-    User.findByIdAndUpdate(edits.id,
-      { $set: {email: edits.email} },
-      callback
-    );
-  }
-  else if(edits.type == "avatar"){
-    User.findByIdAndUpdate(edits.id,
-      { $set: {avatar: edits.avatar} },
-      callback
-    );
-  }
-  else if(edits.type == "stance"){
-    User.findByIdAndUpdate(edits.id,
-      { $set: {stance: edits.stance} },
-      callback
-    );
   }
   else if(edits.type == "password"){
     bcrypt.genSalt(10, (err, salt) => {

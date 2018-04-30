@@ -116,4 +116,5 @@
     </plugin>
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="onesignal-cordova-plugin" spec="^2.3.3" />
+    <plugin name="cordova-plugin-crop" spec="git+https://github.com/obeza/cordova-plugin-crop-with-ratio.git" />
 </widget>

@@ -1,38 +1,50 @@
 page-settings {
   .top-spacing {
+    top: 6em;
+  }
+  .top-spacing-buttons {
     margin-top: 15%;
   }
   .profile-shift {
-    margin-left: 5%;
+    margin-left: 2em;
     position: relative;
   }
-  // If user has a default avatar use this class
+  .profile-left {
+    margin-left: 2em;
+    // position: relative;
+  }
   .avatar-border {
     border-radius: 50%;
-    border-color: map-get($colors, primary);
-    border-style: solid;
-    border-width: 8px;
-    width: 100px;
-    height: 100px;
-    //border: 10px solid map-get($colors, primary);
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ffffff;
   }
-  //if user has their own avatar use this class
-  .avatar-uniq {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
+  // .square-background {
+  //   background-color: map-get($colors, lightBHue);
+  //   position: absolute;
+  //   width: 100%;
+  //   height: 8em;
+  //   // opacity: 0.5;
+  // }
+  .ion-grid{
+    margin-top: 20%;
+    height: 55%;
+    width: 100%;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
   }
-  .edit-icon {
-    font-size: 25px;
-    color: map-get($colors, primary);
+  .ion-row{
+    height:100%;
+  }
+  #headerCam {
+    position: relative;
+    left: 8em;
+    top: 1em;
+  }
+  #profileCam {
+    position: relative;
+    top: 4em;
+    left: .75em;
   }
 
-}
-
-//cssClass for the toasts. Success is green toast, warning is red toast.
-ion-toast.success .toast-wrapper {
-	background: map-get($colors, primary);
-}
-ion-toast.warning .toast-wrapper {
-	background: map-get($colors, danger);
 }

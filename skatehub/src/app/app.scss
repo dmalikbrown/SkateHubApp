@@ -21,6 +21,24 @@ body {
 user-select: text;
 }
 
+ion-header ion-icon.back-button-icon.icon {
+	color: map-get($colors, white);
+
+}
+// ion-header span.back-button-text {
+// 	// color: map-get($colors, primary);
+// 	// font-size: 15px;
+// }
+
+ion-toast.warning .toast-wrapper {
+	background: map-get($colors, danger);
+}
+ion-toast.success .toast-wrapper {
+	background: map-get($colors, success);
+}
+ion-toast.link .toast-wrapper {
+	background: #4CAF50;
+}
 .fs-14 {
   font-size: 14px;
 }

@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Find Friends</ion-title>
   </ion-navbar>
 
@@ -22,25 +22,22 @@
       [(ngModel)] = "searchTerm" name = "searchTerm" (ionChange) = "filter(true)"></ion-textarea>
   </ion-item>
 
+  <ion-grid *ngIf="selectedUsers.length > 0">
+    <ion-row>
+      <ion-col col-3 *ngFor="let searchUser of selectedUsers">
+        <ion-badge>
+          {{searchUser.username}}
+          <ion-icon name="close" (tap)="removeFromSearchList(searchUser);"></ion-icon>
+        </ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
   <ion-list *ngIf="userResultArr.length > 0">
     <ion-list-header>
       Search Results
     </ion-list-header>
     <ion-item *ngFor="let searchUser of userResultArr" (tap)="toggleUser(searchUser)">
-      <ion-avatar item-start>
-        <img [src]="searchUser.avatar">
-      </ion-avatar>
-      <h2>{{searchUser.username}}</h2>
-      <ion-icon *ngIf="!searchUser.checked" name="radio-button-off" item-end></ion-icon>
-      <ion-icon *ngIf="searchUser.checked" name="checkmark" item-end></ion-icon>
-    </ion-item>
-  </ion-list>
-  
-  <ion-list *ngIf="selectedUsers.length > 0">
-    <ion-list-header>
-      Recipients
-    </ion-list-header>
-    <ion-item *ngFor="let searchUser of selectedUsers">
       <ion-avatar item-start>
         <img [src]="searchUser.avatar">
       </ion-avatar>

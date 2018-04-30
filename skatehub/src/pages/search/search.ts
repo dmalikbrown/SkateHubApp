@@ -111,13 +111,17 @@ export class SearchPage {
   @return        nothing
   */
   filterUsers() {
-    this.start = false;
-    if(this.searchTerm && this.searchTerm.trim() != ''){
-      this.userResultArr = this.users.filter(user => user.username.includes(this.searchTerm.toLowerCase()) || user.fullName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    let search = this.searchTerm;
+    if(search && search.trim() != ''){
+      this.userResultArr = this.users.filter(user => this.startsWith(search.toLowerCase(), user.username.toLowerCase()) || this.startsWith(search.toLowerCase(), user.fullName.toLowerCase()));
     }
     else{
       this.userResultArr = [];
     }
+    // console.log(this.userResultArr);
+ }
+ startsWith(str, item){
+   return str.substring( 0, str.length ) === item.substring(0, str.length);
  }
  /*
  Filters the spots array using the searchTerm checking against spots' name.
@@ -129,7 +133,7 @@ export class SearchPage {
 
    this.start = false;
    if(this.searchTerm && this.searchTerm.trim() != ''){
-     this.spotsResultArr = this.spots.filter(spot => spot.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+     this.spotsResultArr = this.spots.filter(spot => this.startsWith(this.searchTerm.toLowerCase(),spot.name.toLowerCase()));
    }
    else{
      this.spotsResultArr = [];

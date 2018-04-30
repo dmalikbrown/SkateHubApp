@@ -45,6 +45,14 @@ export class HomePage {
                 this.filterArray = data;
                 this.spots = this.filterSpots(data);
               });
+              this.event.subscribe('newPost:event', (data) => {
+                if(data){
+                  this.grabPosts();
+                }
+                else {
+                  //Hmm
+                }
+              });
 
   }
   /*
@@ -179,6 +187,12 @@ export class HomePage {
     });
 
   }
+  refresh(refresher){
+    setTimeout(() => {
+      this.grabPosts();
+      refresher.complete();
+    }, 1000);
+  }
   /*
   Filters the spots by their state. spotsVarHolder will always contain all posts
   so that variable can be used to filter.
@@ -188,6 +202,12 @@ export class HomePage {
   filterByState(){
     if(this.state == 'all'){
       this.spots = this.spotsVarHolder;
+      if(this.spots.length == 0){
+        this.noSpots = true;
+      }
+      else {
+        this.noSpots = false;
+      }
       return;
     }
     // use array filter function calling parseStateFromSpot function.

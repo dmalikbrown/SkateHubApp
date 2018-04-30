@@ -1,21 +1,18 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, AlertController,
-  ToastController, ActionSheetController, Platform} from 'ionic-angular';
-import {Headers} from '@angular/http';
-import { FileTransfer, FileUploadOptions,
-  FileTransferObject } from '@ionic-native/file-transfer';
-import { File } from '@ionic-native/file';
-import { FilePath } from '@ionic-native/file-path';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+  ToastController, ActionSheetController, Platform, ModalController} from 'ionic-angular';
 import { AuthProvider } from './../../providers/auth/auth';
 import { SpotsProvider } from './../../providers/spots/spots';
-import { InvitesPage } from './../../pages/invites/invites';
+import { InviteProvider } from './../../providers/invite/invite';
+import { AddSessionPage } from './../../pages/add-session/add-session';
 import { FriendsPage } from './../../pages/friends/friends';
-import { MySpotsPage } from './../../pages/my-spots/my-spots';
-import { SavedSpotsPage } from './../../pages/saved-spots/saved-spots';
 import { SettingsPage } from './../../pages/settings/settings';
+import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
+import { AddFriendPage } from '../../pages/add-friend/add-friend';
+import { DetailedUserPage} from '../../pages/detailed-user/detailed-user';
+import { SeshesPage } from '../../pages/seshes/seshes';
 import { LoginPage } from './../../pages/login/login';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 
 /**
  * Generated class for the ProfilePage page.
@@ -23,7 +20,7 @@ import * as moment from 'moment';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
- declare var cordova: any;
+ // declare var cordova: any;
 
 @IonicPage()
 @Component({
@@ -34,20 +31,32 @@ export class ProfilePage {
 
   userId: any;
   user: any;
+  inviteIds: any = [];
+  spots: any = [];
+  savedSpots: any = [];
+  sortText: any = "YOUR SPOTS";
+  requested: any = [];
+  accepted: any = [];
+  requests: any = [];
+  friends: any = [];
+  emptyRequests: boolean = true;
+  emptyInvites: boolean = true;
+  sort: boolean = true;
   defaultAvatar: any = "assets/imgs/profileGeneric.jpg";
-  imagePath: any;
-  imageNewPath: any;
-  imageChosen: any = 0;
+  // imagePath: any;
+  // imageNewPath: any;
+  // imageChosen: any = 0;
   stance: any;
-  devEp: any = "http://localhost:3000";
-  prodEp: any = "https://skatehub.herokuapp.com";
+  categories: any = "posts";
+  // devEp: any = "http://localhost:3000";
+  // prodEp: any = "https://skatehub.herokuapp.com";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public authProvider: AuthProvider, public app: App,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public actionSheetCtrl: ActionSheetController, public file: File,
-              public transfer: FileTransfer, public platform: Platform,
-              public camera: Camera, public filePath: FilePath) {
+              public actionSheetCtrl: ActionSheetController,
+              public spotsProvider: SpotsProvider, public modalCtrl: ModalController,
+              public inviteProvider: InviteProvider) {
   }
 
   ionViewDidLoad() {
@@ -75,7 +84,43 @@ export class ProfilePage {
   }
 
   ionViewWillLeave(){
+    this.friends = [];
+    this.requests = [];
+    this.accepted = [];
+    this.requested = [];
+  }
+  openDetailedSpot(spot){
+      this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
+      console.log('Go to Post clicked');
+  }
+  openSortAS(){
+    let actionSheet = this.actionSheetCtrl.create({
+       title: 'SORT POSTS BY',
+       buttons: [
+         {
+           text: 'My Spots',
+           handler: () => {
+             this.sortText = "YOUR SPOTS";
+             this.sort = true;
+             // this.actionHandler(1);
+           }
+         },
+         {
+           text: 'Saved Spots',
+           handler: () => {
+             this.sortText = "YOUR SAVED SPOTS";
+             this.sort = false;
+             // this.actionHandler(2);
+           }
+         },
+         {
+           text: 'Cancel',
+           role: 'cancel'
+         }
+       ]
+     });
 
+     actionSheet.present();
   }
 
   getUser(id){
@@ -85,8 +130,12 @@ export class ProfilePage {
       if(data.success){
         this.user = data.user;
         this.authProvider.updateUser(this.user);
+        this.loadInfo();
+        this.inviteIds = this.user.invites;
+        this.loadInviteInfo();
+        this.filterFriends();
         // console.log(this.user);
-        this.imagePath = this.user.avatar;
+        // this.imagePath = this.user.avatar;
         if(this.checkAvatar() && this.checkStance()){
           let msg = "Update your profile picture and skate stance to enhance your profile!";
           let pos = "top";
@@ -124,6 +173,141 @@ export class ProfilePage {
       }
     });
   }
+  getUsersFromArr(id, type){
+    if(!id) return;
+    this.authProvider.getUser(id).subscribe((data)=>{
+      //TODO with some user stuff
+      if(data.success){
+        if(type == "request"){
+          this.requests.push(data.user);
+        }
+        else {
+          this.friends.push(data.user);
+        }
+      }
+      else {
+        console.log("error bitchhhh");
+        //TODO Error alert
+        // let alert = this.alertCtrl.create({
+        //   title: 'Error',
+        //   subTitle: data.msg,
+        //   buttons: ["Dismiss"]
+        // });
+        // alert.present();
+        // return false;
+      }
+    });
+  }
+  loadInfo(){
+    this.spotsProvider.getSpotsByUserId(this.user._id).subscribe((data) => {
+      if(data.success){
+        this.spots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+    this.spotsProvider.getSavedSpotsByArr(this.user._id).subscribe((data) => {
+      if(data.success) {
+        this.savedSpots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+  }
+  loadInviteInfo(){
+    let len = this.inviteIds.length;
+    for(let i = 0; i<len; i++){
+      this.inviteProvider.getInvite(this.inviteIds[i].id, this.authProvider.token)
+        .then((someObs)=>{
+            someObs.subscribe((data) => {
+
+              if(data.success){
+                let invite = data.invite;
+                if(!invite) return;
+                // console.log(invite);
+                if(this.checkDecline(invite)) return;
+                this.authProvider.getUser(data.invite.sender).subscribe((userData)=>{
+                  if(userData.success){
+                    invite.sender = userData.user;
+                    this.spotsProvider.getSpotById(data.invite.spot).subscribe((spotData)=>{
+                      if(spotData.success){
+                        invite.spot = spotData.spot;
+                        // console.log(userData);
+                        if(this.checkAccepted(invite) && invite.active
+                          || this.authProvider.user._id == userData.user._id){
+                          this.emptyInvites = false;
+                          this.accepted.push(invite);
+                        }
+                        else {
+                          if(invite.active){
+                            this.emptyRequests = false;
+
+                            this.requested.push(invite);
+                          }
+                        }
+                      }
+                      else {
+                        //TODO error
+                      }
+                    });
+                  }
+                  else {
+                    //TODO error
+                  }
+                });
+              }
+              else {
+                console.log(data.msg);
+              }
+            });
+      });
+    }
+  }
+  filterFriends(){
+    if(this.user.friends){
+      // let len = this.user.friends;
+      let dummyReq = [];
+      let dummyFriends = [];
+      dummyReq = this.user.friends.filter((friend) => friend.request == false && friend.sender != this.user._id);
+      dummyFriends = this.user.friends.filter((friend) => friend.request == true);
+      // console.log(dummyReq);
+      let reqL = dummyReq.length;
+      let fL = dummyFriends.length;
+
+      for(let i = 0; i<reqL; i++){
+        this.getUsersFromArr(dummyReq[i].sender, 'request');
+      }
+      for(let i = 0; i<fL; i++){
+        let idVal = "";
+        if(dummyFriends[i].id == this.user._id){
+          idVal = dummyFriends[i].sender;
+        }
+        else {
+          idVal = dummyFriends[i].id;
+        }
+        this.getUsersFromArr(idVal, 'friends');
+      }
+
+    }
+  }
+  checkDecline(invite){
+    let index = invite.declined.findIndex(user => user.id == this.user._id);
+    if(index > -1){
+      return true;
+    }
+    return false;
+  }
+  checkAccepted(invite){
+    let index = invite.accepted.findIndex(user => user.id == this.user._id);
+    if(index > -1){
+      return true;
+    }
+    return false;
+  }
   checkAvatar(){
     if(this.user.avatar == this.defaultAvatar){
       return true;
@@ -153,31 +337,143 @@ export class ProfilePage {
       }, 2000);
     });
   }
-  mySpotsPage(){
-    console.log("My Spots");
-    this.navCtrl.push(MySpotsPage, {spots: this.user.spots});
+  avatarClick(friend){
+   this.navCtrl.push(DetailedUserPage, {username: friend.username, id: friend._id});
   }
+
+  acceptFriendRequest(request){
+    let obj = {
+      id: this.user._id,
+      friend: request,
+      type: "accept-request"
+    };
+    this.authProvider.update(obj).subscribe((data) => {
+      if(data.success){
+        console.log(data.msg);
+        this.requests = [];
+        this.friends = [];
+        this.getUser(this.user._id);
+      }
+      else {
+        console.log("yO BITCH");
+      }
+    });
+  }
+
+  openAddFriendsPage(){
+    this.navCtrl.push(AddFriendPage);
+  }
+  pushSeshesPage(sesh, hasJoined){
+    this.navCtrl.push(SeshesPage, {user: this.user, session: sesh, hasJoined: hasJoined});
+  }
+  // mySpotsPage(){
+  //   console.log("My Spots");
+  //   this.navCtrl.push(MySpotsPage, {spots: this.user.spots});
+  // }
   friendsPage(){
     console.log("Friends");
     this.navCtrl.push(FriendsPage, {user: this.user});
   }
-  invitesPage(){
-    console.log("Invites");
-    this.navCtrl.push(InvitesPage,
-      {
-        user: this.user,
-        invites: this.user.invites,
-        spots: this.user.spots,
-        savedSpots: this.user.savedSpots
-      });
+  // invitesPage(){
+  //   console.log("Invites");
+  //   this.navCtrl.push(InvitesPage,
+  //     {
+  //       user: this.user,
+  //       invites: this.user.invites,
+  //       spots: this.user.spots,
+  //       savedSpots: this.user.savedSpots
+  //     });
+  // }
+  // savedSpotsPage(){
+  //   console.log("Saved Spots");
+  //   this.navCtrl.push(SavedSpotsPage, {spots: this.user.savedSpots});
+  // }
+  acceptInvite(invite, index){
+    let obj = {
+      userId: {
+        id: this.user._id
+      },
+      inviteId: invite._id
+    };
+    this.inviteProvider.acceptInvite(obj, this.authProvider.token).subscribe((data)=>{
+      if(data.success){
+        this.requested.splice(index, 1);
+        if(this.requested.length == 0 ){
+          this.emptyRequests == true;
+        }
+        this.loadInviteInfo();
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
   }
-  savedSpotsPage(){
-    console.log("Saved Spots");
-    this.navCtrl.push(SavedSpotsPage, {spots: this.user.savedSpots});
+  declineInvite(invite, index){
+    let obj = {
+      userId: {
+        id: this.user._id
+      },
+      inviteId: invite._id
+    };
+    this.inviteProvider.declineInvite(obj, this.authProvider.token).subscribe((data)=>{
+      if(data.success){
+        this.requested.splice(index, 1);
+        if(this.requested.length == 0 ){
+          this.emptyRequests == true;
+        }
+        this.loadInviteInfo();
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+  }
+  openSessionModal(){
+    if((this.user.spots.length == 0 && this.user.savedSpots.length == 0) ||
+    this.user.friends.length == 0)
+    {
+      //TODO alert or something
+      let alert = this.alertCtrl.create({
+        title: 'No spots',
+        subTitle: "Create or save a spot to create a session",
+        buttons: ['Dismiss']
+      });
+      alert.present();
+      return false;
+    }
+
+    let modal = this.modalCtrl.create(AddSessionPage, {
+      user: this.user,
+      spots: this.user.spots,
+      savedSpots: this.user.savedSpots
+    });
+    modal.onDidDismiss((data) => {
+      if(data.success){
+        let idObj = {
+          id: data.invite._id
+        }
+        this.inviteIds.push(idObj);
+        this.accepted = [];
+        this.requested = [];
+        this.loadInviteInfo();
+      }
+      else if(data.error) {
+        //TODO error
+      }
+      else {
+        //do nothing
+      }
+    });
+    modal.present();
   }
   settingsPage(){
     console.log("Settings");
-    this.navCtrl.push(SettingsPage, {id: this.userId});
+    // this.navCtrl.push(SettingsPage, {id: this.userId});
+    let modal = this.modalCtrl.create(SettingsPage, {id: this.userId});
+    modal.onDidDismiss(() => {
+      this.getUser(this.user._id);
+    });
+    modal.present();
   }
   logout(){
     this.authProvider.logout();
@@ -239,214 +535,28 @@ export class ProfilePage {
     });
   }
 
-
-
-  /*========= PROFILE EDIT IMAGE STUFF ============*/
-
-
-  uploadPhoto() {
-
-    let filename = this.imagePath.split('/').pop();
-
-    //options for when the img gets uploaded
-    let headers = new Headers();
-    headers.append('Authorization',this.authProvider.token);
-
-    var options = {
-      headers: headers,
-      fileKey: "file",
-      fileName: filename,
-      chunkedMode: false,
-      mimeType: "image/jpg",
-      params: {
-     'id': this.userId,
-      } //send this added parameters to the route
-    };
-
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    //send the file to the routes in the router.js file
-    fileTransfer.upload(this.imageNewPath, encodeURI(this.prodEp+'/skatehub/image/upload'),
-      options).then((entry) => {
-       this.imagePath = JSON.parse(entry.response).fileUrl.url;
-        // this.imageChosen = 0;
-        //this.navCtrl.setRoot(HomePage);
-
-      }, (err) => {
-        console.log("uploading");
-        console.log(err);
-        let alert = this.alertCtrl.create({
-          title: 'Error Uploading',
-          subTitle: "Try Again",
-          buttons: ['Dismiss']
-        });
-        alert.present();
-
-      });
-
-  }
-
-  editDbAvatar(){
-    let edits = {
-      id: this.userId,
-      type: "avatar",
-      avatar: this.imagePath
-    };
-    this.authProvider.update(edits).subscribe((data)=>{
-      if(data.success){
-        this.imageChosen = 0;
-        let msg = data.msg;
-        let pos = "top";
-        let cssClass = "success";
-        let showCloseButton = true;
-        let closeButtonText = "Ok";
-        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
+  setBackground(){
+    // console.log(this.headerImagePath);
+    if(this.user.headerImage != "" && this.user.headerImage){
+      return {
+           "background-color": "",
+           "background-image": "url("+this.user.headerImage+")",
+           "background-repeat": "no-repeat",
+           "background-size": "100% 8em",
+           "position": "absolute",
+           "width": "100%",
+           "height": "8em"
       }
-      else {
-        let msg = data.msg;
-        let pos = "top";
-        let cssClass = "warning";
-        let showCloseButton = true;
-        let closeButtonText = "Ok";
-        this.toastCreator(msg, pos, cssClass, showCloseButton, closeButtonText);
-      }
-    });
-  }
-
-  openEditAvatarAS(){
-    let actionSheet = this.actionSheetCtrl.create({
-       title: 'Edit your avatar',
-       buttons: [
-         {
-           text: 'Use Photo Library',
-           handler: () => {
-             this.actionHandler(1);
-           }
-         },
-         {
-           text: 'Use Camera',
-           handler: () => {
-             this.actionHandler(2);
-           }
-         },
-         {
-           text: 'Cancel',
-           role: 'cancel'
-         }
-       ]
-     });
-
-     actionSheet.present();
-  }
-
-  actionHandler(selection: any) {
-    var options: any;
-    //var camera = this.camera;
-    if (selection == 1) {
-      options = {
-        quality: 75,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        allowEdit: true,
-        encodingType: this.camera.EncodingType.JPEG,
-        targetWidth: 300,
-        targetHeight: 300,
-        saveToPhotoAlbum: false
-      };
-    } else {
-      options = {
-        quality: 75,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        sourceType: this.camera.PictureSourceType.CAMERA,
-        allowEdit: true,
-        encodingType: this.camera.EncodingType.JPEG,
-        targetWidth: 300,
-        targetHeight: 300,
-        saveToPhotoAlbum: false
-      };
     }
-
-    this.camera.getPicture(options).then((imgUrl) => {
-      //console.log("Img URL: "+imgUrl);
-        if (this.platform.is('android') && options.sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-          this.filePath.resolveNativePath(imgUrl)
-            .then(filePath => {
-              let sourceDirectory = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-              let sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.lastIndexOf('?'));
-              let newName = moment()+sourceFileName.split('?').shift();
-              this.file.copyFile(sourceDirectory, sourceFileName,cordova.file.cacheDirectory, newName).then((result: any) => {
-                this.imagePath = filePath;
-                this.imageChosen = 1;
-                this.imageNewPath = result.nativeURL;
-                this.uploadPhoto();
-              },(err) => {
-                console.log("file copy "+ err);
-                let alert = this.alertCtrl.create({
-                  title: 'Error Uploading',
-                  subTitle: "Try Again",
-                  buttons: ['Dismiss']
-                });
-                alert.present();
-              });
-        });
+    else {
+      // console.log("here");
+      return {
+           "background-color": '#9bbff2',
+           "position": "absolute",
+           "width": "100%",
+           "height": "8em"
       }
-      else{
-        let sourceDirectory = imgUrl.substring(0, imgUrl.lastIndexOf('/') + 1);
-
-        // var sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.length);
-        let sourceFileName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1, imgUrl.length);
-
-        //console.log("sourceD: "+sourceDirectory);
-
-        let newName = moment()+sourceFileName.split('?').shift();
-
-        this.file.copyFile(sourceDirectory, sourceFileName, cordova.file.cacheDirectory, newName).then((result: any) => {
-
-          this.imagePath = imgUrl;
-          // console.log(this.imagePath);
-          this.imageChosen = 1;
-          this.imageNewPath = result.nativeURL;
-          this.uploadPhoto();
-
-        }, (err) => {
-          console.log("file copy "+ err);
-          let alert = this.alertCtrl.create({
-            title: 'Error Uploading',
-            subTitle: "Try Again",
-            buttons: ['Dismiss']
-          });
-          alert.present();
-        });
-      }
-    }, (err) => {
-      console.log("get picture "+ err);
-      // let alert = this.alertCtrl.create({
-      //   title: 'Error Uploading',
-      //   subTitle: "Try Again",
-      //   buttons: ['Dismiss']
-      // });
-      // alert.present();
-    });
-  }
-  clear(){
-    let obj = {
-      url: this.imagePath
-    };
-    this.authProvider.removeImageCloud(obj).subscribe((data) =>{
-      if(data.success){//if removing url was success
-        this.imagePath = this.user.avatar;
-        this.imageChosen = 0;
-      }
-      else{//if removing url threw error
-        let alert = this.alertCtrl.create({
-          title: 'Error Removing Image',
-          subTitle: "Please try again",
-          buttons: ['Dismiss']
-        });
-        alert.present();
-      }
-    });
+    }
   }
 
 }

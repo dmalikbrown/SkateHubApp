@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,
-  ToastController} from 'ionic-angular';
+  ToastController, ActionSheetController} from 'ionic-angular';
 import { OneSignal, OSNotification } from '@ionic-native/onesignal';
 import { AuthProvider } from './../../providers/auth/auth';
 import { OtherUserSpotsPage } from '../../pages/other-user-spots/other-user-spots';
 import { OtherFriendsPage } from './../../pages/other-friends/other-friends';
+import { DetailedSpotPage } from './../../pages/detailed-spot/detailed-spot';
 import { SpotsProvider } from './../../providers/spots/spots';
 
 
@@ -25,22 +26,52 @@ export class DetailedUserPage {
   user: any;
   userId: any;
   spots: any = [];
+  savedSpots: any = [];
   id: any;
   spotsArr: any = [];
   me: any;
   hasRequested: boolean = false;
   theyRequested: boolean = false;
   isFriends: boolean = false;
+  requests: any = [];
+  friends: any = [];
+  sort: boolean = true;
+  sortText: any = "THEIR SPOTS";
+  categories: any = "posts";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
      public authProvider: AuthProvider, public spotsProvider: SpotsProvider,
-    public toastCtrl: ToastController, public oneSignal: OneSignal) {
+    public toastCtrl: ToastController, public oneSignal: OneSignal,
+    public actionSheetCtrl: ActionSheetController) {
   }
 
   ionViewDidLoad() {
     // console.log('ionViewDidLoad DetailedUserPage');
   }
 
+  setBackground(){
+    // console.log(this.headerImagePath);
+    if(this.user.headerImage != "" && this.user.headerImage){
+      return {
+           "background-color": "",
+           "background-image": "url("+this.user.headerImage+")",
+           "background-repeat": "no-repeat",
+           "background-size": "100% 8em",
+           "position": "absolute",
+           "width": "100%",
+           "height": "8em"
+      }
+    }
+    else {
+      // console.log("here");
+      return {
+           "background-color": '#9bbff2',
+           "position": "absolute",
+           "width": "100%",
+           "height": "8em"
+      }
+    }
+  }
 
 
   /*
@@ -68,6 +99,31 @@ export class DetailedUserPage {
       }
     });
   }
+  getUsersFromArr(id, type){
+    if(!id) return;
+    this.authProvider.getUser(id).subscribe((data)=>{
+      //TODO with some user stuff
+      if(data.success){
+        if(type == "request"){
+          this.requests.push(data.user);
+        }
+        else {
+          this.friends.push(data.user);
+        }
+      }
+      else {
+        console.log("error bitchhhh");
+        //TODO Error alert
+        // let alert = this.alertCtrl.create({
+        //   title: 'Error',
+        //   subTitle: data.msg,
+        //   buttons: ["Dismiss"]
+        // });
+        // alert.present();
+        // return false;
+      }
+    });
+  }
 
   /*
 
@@ -82,24 +138,90 @@ export class DetailedUserPage {
       if(data.success){
          this.user = data.user;
          // console.log(this.user);
+         this.loadInfo();
+         this.filterFriends();
          this.checkFriends();
         //this.spots = this.user.spots;
-        this.spotsProvider.getAllSpots().subscribe((data) => {
-          if (data.success) {
-            for (const spot of data.spots) {
-              if (spot.userId == this.navParams.data.id) {
-                this.spotsArr.push(spot);
-                // console.log("++++++++++++", spot.userId, this.navParams.data.id);
-              }
-            }
-          }
-        });
       } else {
           console.log("Error: DetailedUserPage, failed UserId");
       }
      });
 
   }
+  filterFriends(){
+    if(this.user.friends){
+      let dummyFriends = [];
+      dummyFriends = this.user.friends.filter((friend) => friend.request == true);
+      let fL = dummyFriends.length;
+      for(let i = 0; i<fL; i++){
+        let idVal = "";
+        if(dummyFriends[i].id == this.user._id){
+          idVal = dummyFriends[i].sender;
+        }
+        else {
+          idVal = dummyFriends[i].id;
+        }
+        this.getUsersFromArr(idVal, 'friends');
+      }
+
+    }
+  }
+  loadInfo(){
+    this.spotsProvider.getSpotsByUserId(this.user._id).subscribe((data) => {
+      if(data.success){
+        this.spots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+    this.spotsProvider.getSavedSpotsByArr(this.user._id).subscribe((data) => {
+      if(data.success) {
+        this.savedSpots = data.spots;
+        console.log(this.spots);
+      }
+      else {
+        console.log(data.msg);
+      }
+    });
+  }
+
+  openSortAS(){
+    let actionSheet = this.actionSheetCtrl.create({
+       title: 'SORT POSTS BY',
+       buttons: [
+         {
+           text: 'My Spots',
+           handler: () => {
+             this.sortText = "THEIR SPOTS";
+             this.sort = true;
+             // this.actionHandler(1);
+           }
+         },
+         {
+           text: 'Saved Spots',
+           handler: () => {
+             this.sortText = "THEIR SAVED SPOTS";
+             this.sort = false;
+             // this.actionHandler(2);
+           }
+         },
+         {
+           text: 'Cancel',
+           role: 'cancel'
+         }
+       ]
+     });
+
+     actionSheet.present();
+  }
+
+  openDetailedSpot(spot){
+      this.navCtrl.push(DetailedSpotPage, {spot: spot, id: this.user._id});
+      console.log('Go to Post clicked');
+  }
+
 
   checkFriends(){
     if(this.me.friends){
@@ -203,36 +325,38 @@ export class DetailedUserPage {
                 contents: {en: this.authProvider.user.username+" has sent you a friend request."},
                 include_player_ids: destinationIds
               };
-            this.oneSignal.postNotification(notificationObj)
-                          .then((someData) => {
-                            console.log(someData);
-                            let notification = {
-                              type: "friend",
-                              description: this.authProvider.user.username+" has sent you a friend request.",
-                              sender: this.authProvider.user._id,
-                              receiver: recipients[0]._id,
-                              obj: recipients[0]._id
-                            };
-                            let edit = {
-                              type: "notification",
-                              notification: notification,
-                              id: recipients[0]._id,
-                            };
-                            console.log("EDIT OBJ");
-                            console.log(edit);
-                            this.authProvider.update(edit).subscribe((ret)=> {
-                                if(ret.success){
-                                  //do nothing
-                                }
-                                else {
-                                  console.log(ret.msg);
-                                }
-                            });
+              let notification = {
+                type: "friend",
+                description: this.authProvider.user.username+" has sent you a friend request.",
+                sender: this.authProvider.user._id,
+                receiver: recipients[0]._id,
+                obj: recipients[0]._id
+              };
+              let edit = {
+                type: "notification",
+                notification: notification,
+                id: recipients[0]._id,
+              };
+              console.log("EDIT OBJ");
+              console.log(edit);
+              this.authProvider.update(edit).subscribe((ret)=> {
+                  if(ret.success){
+                    //send notification
+                    this.oneSignal.postNotification(notificationObj)
+                                  .then((someData) => {
+                                    console.log(someData);
 
-                          })
-                          .catch((someErr) => {
-                            console.log(someErr);
-                          })
+
+                                  })
+                                  .catch((someErr) => {
+                                    console.log(someErr);
+                                  })
+                  }
+                  else {
+                    console.log(ret.msg);
+                  }
+              });
+
 
           });
         }

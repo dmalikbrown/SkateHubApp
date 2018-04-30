@@ -5,12 +5,7 @@ import { SeshesPage } from '../../pages/seshes/seshes';
 import { InviteProvider } from '../../providers/invite/invite';
 import { AuthProvider } from '../../providers/auth/auth';
 import { SpotsProvider } from '../../providers/spots/spots';
-/**
- * Generated class for the InvitesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -32,11 +27,22 @@ export class InvitesPage {
               public modalCtrl: ModalController,
               public alertCtrl: AlertController) {
   }
-
+  /**
+  * This is a lifecyle call by ionic that retrieve invites
+  * @param none
+  * @return {bool} none
+  */
   ionViewDidLoad() {
     this.inviteIds = this.navParams.get('invites');
     this.loadInviteInfo();
   }
+  /**
+* This is a lifecyle call by ionic that accepts invites
+* @method acceptInvite
+* @param {String} index
+* @param {Object} invite
+* @return none
+*/
   acceptInvite(invite, index){
     let user = this.navParams.get('user');
     let obj = {
